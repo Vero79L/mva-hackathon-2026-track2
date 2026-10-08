@@ -1,0 +1,23 @@
+# Case manifest schema — the engine is driven ENTIRELY by this file.
+# Swap the case file (config/cases/*.yaml) to run another disease; no code change.
+# Contains ONLY derived, allowed-to-survive information. NEVER raw genotype-scale data.
+case_id: string                 # e.g. bub1b_mva
+disease: string                 # human-readable disease name
+gene: string                    # affected gene symbol
+inheritance: string             # recessive | dominant | x-linked | de_novo
+working_mechanism: string       # loss_of_function | gain_of_function | dominant_negative
+defect_direction: string        # what is broken, as a direction the therapy must COMPENSATE
+                                #   e.g. checkpoint_insufficiency  (=> therapy must STRENGTHEN, not inhibit)
+variants:                       # protein-level only (public-safe); no coordinates required
+  - change: string              # e.g. p.Leu737Ter
+    type: string                # nonsense | missense | frameshift | splice | cnv
+    predicted_effect: string    # null_NMD | hypomorph | unknown
+    residual_function: string   # none | partial | unknown
+molecular_target: string        # the node a compensation strategy must act on
+phenotypes:                     # HPO terms (allowed to survive)
+  - { term: string, hpo: string }
+patient_constraints:            # each becomes a HARD GATE, parameterized
+  age_group: string             # neonate | infant | child | adolescent | adult
+  malignancy_status: string     # active | history | predisposition | none   -> drives G1 severity
+  renal: string                 # normal | impaired | nephrocalcinosis       -> drives G3
+  growth: string                # normal | restricted                        -> drives G4

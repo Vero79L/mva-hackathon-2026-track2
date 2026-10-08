@@ -1,0 +1,9 @@
+[project]
+name = "mva-track2-triage"
+version = "0.1.0"
+description = "Case-driven candidate triage engine for N-of-1 rare-disease drug repurposing (MVA Track 2)"
+requires-python = ">=3.9"
+dependencies = ["pyyaml==6.0.3"]
+
+[tool.mva]
+note = "Disease-agnostic gate engine. Scientific judgment lives in the canonical candidate table, not in the code."

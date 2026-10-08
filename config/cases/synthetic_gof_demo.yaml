@@ -1,0 +1,19 @@
+# Synthetic case to prove the engine is disease-agnostic.
+# Different gene, gain-of-function (opposite direction), adult, no malignancy.
+# Expectation: directionality gate flips (therapy must INHIBIT), and G1/G3/G4 relax.
+case_id: synthetic_gof_demo
+disease: Synthetic GoF channelopathy (demonstration only)
+gene: SCNDEMO
+inheritance: dominant
+working_mechanism: gain_of_function
+defect_direction: channel_overactivity
+variants:
+  - { change: p.Arg200Gln, type: missense, predicted_effect: hyperactivating, residual_function: unknown }
+molecular_target: overactive_channel
+phenotypes:
+  - { term: Seizure, hpo: HP:0001250 }
+patient_constraints:
+  age_group: adult
+  malignancy_status: none
+  renal: normal
+  growth: normal

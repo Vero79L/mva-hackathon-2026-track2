@@ -1,0 +1,55 @@
+# Directionality + patient-specific hard gates. Engine reads this + the case manifest.
+# A candidate must PASS directionality, then ALL applicable hard gates, to be eligible.
+
+directionality:
+  # defect_direction -> net_effect a candidate must have to COMPENSATE the defect
+  checkpoint_insufficiency: strengthen      # inhibitors that weaken the checkpoint are auto-reject
+  channel_overactivity: inhibit
+  loss_of_function_generic: restore_or_bypass
+
+hard_gates:
+  G1_oncology:
+    driver: malignancy_status
+    rule:
+      active:
+        reject_if_candidate_is: [pro_proliferative, pro_tumor, increases_CIN, immunosuppressive]
+      history:
+        reject_if_candidate_is: [pro_proliferative, pro_tumor, increases_CIN]
+      predisposition:
+        reject_if_candidate_is: [pro_tumor, increases_CIN]
+      none:
+        reject_if_candidate_is: [increases_CIN]
+  G2_pediatric:
+    driver: age_group
+    rule:
+      neonate:
+        require: [approved_or_credible_pediatric_path]
+      infant:
+        require: [approved_or_credible_pediatric_path]
+      child:
+        require: [approved_or_credible_pediatric_path]
+      adolescent:
+        require: [approved_or_credible_pediatric_path]
+      adult:
+        require: []
+  G3_renal:
+    driver: renal
+    rule:
+      nephrocalcinosis:
+        reject_if_candidate_is: [nephrotoxic, renal_cleared_narrow_TI]
+      impaired:
+        reject_if_candidate_is: [nephrotoxic]
+      normal:
+        reject_if_candidate_is: []
+  G4_growth:
+    driver: growth
+    rule:
+      restricted:
+        flag_if_candidate_is: [anti_anabolic, growth_suppressive]
+      normal:
+        flag_if_candidate_is: []
+
+tiers:
+  strong: "passes directionality + all gates AND rescue evidence in disease-relevant cells (evidence_distance >=3)"
+  conditional: "passes directionality + all gates but evidence indirect OR depends on unresolved uncertainty"
+  reject: "fails directionality or any hard gate"

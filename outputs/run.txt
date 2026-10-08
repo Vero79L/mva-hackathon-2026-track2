@@ -1,0 +1,29 @@
+== selftest ==
+[PASS] adult_positive: STRONG
+[PASS] wrong_direction: REJECT
+[PASS] unknown_direction: ["unknown defect_direction 'unmapped' (known: ['channel_overactivity', 'checkpoint_insufficiency', 'loss_of_function_generic'])"]
+[PASS] unknown_age: ["G2_pediatric: constraint 'age_group'='adlut' is unknown (known: ['adolescent', 'adult', 'child', 'infant', 'neonate'])"]
+[PASS] bad_types: BLOCKED
+ALL PASS
+
+== real case ==
+
+=== Triage: bub1b_mva (Mosaic Variegated Aneuploidy type 1 (MVA1)) ===
+[CONDITIONAL] Sodium / glycerol phenylbutyrate (4-PBA) (passed)
+[CONDITIONAL] Folate (folinic/5-MTHF) + B12  (passed)
+[CONDITIONAL] Rapamycin / sirolimus          (passed) flags=['G4_growth']
+[REJECT     ] NAD+ precursor (NMN / NR; niacinamide) (G2_pediatric)
+[REJECT     ] PTC readthrough of L737X (DAP / ELX-02;  (G2_pediatric)
+[REJECT     ] N-acetylcysteine               (G1_oncology)
+[REJECT     ] AMPK aneuploid-deselection (metformin; n (G2_pediatric)
+[REJECT     ] Dasatinib + Quercetin (senolytic) (G1_oncology)
+[REJECT     ] MPS1/TTK, Aurora B, PLK1, KIF11 inhibito (directionality)
+[REJECT     ] NAD-inhibitor forms; AICAR/17-AAG (inves (directionality)
+Summary: {'STRONG': 0, 'CONDITIONAL': 3, 'REJECT': 7, 'BLOCKED': 0}
+
+== synthetic case ==
+
+=== Triage: synthetic_gof_demo (Synthetic GoF channelopathy (demonstration only)) ===
+[STRONG     ] Channel-inhibitor-X            (passed)
+[REJECT     ] Channel-opener-Y               (directionality)
+Summary: {'STRONG': 1, 'CONDITIONAL': 0, 'REJECT': 1, 'BLOCKED': 0}

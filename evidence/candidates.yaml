@@ -1,0 +1,10 @@
+candidates:
+  - { id: K01, drug: N-acetylcysteine, net_effect: strengthen, properties: [approved_or_credible_pediatric_path, pro_tumor], evidence_distance: 3, rescue_in_relevant_cells: false }  # pro_tumor via p53-blunting (Sayin 2014) -> killed by falsification
+  - { id: K02, drug: Dasatinib+Quercetin, net_effect: strengthen, properties: [approved_or_credible_pediatric_path, immunosuppressive], evidence_distance: 3, rescue_in_relevant_cells: false }
+  - { id: K03, drug: 4-PBA (phenylbutyrate), net_effect: strengthen, properties: [approved_or_credible_pediatric_path], evidence_distance: 2, rescue_in_relevant_cells: false }
+  - { id: K04, drug: Folate+B12, net_effect: strengthen, properties: [approved_or_credible_pediatric_path, pro_proliferative], evidence_distance: 3, rescue_in_relevant_cells: false }
+  - { id: K05, drug: Rapamycin, net_effect: strengthen, properties: [approved_or_credible_pediatric_path, growth_suppressive], evidence_distance: 4, rescue_in_relevant_cells: false }
+  - { id: R01, drug: Metformin, net_effect: none, properties: [approved_or_credible_pediatric_path, renal_cleared_narrow_TI, anti_anabolic], evidence_distance: 1 }
+  - { id: R04, drug: MPS1/TTK inhibitor, net_effect: weaken, properties: [increases_CIN, pro_tumor], evidence_distance: 1 }
+  - { id: R06, drug: NMN/NR (NAD+), net_effect: strengthen, properties: [pro_tumor], evidence_distance: 4 }
+  - { id: R05, drug: Bortezomib, net_effect: weaken, properties: [increases_CIN], evidence_distance: 2 }

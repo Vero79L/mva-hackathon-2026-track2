@@ -1,0 +1,13 @@
+# AUTO-GENERATED from candidates_canonical.json by build_views.py — do not edit by hand
+_generated_from: candidates_canonical.json
+candidates:
+  - { id: C-NAD, drug: "NAD+ precursor (NMN / NR; niacinamide)", net_effect: strengthen, properties: [], evidence_distance: 2, rescue_in_relevant_cells: false }
+  - { id: C-RT, drug: "PTC readthrough of L737X (DAP / ELX-02; ", net_effect: strengthen, properties: [renal_cleared_narrow_TI], evidence_distance: 2, rescue_in_relevant_cells: false }
+  - { id: C-PBA, drug: "Sodium / glycerol phenylbutyrate (4-PBA)", net_effect: strengthen, properties: [approved_or_credible_pediatric_path], evidence_distance: 1, rescue_in_relevant_cells: false }
+  - { id: C-NAC, drug: "N-acetylcysteine", net_effect: strengthen, properties: [approved_or_credible_pediatric_path, pro_tumor], evidence_distance: 2, rescue_in_relevant_cells: false }
+  - { id: C-AMPK, drug: "AMPK aneuploid-deselection (metformin; n", net_effect: strengthen, properties: [renal_cleared_narrow_TI, anti_anabolic], evidence_distance: 3, rescue_in_relevant_cells: false }
+  - { id: C-DQ, drug: "Dasatinib + Quercetin (senolytic)", net_effect: strengthen, properties: [approved_or_credible_pediatric_path, pro_tumor], evidence_distance: 1, rescue_in_relevant_cells: false }
+  - { id: C-FOL, drug: "Folate (folinic/5-MTHF) + B12", net_effect: strengthen, properties: [approved_or_credible_pediatric_path], evidence_distance: 2, rescue_in_relevant_cells: false }
+  - { id: C-RAPA, drug: "Rapamycin / sirolimus", net_effect: strengthen, properties: [approved_or_credible_pediatric_path, anti_anabolic], evidence_distance: 2, rescue_in_relevant_cells: false }
+  - { id: N-MITOTIC, drug: "MPS1/TTK, Aurora B, PLK1, KIF11 inhibito", net_effect: weaken, properties: [pro_tumor], evidence_distance: 1, rescue_in_relevant_cells: false }
+  - { id: N-OTHER, drug: "NAD-inhibitor forms; AICAR/17-AAG (inves", net_effect: none, properties: [], evidence_distance: 1, rescue_in_relevant_cells: false }

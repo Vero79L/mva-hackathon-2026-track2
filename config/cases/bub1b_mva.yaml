@@ -1,0 +1,30 @@
+case_id: bub1b_mva
+disease: Mosaic Variegated Aneuploidy type 1 (MVA1)
+gene: BUB1B
+inheritance: recessive            # status: ASSUMED (depends on phase, not confirmed here)
+working_mechanism: loss_of_function
+defect_direction: checkpoint_insufficiency
+phase_status: ASSUMED_in_trans    # singleton VCF, no parents, ~10.9kb apart -> unphaseable here
+variants:
+  - { change: p.Leu737Ter, type: nonsense, predicted_effect: null_NMD, nmd_status: PREDICTED_not_measured }
+  - { change: p.Asn1002Lys, type: missense, predicted_effect: hypomorph, function_status: UNKNOWN }
+# residual BUBR1 function is UNKNOWN -> carried as scenarios, not a fixed value (see case_dossier_v1)
+residual_function_scenarios:
+  - { id: S1, label: stabilizable_hypomorph, residual: reduced_allele2_only }
+  - { id: S2, label: function_lesion,       residual: present_nonfunctional }
+  - { id: S3, label: nmd_escape,            residual: mixed }
+molecular_target: residual_BUBR1_pseudokinase_domain_function  # valid only in S1/S3
+phenotypes:
+  - { term: Rhabdomyosarcoma, hpo: HP:0002859 }
+  - { term: Nephrocalcinosis, hpo: HP:0000121 }
+  - { term: Short stature, hpo: HP:0004322 }
+  - { term: Failure to thrive, hpo: HP:0001508 }
+  - { term: Skeletal muscle atrophy, hpo: HP:0003202 }
+  - { term: Premature birth, hpo: HP:0001622 }
+  - { term: Small for gestational age, hpo: HP:0001518 }
+  - { term: Recurrent spontaneous abortion (parental), hpo: HP:0200067 }
+patient_constraints:
+  age_group: child
+  malignancy_status: history      # rhabdomyosarcoma already occurred -> G1 at strictest
+  renal: nephrocalcinosis
+  growth: restricted

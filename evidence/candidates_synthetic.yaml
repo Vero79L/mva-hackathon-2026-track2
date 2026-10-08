@@ -1,0 +1,3 @@
+candidates:
+  - { id: S1, drug: Channel-inhibitor-X, net_effect: inhibit, properties: [], evidence_distance: 3, rescue_in_relevant_cells: true }
+  - { id: S2, drug: Channel-opener-Y, net_effect: strengthen, properties: [], evidence_distance: 2 }

@@ -1,0 +1,21 @@
+# Patient data — never committed
+*.vcf
+*.vcf.gz
+*.vcf.gz.tbi
+*.bam
+*.cram
+*.fastq*
+*.fq.gz
+*.docx
+gated-data/
+work/
+# Secrets / sessions / screenshots
+*token*
+.userdata-*
+shots/
+*.png
+# Env
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
