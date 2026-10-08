@@ -51,3 +51,9 @@ Run on another disease by adding a `config/cases/<id>.yaml` with a new `defect_d
 gain-of-function case shows the directionality rule flipping with the input. This
 demonstrates that the gate logic is case-driven; it is **not** a cross-disease discovery
 claim — candidate generation and evidence appraisal remain curated.
+
+## Submission documents (docs/)
+- `docs/REPORT.md` — the written report (decision, patient basis, candidate funnel, limitations).
+- `docs/PITCH.md` — 3-minute pitch script.
+- `docs/METHODS_AND_AI.md` — methods + AI provenance + data governance.
+- `docs/candidates_canonical.json` — the single candidate source of truth (copy).

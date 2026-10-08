@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.0",
+  "generated_for": "MVA1 (biallelic BUB1B: p.Leu737Ter + p.Asn1002Lys); checkpoint insufficiency",
+  "updated": "2026-10-08",
+  "legend": {
+    "entity_type": "intervention = a specific drug/combination; mechanism_branch = a strategy class; negative_control = wrong-direction reference",
+    "competition_eligibility": "ELIGIBLE (approved + pediatric path for a defensible repurposing) | INELIGIBLE (not approved / lost approval / investigational / preclinical) | UNKNOWN (status not yet verified)",
+    "research_judgment": "SUPPORTED | CONDITIONAL | INSUFFICIENT (not enough evidence, not proven ineffective) | REJECTED (wrong direction or proven unsuitable)",
+    "evidence_distance": "0 database/association | 1 pathway effect in unrelated system | 2 affects BUB1B/SAC biology | 3 rescues BUB1B-deficient cellular phenotype | 4 improves CIN phenotype in relevant model | 5 human/clinical",
+    "directionality": "compensate = right direction for checkpoint insufficiency; worsen = increases CIN / weakens checkpoint; mitigate = reduces downstream consequence; deselect = removes abnormal cells"
+  },
+  "candidates": [
+    {
+      "id": "C-NAD",
+      "drug": "NAD+ precursor (NMN / NR; niacinamide)",
+      "entity_type": "mechanism_branch",
+      "branch": "C functional-compensation (SIRT2-BubR1 axis)",
+      "competition_eligibility": "UNKNOWN",
+      "eligibility_note": "NMN/NR are supplements, not approved drugs; niacinamide is approved — the eligible product/indication must be fixed",
+      "research_judgment": "CONDITIONAL",
+      "directionality": "compensate",
+      "net_effect": "strengthen",
+      "evidence_distance": 2,
+      "gates": {
+        "G1_oncology": "contested",
+        "G2_pediatric": "no peds safety for NMN/NR",
+        "G3_renal": "ok",
+        "G4_growth": "not rescued"
+      },
+      "best_evidence": "North BJ et al., EMBO J 2014, PMID 24825348 (SIRT2 deacetylates BubR1-K668). NOTE: NMN experiments were in aging/WT/Sirt2-null contexts; BubR1^H/H lifespan used a SIRT2 TRANSGENE. NMN untested in the MVA model.",
+      "disposition_reason": "On-mechanism rationale is real, but the NMN/NR drug step is a bridging hypothesis unvalidated in the MVA model and in N1002K; oncology direction contested (raise BubR1 suppresses vs NAD+ fuels tumors).",
+      "decisive_experiment": "In patient/isogenic N1002K cells: NAD+ precursor dose-response -> BubR1-K668 acetylation + total BubR1, mitotic timing, aneuploidy; PLUS clonal-fitness/transformation arm for the tumor-fuelling concern.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "C-RT",
+      "drug": "PTC readthrough of L737X (DAP / ELX-02; aminoglycoside & ataluren rejected)",
+      "entity_type": "mechanism_branch",
+      "branch": "A protein-rescue (readthrough/NMD)",
+      "competition_eligibility": "INELIGIBLE",
+      "eligibility_note": "ataluren lost approval (EMA non-renewal 2025-03-28; PTC withdrew FDA NDA application 2026-02-12); aminoglycosides INELIGIBLE here on renal grounds; ELX-02 investigational; DAP preclinical",
+      "research_judgment": "CONDITIONAL",
+      "directionality": "compensate",
+      "net_effect": "strengthen",
+      "evidence_distance": 2,
+      "gates": {
+        "G1_oncology": "global-readthrough concern",
+        "G2_pediatric": "varies",
+        "G3_renal": "aminoglycosides fail (nephrotoxic x nephrocalcinosis)",
+        "G4_growth": "n/a"
+      },
+      "best_evidence": "Trzaska 2020 Nat Commun PMID 32198346 (DAP UGA readthrough); Toledano 2024 Nat Genet PMID 39174735 (genome-scale readthrough). Full-length restoration precedent is CFTR (Sharma 2021 PMID 34272367), not BUB1B.",
+      "disposition_reason": "Corrected: readthrough gives a near-full-length product (old 'truncated' reason withdrawn). Coordinates recomputed (readthrough_coordinates_2026-10-08.md): stop UGA at c.2209-2211 (g.40209700-702), +1 context base = c.2212 = g.40209703 (raw log's c.2213 was off by one). Blocker = NMD (PREDICTED, not measured; needs allele-specific mRNA) + no renal-safe approved UGA agent. One-allele rescue judged by functional threshold, not allele count.",
+      "decisive_experiment": "Allele-specific BUBR1 mRNA + full-length protein under NMD-inhibition alone / readthrough agent alone / combination, with SAC-competence readout.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "C-PBA",
+      "drug": "Sodium / glycerol phenylbutyrate (4-PBA)",
+      "entity_type": "intervention",
+      "branch": "B protein-stabilization (chaperone)",
+      "competition_eligibility": "ELIGIBLE",
+      "eligibility_note": "approved for urea-cycle disorders; pediatric (glycerol form >=2 months)",
+      "research_judgment": "INSUFFICIENT",
+      "directionality": "compensate (intended)",
+      "net_effect": "strengthen",
+      "evidence_distance": 1,
+      "gates": {
+        "G1_oncology": "ok",
+        "G2_pediatric": "ok",
+        "G3_renal": "Na+ load caution",
+        "G4_growth": "ok"
+      },
+      "best_evidence": "Mechanism = COPII/secretory-cargo export, NOT a cytosolic chaperone (Ma W & Goldberg J, eLife 2017, PMID 28594326). Zero BUBR1-specific data.",
+      "disposition_reason": "Mechanism mismatch (BUBR1 is cytosolic/mitotic) + achievable exposure (0.2-1.3 mM total) overlaps the HDAC range. Thresholds are NOT a measured N1002K ECx -> 'direct rescue and exposure feasibility not established' (deprioritized), NOT 'no window proven'.",
+      "decisive_experiment": "In-cell EC50 for N1002K-BUBR1 stabilization across 0.05-10 mM vs a histone-H3/H4-acetylation (HDAC) readout in the same cells.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "C-NAC",
+      "drug": "N-acetylcysteine",
+      "entity_type": "intervention",
+      "branch": "E downstream-mitigation",
+      "competition_eligibility": "ELIGIBLE",
+      "eligibility_note": "approved; extensive pediatric use; renally gentle",
+      "research_judgment": "CONDITIONAL",
+      "directionality": "mitigate",
+      "net_effect": "strengthen",
+      "evidence_distance": 2,
+      "gates": {
+        "G1_oncology": "antioxidant-aids-tumor watch",
+        "G2_pediatric": "ok",
+        "G3_renal": "ok",
+        "G4_growth": "ok"
+      },
+      "best_evidence": "As a disease modifier: rejected (effective 0.5-5 mM vs reachable plasma ~2-25 uM oral). As mitigation: reduces oxidative/senescence load (consequence endpoint).",
+      "disposition_reason": "Conditional as downstream mitigation (a lane the strategy permits), NOT a disease modifier; exposure for the mitigation endpoint unproven; keep tumor-promotion watch.",
+      "decisive_experiment": "In patient cells: ROS + senescence markers (SA-beta-gal/p16/p21) + proliferative lifespan at achievable exposure; explicitly a mitigation readout, not a fidelity fix.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "C-AMPK",
+      "drug": "AMPK aneuploid-deselection (metformin; non-renal AMPK agent needed)",
+      "entity_type": "mechanism_branch",
+      "branch": "F aneuploid-deselection",
+      "competition_eligibility": "UNKNOWN",
+      "eligibility_note": "metformin approved/pediatric but renal-limited (FDA limit by eGFR); a non-renally-cleared AMPK activator is the open substitution",
+      "research_judgment": "CONDITIONAL",
+      "directionality": "deselect",
+      "net_effect": "strengthen",
+      "evidence_distance": 3,
+      "gates": {
+        "G1_oncology": "selectivity vs normal-tissue loss unresolved",
+        "G2_pediatric": "metformin ok",
+        "G3_renal": "metformin limited by eGFR",
+        "G4_growth": "appetite/growth caution"
+      },
+      "best_evidence": "Tang YC et al., Cell 2011, PMID 21315436 — p53-RELATED apoptosis (Fig 3), AMPK-dependence (Fig 4), Bub1b^H/H MEFs (Fig 6). NOT p53-independent.",
+      "disposition_reason": "Research question: under what cell + exposure does a selective effect exceed normal-tissue loss? Anti-proliferation is not repaired segregation. Euploid cells in constitutional BUB1B deficiency still carry the defect.",
+      "decisive_experiment": "Euploid-vs-aneuploid differential viability in matched patient cells with a non-renal AMPK agent; measure normal-cell loss and p53 status; separate selection from fidelity.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "C-DQ",
+      "drug": "Dasatinib + Quercetin (senolytic)",
+      "entity_type": "intervention",
+      "branch": "B/E senolytic",
+      "competition_eligibility": "ELIGIBLE",
+      "eligibility_note": "dasatinib approved pediatric (Ph+ CML/ALL)",
+      "research_judgment": "REJECTED",
+      "directionality": "deselect (downstream)",
+      "net_effect": "strengthen",
+      "evidence_distance": 1,
+      "gates": {
+        "G1_oncology": "senescence is a tumor-suppressive barrier; myelosuppression",
+        "G2_pediatric": "dasatinib toxicity",
+        "G3_renal": "caution",
+        "G4_growth": "caution"
+      },
+      "best_evidence": "Baker 2011 Nature PMID 22048312 used the INK-ATTAC GENETIC tool + AP20187 to clear p16 cells — this is NOT evidence that the D+Q DRUG rescued the disease model. Zhu 2015 Aging Cell PMID 25754370 D+Q is in Ercc1-deficient/other models. No aneuploidy endpoint in any cited study.",
+      "disposition_reason": "Acts downstream; genetic-tool validation != D+Q drug evidence; endpoint mismatch (senescence markers, not aneuploidy) + toxicity on this child's organs.",
+      "decisive_experiment": "Only re-enters if a patient model shows D+Q reduces the PROLIFERATING aneuploid clone fraction (scDNA-seq/micronucleus) AND does not accelerate outgrowth.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "C-FOL",
+      "drug": "Folate (folinic/5-MTHF) + B12",
+      "entity_type": "intervention",
+      "branch": "E mitigation (aneugenic MN)",
+      "competition_eligibility": "ELIGIBLE",
+      "eligibility_note": "approved vitamins; pediatric",
+      "research_judgment": "INSUFFICIENT",
+      "directionality": "mitigate (partial)",
+      "net_effect": "strengthen",
+      "evidence_distance": 2,
+      "gates": {
+        "G1_oncology": "folate feeds proliferation (watch)",
+        "G2_pediatric": "ok",
+        "G3_renal": "ok",
+        "G4_growth": "ok"
+      },
+      "best_evidence": "Aneugenic micronucleus evidence in human lymphocytes at physiologic doses; no BUB1B/SAC link.",
+      "disposition_reason": "Supportive/deficiency-correction claim distinct from disease modification; dose only to the genome-stability threshold; oncology watch.",
+      "decisive_experiment": "Deficiency status + aneugenic MN readout at threshold dosing; not a segregation-fidelity fix.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "C-RAPA",
+      "drug": "Rapamycin / sirolimus",
+      "entity_type": "intervention",
+      "branch": "oncologic-protective",
+      "competition_eligibility": "ELIGIBLE",
+      "eligibility_note": "approved; broad pediatric base",
+      "research_judgment": "CONDITIONAL",
+      "directionality": "oncologic-protective only",
+      "net_effect": "strengthen",
+      "evidence_distance": 2,
+      "gates": {
+        "G1_oncology": "anti-cancer favorable",
+        "G2_pediatric": "ok",
+        "G3_renal": "ok",
+        "G4_growth": "growth-suppressive"
+      },
+      "best_evidence": "Baker 2013 (PMID 23242215) mentions a preliminary rapamycin feeding result as UNPUBLISHED DATA — a negative signal only, NOT a full dose/stat-powered pharmacological experiment.",
+      "disposition_reason": "Keep as conditional on the oncologic-protective axis; the 'genome-stabilizing' story is not supported; the null is an unpublished preliminary signal, not proof of equivalence or inefficacy.",
+      "decisive_experiment": "Patient-target-phenotype vs dose/exposure compatibility; do not substitute an anti-aging endpoint for patient benefit.",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "N-MITOTIC",
+      "drug": "MPS1/TTK, Aurora B, PLK1, KIF11 inhibitors; microtubule destabilizers; bortezomib; HSP90i (17-AAG)",
+      "entity_type": "negative_control",
+      "branch": "wrong-direction",
+      "competition_eligibility": "varies",
+      "eligibility_note": "individual approval status differs; recorded as negative controls",
+      "research_judgment": "REJECTED",
+      "directionality": "worsen",
+      "net_effect": "weaken",
+      "evidence_distance": 1,
+      "gates": {
+        "G1_oncology": "increase CIN",
+        "G2_pediatric": "n/a",
+        "G3_renal": "n/a",
+        "G4_growth": "n/a"
+      },
+      "best_evidence": "Mechanism: these abrogate/overload the checkpoint or raise CIN — the disease's own direction.",
+      "disposition_reason": "Negative controls with clear reasons; proven wrong-direction for checkpoint insufficiency. Kept to show the system says no, not scored by a string rule alone.",
+      "decisive_experiment": "n/a (negative control)",
+      "version": "2026-10-08"
+    },
+    {
+      "id": "N-OTHER",
+      "drug": "NAD-inhibitor forms; AICAR/17-AAG (investigational); chloroquine/HCQ (hypothesis-only); navitoclax (investigational); fisetin (supplement); aspirin/isotretinoin (off-target tumor spectrum); bulk nucleoside loading",
+      "entity_type": "negative_control",
+      "branch": "rejected-misc (to be split before submission)",
+      "competition_eligibility": "varies",
+      "eligibility_note": "MUST be split into individual entries before final submission — each has distinct approval/mechanism/evidence",
+      "research_judgment": "REJECTED",
+      "directionality": "mixed",
+      "net_effect": "none",
+      "evidence_distance": 1,
+      "gates": {
+        "G1_oncology": "varies",
+        "G2_pediatric": "varies",
+        "G3_renal": "varies",
+        "G4_growth": "varies"
+      },
+      "best_evidence": "Per-agent reasons recorded in kill_memos / P0 synthesis.",
+      "disposition_reason": "Placeholder grouping; flagged for splitting so each rejection is individually reproducible.",
+      "decisive_experiment": "n/a",
+      "version": "2026-10-08"
+    }
+  ]
+}
