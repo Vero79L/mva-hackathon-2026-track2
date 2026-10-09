@@ -8,7 +8,7 @@ candidates:
   net_effect: strengthen
   evidence_distance: 2
   rescue_in_relevant_cells: false
-  competition_eligibility: UNKNOWN
+  competition_eligibility: INELIGIBLE
   properties: []
   safety_assessment:
     oncology: contradictory
@@ -54,8 +54,10 @@ candidates:
   net_effect: strengthen
   evidence_distance: 3
   rescue_in_relevant_cells: false
-  competition_eligibility: UNKNOWN
-  properties: []
+  competition_eligibility: ELIGIBLE
+  properties:
+  - approved_or_credible_pediatric_path
+  - renal_cleared_narrow_TI
   safety_assessment:
     oncology: not_assessed
     renal: not_assessed
@@ -111,14 +113,79 @@ candidates:
     oncology: confirmed_risk
     renal: not_assessed
     growth: not_assessed
-- id: N-OTHER
-  drug: NAD-inhibitor forms; AICAR/17-AAG (investigational); chloroquine/HCQ (hypothesis-only);
-    navitoclax (investigational); fisetin (supplement); aspirin/isotretinoin (off-target
-    tumor spectrum); bulk nucleoside loading
+- id: N-CQ
+  drug: Chloroquine / hydroxychloroquine
+  net_effect: strengthen
+  evidence_distance: 1
+  rescue_in_relevant_cells: false
+  competition_eligibility: ELIGIBLE
+  properties:
+  - approved_or_credible_pediatric_path
+  safety_assessment:
+    oncology: not_assessed
+    renal: not_assessed
+    growth: not_assessed
+- id: N-ASA
+  drug: Aspirin
   net_effect: none
   evidence_distance: 1
   rescue_in_relevant_cells: false
-  competition_eligibility: UNKNOWN
+  competition_eligibility: ELIGIBLE
+  properties: []
+  safety_assessment:
+    oncology: not_assessed
+    renal: not_assessed
+    growth: not_assessed
+- id: N-ISO
+  drug: Isotretinoin
+  net_effect: none
+  evidence_distance: 1
+  rescue_in_relevant_cells: false
+  competition_eligibility: ELIGIBLE
+  properties: []
+  safety_assessment:
+    oncology: not_assessed
+    renal: not_assessed
+    growth: not_assessed
+- id: N-AICAR
+  drug: AICAR / 17-AAG
+  net_effect: none
+  evidence_distance: 1
+  rescue_in_relevant_cells: false
+  competition_eligibility: INELIGIBLE
+  properties: []
+  safety_assessment:
+    oncology: not_assessed
+    renal: not_assessed
+    growth: not_assessed
+- id: N-NAVI
+  drug: Navitoclax
+  net_effect: none
+  evidence_distance: 1
+  rescue_in_relevant_cells: false
+  competition_eligibility: INELIGIBLE
+  properties: []
+  safety_assessment:
+    oncology: not_assessed
+    renal: not_assessed
+    growth: not_assessed
+- id: N-FIS
+  drug: Fisetin
+  net_effect: none
+  evidence_distance: 1
+  rescue_in_relevant_cells: false
+  competition_eligibility: INELIGIBLE
+  properties: []
+  safety_assessment:
+    oncology: not_assessed
+    renal: not_assessed
+    growth: not_assessed
+- id: N-NUC
+  drug: Bulk nucleoside loading
+  net_effect: none
+  evidence_distance: 1
+  rescue_in_relevant_cells: false
+  competition_eligibility: INELIGIBLE
   properties: []
   safety_assessment:
     oncology: not_assessed

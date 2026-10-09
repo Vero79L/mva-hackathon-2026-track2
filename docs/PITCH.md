@@ -15,12 +15,12 @@ denominator — no candidate reaches clinical support. We demoted our own earlie
 (4-PBA) once its mechanism turned out to be secretory, not a cytosolic chaperone, and its
 achievable exposure overlapped its HDAC-inhibitory range.
 
-**1:20–2:05 — The surviving set and its single honest hypothesis.** Four branches remain
-conditional, each with a distinct risk: NAD+/SIRT2 has the only on-mechanism rationale but
-is unvalidated in the disease model with a contested oncology direction; readthrough is
-right-directioned but blocked by nonsense-mediated decay; NAC is downstream mitigation
-only; AMPK deselection is renally constrained. Our hypothesis is the rule that ties them:
-improve segregation at an achievable exposure while testing for adverse clonal effects.
+**1:20–2:05 — The surviving set and the named primary.** After verifying what is actually
+an approved medication, the strongest biology — raising BUBR1 via SIRT2 — has no approved
+drug. Among approved, pediatric-feasible options the single most defensible candidate is
+glycerol phenylbutyrate, aimed at stabilizing the patient's residual BUBR1. We name it as a
+research hypothesis, not a recommendation: its mechanism is contested, and one experiment
+decides it. Backup is N-acetylcysteine as downstream mitigation.
 
 **2:05–2:40 — The decisive experiment.** First characterize N1002K — abundance and
 function — because that single measurement tells us whether a rescuable protein exists.

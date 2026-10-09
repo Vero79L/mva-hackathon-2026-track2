@@ -29,7 +29,7 @@ Or with uv (single-file inline deps): `uv run src/triage.py --case config/cases/
 
 ## Tests
 ```sh
-python3 src/triage.py --selftest     # 5 regression checks (input validation + gates)
+python3 src/triage.py --selftest     # 8 regression checks (input validation + gates)
 ```
 Expected: `ALL PASS`. The checks cover: empty-require passes, wrong-direction rejects,
 unknown defect_direction / age typo BLOCK the case, and out-of-range/wrong-type inputs BLOCK.

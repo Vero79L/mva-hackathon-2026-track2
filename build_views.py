@@ -112,11 +112,12 @@ cmp_md = ["# Computed (engine) vs human research judgment", "",
           "| ID | Human | Engine | Explanation of divergence |", "|---|---|---|---|"]
 EXPL = {
  "C-NAD": "engine REJECTs at pediatric gate: no approved pediatric product is fixed (eligibility UNKNOWN); human keeps the SIRT2-BubR1 mechanism CONDITIONAL for study",
- "C-AMPK": "engine REJECTs at pediatric gate: no specific agent fixed (eligibility UNKNOWN); human keeps the deselection mechanism CONDITIONAL for study",
+ "C-AMPK": "engine REJECTs at renal gate (metformin renal_cleared_narrow_TI vs nephrocalcinosis); human keeps the deselection mechanism CONDITIONAL pending a non-renal AMPK agent",
  "C-RT": "engine REJECTs on INELIGIBLE (no approved renal-safe UGA agent); human keeps the mechanism-branch CONDITIONAL",
  "C-PBA": "engine has no INSUFFICIENT terminal; an eligible-but-weak candidate reads CONDITIONAL",
  "C-DQ": "human REJECTED is a research judgment (downstream action + endpoint mismatch), not one of the four gates",
  "C-FOL": "engine has no INSUFFICIENT terminal; reads CONDITIONAL",
+ "N-CQ": "eligible + directionally plausible so engine passes gates; human REJECTED on chronic pediatric toxicity + hypothesis-only (not a gate)",
 }
 for c in C:
     h, e = c["research_judgment"], computed.get(c["id"], "?")
