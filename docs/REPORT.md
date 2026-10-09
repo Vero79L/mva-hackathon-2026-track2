@@ -6,6 +6,8 @@ No screened candidate currently supports clinical use for this MVA1 patient, and
 
 What would overturn the current disposition is stated per candidate below (each has a named decisive experiment).
 
+**Primary research hypothesis (named, conditional).** The most defensible direction is to RAISE or PROTECT residual BUBR1 function so that chromosome segregation improves at an achievable exposure, without adverse clonal effects. The lead testable instantiation is the SIRT2-BUBR1 / NAD+ axis (NMN/NR) — the only branch with an on-mechanism rationale in the disease biology — gated by one experiment: characterize N1002K (abundance vs function) and test whether an NAD+ precursor raises functional BubR1 and improves mitotic fidelity, with a clonal-fitness arm. This is explicitly conditional: NMN/NR are not approved drugs (an eligible product must be fixed), the axis is unvalidated in the MVA model, nicotinamide is directionally OPPOSITE (a sirtuin inhibitor that lowered BubR1), and the oncology direction is contested. No currently-approved medication cleanly completes the candidate card; that gap is itself a reportable finding, not a candidate list padded to hide it.
+
 ## Patient basis — fact status separated
 From the gated dataset (derived facts only; raw data held in a controlled environment):
 - **CONFIRMED**: two BUB1B variants in the proband, both high-quality heterozygous — p.Leu737Ter (c.2210T>G, 15:40209701) and p.Asn1002Lys (c.3006T>G, 15:40220612); phenotype including a documented rhabdomyosarcoma history, nephrocalcinosis, growth restriction, prematurity.
@@ -18,7 +20,7 @@ Risk statements are classified as regulatory contraindication / known pharmacolo
 Biallelic BUB1B reduces BUBR1 at the spindle-assembly checkpoint, weakening the delay of anaphase until kinetochores are correctly attached, which produces mis-segregation and mosaic aneuploidy. The BUBR1 pseudokinase domain promotes PP2A-B56 recruitment and checkpoint silencing (Gama Braga et al., Cell Reports 2020). The objective is therefore accurate chromosome segregation under appropriately regulated mitotic progression — not generic "more checkpoint." A direction that further weakens the checkpoint (MPS1/TTK, Aurora B, PLK1, KIF11 inhibitors) is the disease's own direction and serves only as a negative control.
 
 ## Candidate funnel (one denominator, generated from a single source)
-All views derive from `candidates_canonical.json` via `build_views.py`: **5 interventions + 3 mechanism-branches + 2 negative-control groups = 10 entries.** Competition eligibility (ELIGIBLE / INELIGIBLE / UNKNOWN) is tracked separately from research judgment (SUPPORTED / CONDITIONAL / INSUFFICIENT / REJECTED).
+The candidate tables, the engine fixture, and the computed-vs-human comparison are generated from `candidates_canonical.json` via `build_views.py` (the narrative report, pitch, and Master Control are maintained separately): **5 interventions + 3 mechanism-branches + 2 negative-control groups = 10 entries.** Competition eligibility (ELIGIBLE / INELIGIBLE / UNKNOWN) is tracked separately from research judgment (SUPPORTED / CONDITIONAL / INSUFFICIENT / REJECTED).
 
 | Branch / candidate | Eligibility | Research | Ev-dist | Why / decisive experiment |
 |---|---|---|---|---|

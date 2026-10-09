@@ -1,13 +1,20 @@
 #!/bin/sh
-# Single clean-run command: real case + synthetic case + selftest, snapshot to outputs/
-set -e
-cd "$(dirname "$0")"
-mkdir -p outputs
+# One clean run: selftest -> generate views -> real case -> synthetic case.
+# Any step failure exits non-zero (no pipeline masking).
+cd "$(dirname "$0")" || exit 1
 PY="${PYTHON:-python3}"
-echo "== selftest ==" | tee outputs/run.txt
-$PY src/triage.py --selftest 2>&1 | tee -a outputs/run.txt
-echo "\n== real case (bub1b_mva) ==" | tee -a outputs/run.txt
-$PY src/triage.py --case config/cases/bub1b_mva.yaml --candidates evidence/candidates_from_canonical.yaml 2>&1 | tee -a outputs/run.txt
-echo "\n== synthetic case (gof demo) ==" | tee -a outputs/run.txt
-$PY src/triage.py --case config/cases/synthetic_gof_demo.yaml --candidates evidence/candidates_synthetic.yaml 2>&1 | tee -a outputs/run.txt
-echo "\nDONE. Snapshot in outputs/run.txt"
+mkdir -p outputs
+OUT=outputs/run.txt
+: > "$OUT"
+step() {
+  name="$1"; shift
+  echo "== $name ==" >> "$OUT"
+  "$@" >> "$OUT" 2>&1
+  rc=$?
+  if [ "$rc" -ne 0 ]; then echo "STEP FAILED ($name) rc=$rc" >> "$OUT"; echo "STEP FAILED ($name) rc=$rc"; exit "$rc"; fi
+}
+step selftest "$PY" src/triage.py --selftest
+step "generate views" "$PY" build_views.py
+step "real case" "$PY" src/triage.py --case config/cases/bub1b_mva.yaml --candidates evidence/candidates_from_canonical.yaml
+step "synthetic case" "$PY" src/triage.py --case config/cases/synthetic_gof_demo.yaml --candidates evidence/candidates_synthetic.yaml
+echo "DONE" >> "$OUT"; echo "DONE (see $OUT)"

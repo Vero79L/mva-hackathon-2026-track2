@@ -12,8 +12,7 @@ table: `../registers/candidates_canonical.json`, from which all views are genera
 `../registers/build_views.py`.
 
 ## No patient data here
-This repository contains **no genomic or clinical patient data**. Raw VCF/FASTQ/clinical
-files stay in a controlled local area under a 30-day post-close deletion obligation
+This repository contains **no raw genomic or clinical files**. It does list rules-permitted DERIVED facts (two public variant coordinates already in ClinVar/competitor repos, HPO terms, mechanism analysis). Raw VCF/FASTQ/clinical files stay in a controlled local area under a 30-day post-close deletion obligation
 (see `../DATA-LOCATION.md`). `.gitignore` excludes those file types as a secondary
 barrier. The HF login automation is deliberately **not** in this package.
 
