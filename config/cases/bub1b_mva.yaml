@@ -186,7 +186,7 @@ provenance:
     sha256: 6602dcef5290c4108edc3a2149a4c75b99377a75948a922ae3a8af22c7f5af1d
   mechanism_graph:
     file: docs/mechanism_graph.yaml
-    sha256: 35bdf7385b71506b1ebb340d7ef5aa41a020fbda843206e7513547200253cfec
+    sha256: 9647765f17f2a9a63a04982c56e0fffb4338f2bd8c1558a7c633824457134747
   scenarios:
     file: config/scenarios/bub1b_mva.scenarios.yaml
     sha256: e59bc42c64d18f321fde5189560fbd9a181ba7d35e16fd5bd13e719b0764c408
@@ -194,4 +194,4 @@ provenance:
     file: research/registers/fact_register.csv
     sha256: 12ccdf52f606b5a5468c28b0667dc73c351915ed55d9f59e32f76916172882ef
     rows: 18
-  built_at: '2026-10-19T10:05:01+00:00'
+  built_at: '2026-10-19T12:32:50+00:00'

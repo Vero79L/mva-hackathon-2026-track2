@@ -139,10 +139,11 @@ Summary: {'STRONG': 0, 'CONDITIONAL': 7, 'REJECT': 10, 'BLOCKED': 0}
 claim_ledger.csv: 36 claims -> /sessions/rcw-01v3z1lhckhutum2htls471x/mnt/opportunity-quest/mva/research/registers/claim_ledger.csv
   human sign-off: 0/36 signed (registers/claim_signoff.csv)
   by type: {'mechanism': 18, 'regulatory': 11, 'global_negative': 5, 'method': 2}
-  by strength: {'predicted': 3, 'measured': 26, 'asserted': 7}
+  by strength: {'predicted': 3, 'measured': 27, 'asserted': 6}
 == manifest ==
 manifest OK
   PENDING (filled at freeze; run with --freeze to make this blocking): docs/REPORT.md: slots still to fill at freeze ['{{FILL:DATE}}', '{{FILL:VIDEO}}']
+  PENDING (filled at freeze; run with --freeze to make this blocking): registers/citation_check.csv is older than docs/mechanism_graph.yaml - re-run scripts/phase1/16_verify_citations.py from a network that can reach Europe PMC/Crossref
   PENDING (filled at freeze; run with --freeze to make this blocking): 36/36 claim-ledger rows carry no human sign-off (registers/claim_signoff.csv). A generated ledger can prove its sources; it cannot prove that a person read them.
  counts verified: claims=36, global-negative=5, product rows=11, registered facts=18, self-tests=28
  denominator: 13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries

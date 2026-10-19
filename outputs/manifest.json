@@ -3,12 +3,12 @@
   "denominator": "13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries",
   "primary_hypothesis": "A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experiment only if it acts in the compensating direction on the bottleneck the decisive experiment is built to measure — residual BubR1 abundance and checkpoint function, both of which are UNKNOWN in this child — passes this patient's constraint gates with every safety axis those gates cannot see declared rather than counted as clear, and rests on an approved product with a dated label. Under that rule the single named candidate is niacin (nicotinic acid), an approved NAD+ precursor acting through the SIRT2–BubR1 stabilization axis, carried as a conditional research hypothesis and not a recommendation: its oncology axis is contradictory and its growth axis unassessed. It is overturned if NAD+ repletion in patient-derived cells fails to raise BubR1 protein, fails to correct the checkpoint defect, or raises the aneuploid fraction of the surviving population — a fraction, never raw survival, because a real checkpoint rescue can raise overall survival.",
   "files": {
-    "docs/REPORT.md": "99fba0d13b2f4abad200add3d20569ddb33ca0d8f053795970869661f14bd726",
-    "docs/PITCH.md": "4266acc8189b3342b74511588801bb14365ab24af7f0e7f47da655e4e92b617b",
+    "docs/REPORT.md": "e2d0ecef0e8e2b835a35b0674307cd378824363e18f5f826e3327ede4464f346",
+    "docs/PITCH.md": "7a01b232504979586ed2082ead7012ed7faa9251b7b9e5c1b979f85996cec3d0",
     "docs/METHODS_AND_AI.md": "a7674af05a90d6c4a263277b710ee52568ef7c358c2161359709e45a4063450a",
-    "docs/PRIMARY_HYPOTHESIS.md": "3ddcfa4a437b44eefd524ce05feff3a8c5e4fd9da04a8779c9091574118bbbda",
+    "docs/PRIMARY_HYPOTHESIS.md": "6ed273cd3ebbeab0f236652a38cc17107aecf54d876d3cb7a9ab7abdde50eab3",
     "docs/SAFETY_ANNEX.md": "f8819bc75b80f890313312adc9d19f0efaa39e4208b27cc60d9400ea1356ac6f",
-    "docs/MVA_DECISION_TABLE.md": "a4a60cb28473ec90c5e4ce7fe480f085d38f75abe3822569e6eeaebf887b1cd7",
+    "docs/MVA_DECISION_TABLE.md": "6d3e763b2d80709a184c34cb8ab3873b06ebeb0d59835cf990b56cf1f8a115d2",
     "docs/candidate_table.md": "b86410c6abc0f01b8d7e50d39850cf04e14bfcf220021820d5905a2fb099bdbd",
     "docs/candidates_canonical.json": "5c898f98f5b61c526285adb6ad5a3702fe1c3c1eb7392aae8d7dea2bb13de172",
     "docs/computed_vs_human.md": "f35d30db215e36705f063da804beb4679182ce78845a743b7795b2ad1db815f2"

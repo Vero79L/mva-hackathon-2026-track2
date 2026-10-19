@@ -48,6 +48,6 @@ digraph G {
   D1 -> D2 [style=solid, penwidth=1.8, label="E14"];
   D2 -> D3 [style=solid, penwidth=1.8, label="E15"];
   D3 -> D4 [style=solid, penwidth=1.8, xlabel="E16"];
-  D3 -> D4 [style=dotted, penwidth=1.8, xlabel="E16b"];
+  D3 -> D4 [style=solid, penwidth=1.8, xlabel="E16b"];
   D4 -> P [style=solid, penwidth=1.8, label="E17"];
 }

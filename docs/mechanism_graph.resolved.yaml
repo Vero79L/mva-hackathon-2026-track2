@@ -529,16 +529,18 @@ edges:
 - id: E16b
   from: D3
   to: D4
-  claim: 同一個酵素在 BubR1 上還有第二個位點，方向相反：K250 的乙醯化（由 PCAF 催化）阻擋泛素依賴的降解，K250Q 抗降解、K250R 不穩定；而 SIRT2 會去乙醯化 K250。因此 SIRT2 對 BubR1
-    穩定性的淨效應取決於哪個位點占優，在本案背景從未測過
-  claim_en: The same enzyme acts on a second BubR1 lysine with the opposite sign. Acetylation at K250 (by PCAF) blocks ubiquitin-dependent
-    degradation -- K250Q resists degradation while K250R is unstable -- and SIRT2 deacetylates K250. The net effect of SIRT2
-    on BubR1 stability therefore depends on which site dominates, and has never been measured in this background.
-  strength: asserted
+  claim: 同一個酵素在 BubR1 上還有第二個位點：SIRT2 去乙醯化 K250（體外與體內皆已實測），而 K250 的乙醯化（由 PCAF 催化）阻擋泛素依賴的降解。但關鍵限定是：Suematsu 2014 敲低 SIRT2 後
+    K250 乙醯化確實上升，卻「not substantial to elevate the levels of total BubR1 or delay the transition from prometaphase to anaphase」——也就是說，這個位點上的作用並未被證實會改變
+    BubR1 總量。因此這是一條已證實的酵素—位點關係，不是一個已證實的、與 K668 相反的蛋白量效應
+  claim_en: 'The same enzyme acts on a second BubR1 lysine. SIRT2 deacetylates K250 in vitro and in vivo, and acetylation
+    at K250 (by PCAF) blocks ubiquitin-dependent degradation. The decisive qualifier: when Suematsu 2014 knocked SIRT2 down,
+    K250 acetylation rose but that increase was "not substantial to elevate the levels of total BubR1 or delay the transition
+    from prometaphase to anaphase". So this is an established enzyme-site relationship, NOT an established opposing effect
+    on BubR1 abundance.'
+  strength: measured_in_model
   model:
-    system: 人類細胞（K250 乙醯化/降解為實測）＋ SIRT2-K250 去乙醯化（本團隊僅核對到書目與標題層級，未能取得原文摘要）
-    system_en: human cells (K250 acetylation/degradation measured) + SIRT2-K250 deacetylation (verified by us only at bibliographic/title
-      level; no abstract obtainable)
+    system: 人類細胞；K250 乙醯化/降解與 SIRT2-K250 去乙醯化皆為實測
+    system_en: human cells; both K250 acetylation/degradation and SIRT2-K250 deacetylation measured
     species: human
     genotype_match: not_applicable
   sources:
@@ -547,19 +549,22 @@ edges:
     strength: measured_in_model
     title_hint: BubR1 acetylation at prometaphase is required for modulating APC/C activity and timing of mitosis
   - pmid: '25285631'
-    locator: title only -- the publisher deposited no abstract and no accessible full text (checked 2026-10-19); cited for
-      the existence and direction of the SIRT2-K250 link, NOT for any quantitative result
-    strength: asserted
+    locator: 'abstract: SIRT2 deacetylates BubR1 K250 in vitro and in vivo; SIRT2 knockdown raises K250 acetylation but that
+      increase is not substantial to elevate total BubR1 or delay the prometaphase-to-anaphase transition'
+    strength: measured_in_model
     title_hint: Deacetylation of the mitotic checkpoint protein BubR1 at lysine 250 by SIRT2 and subsequent effects on BubR1
       degradation during the prometaphase/anaphase transition
-  counterevidence: 我們沒能讀到 25285631 的原文或摘要（出版社未存摘要，全文路徑均被擋），因此本邊只標 asserted，且不引用任何該文的量化結果。另一個方向的佐證反而讓情況更複雜：Qiu 2018（PMID 29067790）在小鼠卵母細胞顯示，不可乙醯化的
-    BubR1-K243R 才是有益的等位基因，能降低高齡卵的非整倍體率——而 mouse K243 與 human K250 很可能是同一個保守殘基的不同編號。同一個酵素、至少三個位點、對穩定性與對終點的後果不一致
-  counterevidence_en: 'We could not read the primary text or abstract of PMID 25285631 (the publisher deposited no abstract
-    and every full-text route was blocked), so this edge is graded asserted and no quantitative result from that paper is
-    cited. Evidence from a third site makes the picture harder, not easier: Qiu 2018 (PMID 29067790) shows that in mouse oocytes
-    the NON-acetylatable BubR1-K243R is the beneficial allele, lowering the incidence of aneuploid eggs from aged mice --
-    and mouse K243 is plausibly the same conserved residue as human K250 under different numbering. One enzyme, at least three
-    sites, and the consequences for stability and for the endpoint do not agree.'
+  counterevidence: 本邊在 2026-10-19 晚取得原文摘要後被改寫過一次，兩個方向都錯過：先前我們既把酵素—位點關係低估成 asserted，又把它高估成「與 K668 相反的蛋白量效應」。原文實際顯示 SIRT2 敲低後
+    K250 乙醯化上升但總量未變——這反而削弱了 K250 作為反對意見的份量。另一個方向的佐證反而讓情況更複雜：Qiu 2018（PMID 29067790）在小鼠卵母細胞顯示，不可乙醯化的 BubR1-K243R 才是有益的等位基因，能降低高齡卵的非整倍體率——而
+    mouse K243 與 human K250 很可能是同一個保守殘基的不同編號。同一個酵素、至少三個位點、對穩定性與對終點的後果不一致
+  counterevidence_en: 'This edge was rewritten once, on the evening of 2026-10-19, after we obtained the primary abstract.
+    We had been wrong in BOTH directions: we under-graded the enzyme-site link as asserted, and we over-stated it as an opposing
+    effect on BubR1 ABUNDANCE. The source shows SIRT2 knockdown raises K250 acetylation without changing total BubR1 -- which
+    WEAKENS K250 as a counter-argument rather than strengthening it, and we record that because the correction runs in our
+    own favour. Evidence from a third site makes the picture harder, not easier: Qiu 2018 (PMID 29067790) shows that in mouse
+    oocytes the NON-acetylatable BubR1-K243R is the beneficial allele, lowering the incidence of aneuploid eggs from aged
+    mice -- and mouse K243 is plausibly the same conserved residue as human K250 under different numbering. One enzyme, at
+    least three sites, and the consequences for stability and for the endpoint do not agree.'
   scenario_dependent: false
 - id: E17
   from: D4
@@ -602,4 +607,4 @@ warnings:
 - 'E04: rule 4 - this measured claim rests on premise T2, which is supported only by predicted/asserted edges, so the report
   must word it as "if T2 holds"'
 - 找不到 hpo_terms.tsv：跳過「每個 HPO term 都有節點」的檢查
-generated_at: '2026-10-19T09:38:45+00:00'
+generated_at: '2026-10-19T12:31:39+00:00'

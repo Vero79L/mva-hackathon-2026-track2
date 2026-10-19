@@ -16,7 +16,7 @@ A repurposing hypothesis earns its next experiment only when all four hold:
 
 ## 3. What overturns it
 Any one of these negative results in patient-derived cells rejects the candidate:
-- NAD+ repletion does not raise total BubR1 protein (or K668 acetylation), or
+- NAD+ repletion does not raise total BubR1 protein, **or does not lower the K668-acetylated fraction of BubR1** (normalised to total BubR1). Note the direction: the hypothesis is that SIRT2 **de**acetylates K668, so a working intervention makes the acetylated fraction go *down*. An earlier version of this line asked for K668 acetylation to *rise*, which would have read a successful result as a failure; it is corrected here. Normalising to total BubR1 matters for the same reason — a rise in total protein alone can move an unnormalised site signal either way, or
 - the spindle-assembly checkpoint defect does not recover even if BubR1 abundance rises (scenario S2), or
 - the aneuploid fraction of the surviving population, or the clonal dominance of an aneuploid lineage, increases — measured as a fraction of the population, not as raw survival, since a real checkpoint rescue can raise overall survival, or
 - a truncated BubR1 product is present and rises with NAD+ repletion (scenario S3), which pauses every abundance-raising strategy.
