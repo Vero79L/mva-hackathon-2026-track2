@@ -1,0 +1,138 @@
+# 公開安全版：無基因體座標、無基因型品質。由 scripts/phase1/11_transcript_facts.sh 產生，不要手改
+schema: transcript_facts_public/2
+generated_at: '2026-10-19T12:32:26+08:00'
+gene: BUB1B
+mode: A
+tools:
+  vep_version: '116'
+  gtf: Homo_sapiens.GRCh38.116.gtf.gz
+  reference: GRCh38.nochr.fa.gz
+variants:
+- id: V1
+  identity_status: CONFIRMED
+  zygosity: het
+  transcript: ENST00000287598.11
+  transcript_choice: MANE_SELECT
+  mane_select: NM_001211.6
+  consequence: stop_gained
+  impact: HIGH
+  region: cds
+  exon: 17/23
+  intron: null
+  c_position: '2210'
+  hgvs_c: ENST00000287598.11:c.2210T>G
+  hgvs_p: ENSP00000287598.7:p.Leu737Ter
+  protein_position: '737'
+  amino_acids: L/*
+  uniprot: O60566.231
+  uniprot_isoform: O60566-1
+  coding:
+    protein_length_ref: 1050
+    first_changed_aa: 737
+    ref_aa: Leu
+    alt_aa: Ter
+    class: stop_gained
+    ptc_aa: 737
+    protein_length_alt: 736
+    stop_codon: TGA
+    plus4_base: A
+    nmd_strength: predicted
+    nmd_rule_source: 50–55 nt 規則（Nagy & Maquat 1998）；逃逸規則依 aenmd 的實作（Klonowski et al. 2023, Bioinformatics 39:btad556），源自
+      Lindeboom et al. 2016 / 2019
+    nmd_class: NMD_predicted
+    ptc_to_last_junction_nt: 748
+    exon_of_ptc: 17/23
+    exon_of_ptc_length: 141
+    nmd_escape_rules: []
+  splice: null
+  distance_to_transcript_nt: null
+  predictors: {}
+  cross_check:
+    status: pass
+    checks:
+    - name: transcript_version
+      vep: ENST00000287598.11
+      gtf: ENST00000287598.11
+      status: pass
+    - name: strand
+      vep: +
+      gtf: +
+      status: pass
+    - name: consequence_class
+      vep: stop_gained
+      gtf: stop_gained
+      status: pass
+    - name: exon_number
+      vep: 17/23
+      gtf: 17/23
+      status: pass
+    - name: c_position
+      vep: '2210'
+      gtf: '2210'
+      status: pass
+    - name: protein_first_changed
+      vep: 737
+      gtf: 737
+      status: pass
+- id: V2
+  identity_status: CONFIRMED
+  zygosity: het
+  transcript: ENST00000287598.11
+  transcript_choice: MANE_SELECT
+  mane_select: NM_001211.6
+  consequence: missense_variant
+  impact: MODERATE
+  region: cds
+  exon: 23/23
+  intron: null
+  c_position: '3006'
+  hgvs_c: ENST00000287598.11:c.3006T>G
+  hgvs_p: ENSP00000287598.7:p.Asn1002Lys
+  protein_position: '1002'
+  amino_acids: N/K
+  uniprot: O60566.231
+  uniprot_isoform: O60566-1
+  coding:
+    protein_length_ref: 1050
+    first_changed_aa: 1002
+    ref_aa: Asn
+    alt_aa: Lys
+    class: missense
+    protein_length_alt: 1050
+  splice: null
+  distance_to_transcript_nt: null
+  predictors:
+    sift: deleterious(0.01)
+    polyphen: probably_damaging(0.997)
+    strength: predicted
+  cross_check:
+    status: pass
+    checks:
+    - name: transcript_version
+      vep: ENST00000287598.11
+      gtf: ENST00000287598.11
+      status: pass
+    - name: strand
+      vep: +
+      gtf: +
+      status: pass
+    - name: consequence_class
+      vep: missense_variant
+      gtf: missense
+      status: pass
+    - name: exon_number
+      vep: 23/23
+      gtf: 23/23
+      status: pass
+    - name: c_position
+      vep: '3006'
+      gtf: '3006'
+      status: pass
+    - name: protein_first_changed
+      vep: 1002
+      gtf: 1002
+      status: pass
+    - name: protein_alt_aa
+      vep: Lys
+      gtf: Lys
+      status: pass

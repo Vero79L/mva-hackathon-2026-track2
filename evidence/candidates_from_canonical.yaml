@@ -14,6 +14,26 @@ candidates:
     oncology: contradictory
     renal: not_observed
     growth: not_assessed
+  objective_class: restore
+  safety_gap_declared:
+  - growth
+  - oncology
+- id: C-NA
+  drug: Niacin (nicotinic acid), extended-release prescription tablets
+  net_effect: strengthen
+  evidence_distance: 2
+  rescue_in_relevant_cells: false
+  competition_eligibility: ELIGIBLE
+  properties:
+  - approved_or_credible_pediatric_path
+  safety_assessment:
+    oncology: contradictory
+    renal: not_observed
+    growth: not_assessed
+  objective_class: restore
+  safety_gap_declared:
+  - growth
+  - oncology
 - id: C-RT
   drug: PTC readthrough of L737X (DAP / ELX-02; aminoglycoside & ataluren rejected)
   net_effect: strengthen
@@ -25,6 +45,11 @@ candidates:
     oncology: not_assessed
     renal: confirmed_risk
     growth: not_assessed
+  objective_class: restore
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal
 - id: C-PBA
   drug: Sodium / glycerol phenylbutyrate (4-PBA)
   net_effect: strengthen
@@ -37,6 +62,8 @@ candidates:
     oncology: not_observed
     renal: not_observed
     growth: not_observed
+  objective_class: restore
+  safety_gap_declared: []
 - id: C-NAC
   drug: N-acetylcysteine
   net_effect: strengthen
@@ -49,6 +76,9 @@ candidates:
     oncology: not_assessed
     renal: not_observed
     growth: not_observed
+  objective_class: mitigate
+  safety_gap_declared:
+  - oncology
 - id: C-AMPK
   drug: AMPK aneuploid-deselection (metformin; non-renal AMPK agent needed)
   net_effect: strengthen
@@ -62,6 +92,10 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: deselect
+  safety_gap_declared:
+  - growth
+  - oncology
 - id: C-DQ
   drug: Dasatinib + Quercetin (senolytic)
   net_effect: strengthen
@@ -75,6 +109,8 @@ candidates:
     oncology: not_assessed
     renal: not_observed
     growth: not_observed
+  objective_class: deselect
+  safety_gap_declared: []
 - id: C-FOL
   drug: Folate (folinic/5-MTHF) + B12
   net_effect: strengthen
@@ -87,6 +123,9 @@ candidates:
     oncology: not_assessed
     renal: not_observed
     growth: not_observed
+  objective_class: mitigate
+  safety_gap_declared:
+  - oncology
 - id: C-RAPA
   drug: Rapamycin / sirolimus
   net_effect: strengthen
@@ -96,10 +135,13 @@ candidates:
   properties:
   - approved_or_credible_pediatric_path
   - growth_suppressive
+  - immunosuppressive
   safety_assessment:
-    oncology: not_observed
+    oncology: confirmed_risk
     renal: not_observed
     growth: confirmed_risk
+  objective_class: protect
+  safety_gap_declared: []
 - id: N-MITOTIC
   drug: MPS1/TTK, Aurora B, PLK1, KIF11 inhibitors; microtubule destabilizers; bortezomib;
     HSP90i (17-AAG)
@@ -113,6 +155,10 @@ candidates:
     oncology: confirmed_risk
     renal: not_assessed
     growth: not_assessed
+  objective_class: restore
+  safety_gap_declared:
+  - growth
+  - renal
 - id: N-CQ
   drug: Chloroquine / hydroxychloroquine
   net_effect: strengthen
@@ -125,6 +171,11 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: mitigate
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal
 - id: N-ASA
   drug: Aspirin
   net_effect: none
@@ -136,6 +187,11 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: protect
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal
 - id: N-ISO
   drug: Isotretinoin
   net_effect: none
@@ -147,6 +203,11 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: protect
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal
 - id: N-AICAR
   drug: AICAR / 17-AAG
   net_effect: none
@@ -158,6 +219,11 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: deselect
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal
 - id: N-NAVI
   drug: Navitoclax
   net_effect: none
@@ -169,6 +235,11 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: deselect
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal
 - id: N-FIS
   drug: Fisetin
   net_effect: none
@@ -180,6 +251,11 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: deselect
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal
 - id: N-NUC
   drug: Bulk nucleoside loading
   net_effect: none
@@ -191,3 +267,8 @@ candidates:
     oncology: not_assessed
     renal: not_assessed
     growth: not_assessed
+  objective_class: mitigate
+  safety_gap_declared:
+  - growth
+  - oncology
+  - renal

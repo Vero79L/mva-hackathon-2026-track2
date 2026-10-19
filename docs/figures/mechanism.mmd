@@ -1,0 +1,39 @@
+flowchart TB
+  V1["p.Leu737Ter truncating allele"]
+  V2["p.Asn1002Lys kinase-domain missense allele"]
+  T1["truncating allele: NMD predicted (scenario-dependent)"]
+  T2["missense allele: last exon, no NMD"]
+  P["residual BubR1 abundance and function (scenario-dependent)"]
+  C["MCC / spindle-assembly checkpoint (SAC) signalling"]
+  F["chromosome-segregation accuracy (the section 3 endpoint sits here)"]
+  O["mosaic variegated aneuploidy, micronuclei, senescence"]
+  H1["Rhabdo- myosarcoma"]
+  H2["Nephro- calcinosis"]
+  H3["Short stature"]
+  H4["Failure to thrive"]
+  H5["Skeletal muscle atrophy"]
+  H6["Premature birth"]
+  H7["Small for gestational age"]
+  H8["Recurrent miscarriage (parental)"]
+  D1["niacin (nicotinic acid) approved ER prescription product"]
+  D2["cellular and circulating NAD+ availability"]
+  D3["SIRT2 deacetylase activity"]
+  D4["BubR1 acetylation state (K668, K250)"]
+  V1 -.->|E01 · predicted| T1
+  V2 -.->|E02 · predicted| T2
+  T1 -.->|E03 · predicted| P
+  T2 -->|E04 · measured_in_model| P
+  P -->|E05 · measured_in_model| C
+  C -->|E06 · measured_in_model| F
+  F -->|E07 · measured_in_model| O
+  O -->|E08 · measured_in_model| H1
+  O -->|E09 · measured_in_model| H3
+  O -->|E10 · measured_in_model| H4
+  O -->|E11 · measured_in_model| H5
+  O -->|E12 · measured_in_model| H7
+  O -.->|E13 · asserted| H8
+  D1 -->|E14 · measured_in_model| D2
+  D2 -->|E15 · measured_in_model| D3
+  D3 -->|E16 · measured_in_model| D4
+  D3 -.->|E16b · asserted| D4
+  D4 -->|E17 · measured_in_model| P

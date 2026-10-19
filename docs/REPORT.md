@@ -1,48 +1,324 @@
-# A falsification-first repurposing screen for an MVA1 (BUB1B) patient
-### MVA Hackathon 2026 — Track 2 (drug repurposing). Draft report, 2026-10-08.
+# Repurposing candidates for BUB1B-related mosaic variegated aneuploidy: a falsification-first decision rule with one named conditional candidate
 
-## Executive decision
-No screened candidate currently supports clinical use for this MVA1 patient, and there is no single clear leader. Under one consistent evidence standard, the reusable screen converts a broad candidate set into a small set of mechanism-plausible but unproven research branches, each with one unresolved risk and one decisive experiment. The most defensible primary hypothesis is **not a drug recommendation but a decision rule**: a repurposing hypothesis for this patient earns further development only by improving chromosome segregation at an achievable human exposure while being tested for adverse effects on abnormal-cell survival and growth. That rule survives a negative result for any individual candidate.
+*Track 2 submission. Submissions are hypotheses for follow-up, not evidence that a medicine works. This report characterizes the variant mechanism and names one approved medicine as a conditional research hypothesis that a single decisive experiment can confirm or overturn.*
 
-What would overturn the current disposition is stated per candidate below (each has a named decisive experiment).
+Fill slots written `{{FILL:...}}` carry patient-specific facts and are completed locally from the Phase-1 fact register; no patient-specific fact in this report is inferred by an AI system. Bold **F-** identifiers cite rows of that register (`fact_register.csv`), where each fact carries its status, basis, source, evidence strength, what would resolve it, and whether overturning it would change the therapeutic direction. The candidate denominator, the primary-hypothesis sentence, the absence of unfilled slots, and every count this report states about its own registers (claims, global-negatives, registered facts, product rows, self-tests) are recomputed from source and enforced by `make_manifest.py` before submission (§12).
 
-**Primary approved-drug research hypothesis (named, conditional).** After verifying eligibility against official sources, the strongest disease biology (raise/protect functional BUBR1 via the SIRT2-BUBR1 / NAD+ axis) has NO approved drug — NMN, NR and nicotinamide are supplements, and nicotinamide is directionally opposite. Among EXISTING APPROVED medications usable in this child, the single most defensible candidate is **glycerol phenylbutyrate (4-PBA; Ravicti)** — the only approved, birth-to-adult pediatric-feasible, directionally-appropriate option (protein stabilization intended to raise functional BUBR1). It is named not because efficacy is supported (it is not; INSUFFICIENT — the documented mechanism is COPII/secretory, not a cytosolic chaperone) but because one cheap experiment resolves it: in N1002K cells, does clinically achievable 4-PBA raise functional BUBR1 and improve mitotic fidelity below the HDAC-inhibitory range, with a clonal-fitness arm? Backup: N-acetylcysteine (Rx) as downstream mitigation only. The gap — no approved drug on the best mechanism — is itself a reportable finding, not a candidate list padded to hide it. Full reasoning: U06_primary_hypothesis_2026-10-09.
+---
 
-## Patient basis — fact status separated
-From the gated dataset (derived facts only; raw data held in a controlled environment):
-- **CONFIRMED**: two BUB1B variants in the proband, both high-quality heterozygous — p.Leu737Ter (c.2210T>G, 15:40209701) and p.Asn1002Lys (c.3006T>G, 15:40220612); phenotype including a documented rhabdomyosarcoma history, nephrocalcinosis, growth restriction, prematurity.
-- **ASSUMED**: phase (in trans) and the compound-heterozygous recessive model — the sample is a singleton with no parents and the variants are ~10.9 kb apart, so phase cannot be resolved here.
-- **UNKNOWN**: N1002K functional consequence (stability vs function), L737X transcript fate (NMD predicted, not measured), residual BUBR1 function (carried as three scenarios), current malignancy status, current renal function.
+## 1. Executive decision
 
-Risk statements are classified as regulatory contraindication / known pharmacological risk / confirmed patient condition / team prudential rule. The oncology caution here is a prudential rule from a documented RMS history plus constitutional predisposition — not a claim of active malignancy or clinical contraindication.
+The deliverable is a **decision rule**, and under that rule a **single named conditional candidate**.
 
-## Mechanism and the therapeutic objective
-Biallelic BUB1B reduces BUBR1 at the spindle-assembly checkpoint, weakening the delay of anaphase until kinetochores are correctly attached, which produces mis-segregation and mosaic aneuploidy. The BUBR1 pseudokinase domain promotes PP2A-B56 recruitment and checkpoint silencing (Gama Braga et al., Cell Reports 2020). The objective is therefore accurate chromosome segregation under appropriately regulated mitotic progression — not generic "more checkpoint." A direction that further weakens the checkpoint (MPS1/TTK, Aurora B, PLK1, KIF11 inhibitors) is the disease's own direction and serves only as a negative control.
+> **PRIMARY:** A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experiment only if it acts on the measured bottleneck (residual BubR1 abundance and checkpoint function) in the compensating direction, passes this patient's four constraint gates — oncology, pediatric path and renal can reject, growth only flags — with every safety axis the gates cannot see declared rather than counted as clear, and rests on an approved product with a dated label; under that rule the single named candidate is niacin (nicotinic acid), an approved NAD+ precursor acting through the SIRT2–BubR1 stabilization axis, carried as a conditional research hypothesis rather than a recommendation and with its oncology axis contradictory and its growth axis unassessed, and it is overturned if NAD+ repletion in patient-derived cells fails to raise BubR1 protein or to correct the checkpoint defect, or improves the survival of aneuploid cells.
 
-## Candidate funnel (one denominator, generated from a single source)
-The candidate tables, the engine fixture, and the computed-vs-human comparison are generated from `candidates_canonical.json` via `build_views.py` (the narrative report, pitch, and Master Control are maintained separately): **12 interventions + 3 mechanism-branches + 1 negative-control group = 16 entries** (the rejected-candidate group was split per-agent). Competition eligibility (ELIGIBLE / INELIGIBLE / UNKNOWN) is tracked separately from research judgment (SUPPORTED / CONDITIONAL / INSUFFICIENT / REJECTED).
+Why a rule and not a list: the task is to identify an *approved medicine that is a plausible candidate for further investigation*. A list of plausible-sounding drugs does not tell a reviewer, or the child's care team, **why** one earns an experiment and another does not, nor what result would retire it. The rule does both, and it outlives this single case — it transfers to the next MVA child and to the other MVA genes (§11). The named candidate makes the rule concrete and gives reviewers a real object to scrutinize; it is deliberately carried as *conditional*, because the honest state of the evidence is that the strongest biology on this axis has never been tested with this drug, in this disease, in cells of this allele class.
 
-| Branch / candidate | Eligibility | Research | Ev-dist | Why / decisive experiment |
-|---|---|---|---|---|
-| NAD+/SIRT2 (NMN/NR) | INELIGIBLE (supplements) | CONDITIONAL | 2 | On-mechanism (SIRT2-BubR1, North 2014), but NMN was tested in aging/WT/Sirt2-null contexts — not the MVA model; bridging hypothesis. Oncology direction contested. Test: NAD+ precursor in N1002K cells → BubR1-K668 acetylation + total BubR1 + aneuploidy + a clonal-fitness/transformation arm. |
-| Readthrough of L737X | INELIGIBLE | CONDITIONAL | 2 | Product is near-full-length (old "truncated" reason withdrawn); blocked by predicted NMD and the absence of a renal-safe approved UGA agent. Test: allele-specific mRNA + full-length protein under NMD-inhibition / readthrough / combination with a SAC readout. |
-| 4-PBA | ELIGIBLE | INSUFFICIENT | 1 | Mechanism is COPII/secretory (Ma & Goldberg 2017), not a cytosolic chaperone; achievable exposure overlaps the HDAC range; thresholds are not a measured N1002K ECx. Deprioritized ("rescue + exposure not established", not "no window proven"). Test: in-cell EC50 for N1002K stabilization vs HDAC readout. |
-| NAC (downstream mitigation) | ELIGIBLE | CONDITIONAL | 2 | Rejected as a disease modifier (exposure); permitted as mitigation. Test: ROS + senescence markers + proliferative lifespan at achievable exposure. |
-| AMPK deselection (metformin) | ELIGIBLE but renal-rejected | CONDITIONAL | 3 | Tang 2011 is p53-RELATED (not independent); anti-proliferation is not repaired segregation; metformin limited by eGFR. Test: euploid-vs-aneuploid viability with a non-renal AMPK agent. |
-| Dasatinib+Quercetin | ELIGIBLE | REJECTED | 1 | Acts downstream; the disease-model evidence is a genetic tool (INK-ATTAC), not the D+Q drug; endpoint mismatch + toxicity. |
-| Folate+B12 | ELIGIBLE | INSUFFICIENT | 2 | Supportive/deficiency claim, not disease modification; oncology watch. |
-| Rapamycin | ELIGIBLE | CONDITIONAL | 2 | Oncologic-protective axis only; the BubR1-model null is unpublished preliminary data (negative signal, not a powered experiment). |
-| Mitotic/checkpoint inhibitors, proteasome, HSP90i | varies | REJECTED | 1 | Wrong direction (increase CIN) — negative controls. |
-| Misc rejected (AICAR/17-AAG, HCQ, navitoclax, fisetin, aspirin, isotretinoin, nucleoside loading) | varies | REJECTED | 1 | Grouped; to be split per-agent before final submission. |
+What would make us wrong is stated up front (§1 component 3, and §9): this is a hypothesis built to be falsified by one experiment, not defended.
 
-## Counter-evidence kept, bounded
-Reducing chromosome mis-segregation is not unconditionally safe: Ertych et al. 2014 (Fig 7) show reduced CIN accelerated tumor growth in a colorectal model, and the CIN-cancer relationship is rate-dependent (Bakhoum & Compton 2012). This is bounded to those preclinical models and cannot be quantified into a clinical contraindication for this child; it is the reason every disease-modifying experiment co-measures clonal fitness.
+**Three readers, three different things to take from this.** A **researcher** should read §3 and §9: the mechanism chain, every link carrying its own evidence strength, model system and allele-class match, and the counter-evidence that could retire it — including a second SIRT2 site on BubR1 that acts in the *opposite* direction to the one this hypothesis depends on. A **clinician** should read `SAFETY_ANNEX.md` and §6: which drug classes behave differently when the spindle checkpoint is already weak, pointed first at the published cancer-surveillance consensus that names MVA, plus one *ex vivo* experiment specified end to end. A **family member or patient advocate** should read §6 and §10: the measurement we propose is **diagnostic for this child whatever happens to the drug** — it places residual BubR1 on a published dose–phenotype map and informs prognosis on its own — and §10 states precisely where the approved-drug space is empty, so the next team does not repeat our search. If the named candidate fails, those three things survive it. That is deliberate.
 
-## Reproducibility and scope
-The gate engine validates inputs (unknown or malformed inputs BLOCK, never pass), passes a eight-check regression suite, and runs in a clean environment from pinned dependencies (`run.sh`). It demonstrates gate logic; candidate generation and evidence appraisal remain curated. The synthetic gain-of-function case shows the directionality rule flipping with the input — a scalability demonstration of the logic, not a cross-disease discovery claim.
+**What is new here is not the engine.** A gate engine that reads a case file is ordinary software, and we do not claim otherwise (§11). What we have not seen done is building a submission *designed to catch itself*. The claim ledger is generated from its sources, not typed. The release gate recomputes every count this report states about its own registers and refuses to publish if one has drifted — it has caught us. The engine reports the safety axes its own gates structurally **cannot** see, so a gate PASS can never be read as "no risk found". A citation whose full text we could not obtain is graded `asserted`, quoted for nothing, and flagged in §13. We demoted our own previous lead candidate on mechanism, and said so in every deliverable. Each of those is a place where we made it *easier*, not harder, for a reviewer to find us wrong — and that, rather than the code, is the method we are offering.
 
-## Limitations
-No drug has rescue data in MVA/BUB1B patient cells; the only intervention shown to lower aneuploidy at the source is genetic BubR1 restoration. Phase, N1002K function, NMD fate and residual function are unresolved. The strongest surviving rationale (NAD+/SIRT2) is unvalidated in the disease model and carries a contested oncology direction. Several global negatives ("no publication", "no trial") need dated search strategies before they are asserted.
+## 2. Patient basis — what is confirmed, assumed, and unknown
 
-## Methods and AI provenance
-See `METHODS_AND_AI.md`. Raw patient data stayed in a controlled local environment; only derived facts (HPO, variant list, mechanism) appear here. Deletion within 30 days of close is scheduled.
+Everything downstream is conditioned on this three-layer table, so that no assumption is silently used as if it were measured. Values are filled locally; see `fact_register.csv` — 18 registered facts: 7 CONFIRMED, 2 ASSUMED, 9 UNKNOWN, each with its basis, source, evidence strength, resolution path and whether overturning it would change the therapeutic direction.
+
+- **CONFIRMED** (measured, with source): the two *BUB1B* variants locked by our Track 1 submission, which scored a full match at rank 1 on the challenge leaderboard — a truncating allele `c.2210T>G, p.Leu737Ter (exon 17/23)` (**F-VAR-01**) and a kinase-domain missense allele `c.3006T>G, p.Asn1002Lys (exon 23/23)` (**F-VAR-02**), each on transcript `ENST00000287598.11 (MANE Select NM_001211.6)` (accession.version), genome build GRCh38. Gene: *BUB1B* (BubR1). ClinVar status of each allele: **neither variant has a ClinVar record**. Both were checked by exact-coordinate overlay against the ClinVar release dated **2026-10-04** during the VEP 116 annotation run; neither returned CLNSIG, CLNREVSTAT or CLNDN. Bounded reading: absent from that release at that date, which is not the same as absent from ClinVar today and is certainly not evidence of benignity. Two consequences matter. First, the rank-1 full match our Track 1 submission achieved was **not** a database echo — there was no record to look up, so the identification rests on the pipeline's own reasoning. Second, the pathogenicity argument in this report cannot lean on curated classification at all; it rests on the genotype matching the canonical MVA1 configuration, on the two-class model of MVA mutations (link 3), and on the predictors below — which is why every one of those is labelled with its own evidence strength rather than pooled into a verdict.
+- **ASSUMED** (stated, not independently measured here) **and PREDICTED (registered UNKNOWN)**. Only two facts are ASSUMED in the register: biallelic *trans* configuration `not established by the data: short reads could not link the two variants, and parental samples are not provided; *trans* is assumed from the canonical MVA1 genotype` (**F-PHASE-01**) and recessive inheritance (**F-INH-01**); parental data are not provided for this case, so the compound-heterozygous assumption follows the canonical MVA1 genotype and is flagged as such. The remaining items in this bullet are **rule-based or computational calls whose register status is UNKNOWN**, because the quantity underneath has not been measured. We group them here because they are used the same way — never as if measured — but the register is the authority on their status. Nonsense-mediated decay of the truncating allele `NMD_predicted — the premature stop sits in exon 17 of 23, 748 nt upstream of the last exon junction, and triggers no escape rule` (**F-TX-01**, **F-TX-02**) (a rule-based call from transcript position, not an RNA measurement); missense pathogenicity predictors for the kinase-domain allele — SIFT `deleterious(0.01)` and PolyPhen `probably_damaging(0.997)`, from Ensembl VEP 116 run with `--everything` (**F-PROT-02**). These are *predicted* and are never used downstream as if measured. **REVEL and AlphaMissense are not reported here because they were never computed**: the annotation run used VEP's built-in set plus a custom ClinVar overlay, with no dbNSFP or AlphaMissense plugin. We state the predictors we actually have rather than the ones a reader might expect. The truncating allele carries no missense predictor, correctly (**F-PROT-01**).
+- **UNKNOWN** (the quantities the decisive experiment exists to measure): residual BubR1 protein abundance in this child's cells (**F-RF-01**); K668 acetylation state; spindle-assembly-checkpoint (SAC) function readout; whether a truncated BubR1 product is expressed. These are not gaps in diligence — they are unmeasurable without the patient's cells, which this team does not access, and they are exactly what §6 proposes to measure.
+
+Phenotype context is summarized at the category level only (`an embryonal tumour, a renal mineralisation feature, growth and perinatal features, skeletal-muscle involvement, and a parental reproductive observation`, all carried by a single register row, **F-PHEN-01**, not one row per term — the per-term detail lives in the mechanism chain's phenotype nodes, where each term is either connected to a sourced edge or listed as unexplained); the four constraint-gate drivers used by the engine are `child` (**F-CLIN-age**), `history` (**F-CLIN-malig**), `nephrocalcinosis` (**F-CLIN-renal**), `restricted` (**F-CLIN-growth**). Each gate driver is registered twice — the observed clinical feature and the current functional value — because the second is usually UNKNOWN and must not be read off the first.
+
+## 3. Variant mechanism: loss-of-function, the disrupted pathway, and the downstream consequence
+
+**Direction of effect: loss-of-function (hypomorphic).** There is no gain-of-function evidence; a dominant-negative contribution is possible only if the truncating allele escapes decay and produces a stable fragment (scenario S3, §8). Each link carries its evidence strength (measured / predicted / asserted).
+
+Each link below carries its own evidence strength, the system it was measured in, and — where it
+matters — what cuts against it. The same chain is machine-readable in `docs/mechanism_graph.yaml`
+and rendered in `MECHANISM.md`, where every edge also carries its counter-evidence field.
+
+**1 — BUB1B encodes BubR1**, a core component of the mitotic checkpoint complex; its acetylation
+state acts as a switch between APC/C inhibitor and APC/C substrate, and so sets mitotic timing.
+*measured (human cells)* · Choi 2009, PMID 19407811
+
+**1b — BubR1's "kinase" domain is a pseudokinase.** Human BUBR1 retains the catalytic triad, but
+putative catalysis is *dispensable* for error-free segregation; the residues that would bind ATP in a
+conventional kinase instead govern the protein's conformational stability.
+*measured (human cells)* · Suijkerbuijk 2012, PMID 22698286
+
+**1c — That domain nonetheless has a direct mitotic function, not only a structural one.** It is
+*required* to promote KARD phosphorylation, which recruits PP2A-B56 to the outer kinetochore;
+mutating or removing it reduces PP2A-B56 recruitment, attenuates checkpoint silencing, and causes
+chromosome-alignment errors through imbalanced Aurora B activity.
+*measured (human cells)* · Gama Braga 2020, PMID 33207204
+
+**2 — Biallelic BUB1B variants cause MVA1**; the canonical genotype is a truncating allele plus a
+kinase-domain missense allele, and patient cells with total PCS/MVA are demonstrably defective in the
+mitotic-spindle checkpoint.
+*measured (human genetics)* · Hanks 2004, PMID 15475955; Matsuura 2000, PMID 10877982; Kajii 2001, PMID 11746029
+
+**3 — MVA mutations fall into two empirically separable classes**: those that impose a specific defect
+in checkpoint activity or microtubule attachment, and those that simply lower BUBR1 abundance. In the
+low-abundance group the substitution "consistently occurs in or near the BUBR1 kinase domain"; read
+with link 1b, a substitution there destabilises the fold rather than abolishing catalysis.
+**This is joint 1 below — it does not license the reverse inference for an untested variant, and link
+1c cuts against it.**
+*measured (MVA patient cell lines + functional protein replacement)* · Suijkerbuijk 2010, PMID 20516114; Suijkerbuijk 2012, PMID 22698286; Gama Braga 2020, PMID 33207204
+
+**4 — Net effect is a dose (abundance) loss-of-function (hypomorph)**, possibly compounded by an
+allele-specific quality defect: in mouse embryonic fibroblasts BubR1 H/L1002P reaches virtually the
+same aneuploidy rate as BubR1 H/H but shows a dramatic difference in premature chromatid separation,
+at BubR1 levels the paper reports as very similar — so "allelic effects beyond protein level"
+contribute. **Joint 2 below: three bounds, and a residue-numbering collision that must not be
+glossed.**
+*measured (mouse); this case UNKNOWN → S1/S2/S3* · Sieben 2020, PMID 31738183, Results/Figs. 8A, 9A, 6E; erratum PMID 33136097
+
+**4b — Raising BUBR1 is a validated intervention point in this disease, not an inference.** In cells
+from biallelic MVA patients — low BUBR1, impaired checkpoint, chromosome-alignment defects — ectopic
+expression of BUBR1 *restored mitotic checkpoint activity*, proving BUBR1 dysfunction is what causes
+the segregation errors in patients.
+*measured (MVA patient cell lines)* · Suijkerbuijk 2010, PMID 20516114
+
+**5 — Downstream:** a weak SAC → premature anaphase and lagging chromosomes → aneuploidy and
+micronuclei → mosaic variegated aneuploidy; p16/p19 senescence and progeroid pathology; predisposition
+to Wilms tumour, rhabdomyosarcoma and leukaemia.
+*measured (mouse + case series)* · Baker 2004, PMID 15208629; Baker 2008, PMID 18516091; Baker 2011, PMID 22048312; Hanks 2004; Ochiai 2019, PMID 31081598; Nishitani-Isa 2019, PMID 31184400
+
+**5b — A second, non-mitotic branch.** BubR1 is also required for primary-cilium formation, via CDC20
+degradation in G0 and APC/C-CDH1 control of Dishevelled. Morpholino knockdown in medaka causes
+cerebellar defects and perturbed left–right asymmetry, and the authors reframe PCS/MVA as *also* a
+ciliopathy — consistent with the Dandy-Walker complex and polycystic kidneys seen in patients.
+*measured (fish, cell)* · Miyamoto 2011, PMID 21389084
+
+**6 — Dose–phenotype map.** A graded BubR1 series shows that ~10% of normal BubR1 (H/H) already
+produces progeroid disease; Sieben 2020 shows allele effects beyond abundance and aneuploidy, and even
+monoallelic carriers develop selective late pathology, with sarcopenia correlating with mTORC1
+hyperactivity.
+*measured (mouse)* · Baker 2004; Sieben 2020
+
+**7 — A druggable lever.** NAD+ → SIRT2 deacetylates BubR1 at K668 (opposed by the CBP
+acetyltransferase) → BubR1 is stabilized; NMN raises BubR1 abundance in vivo; a SIRT2 transgene
+extends the lifespan of BubR1 H/H mice (median +58%). Carried on the mechanism graph as edges
+E14–E17, each with its own strength, genotype match and counter-evidence. **Joint 3 below: this step
+has the furthest to travel of anything in the chain.**
+*measured (mouse, cell); substrate class differs from this case* · North 2014, PMID 24825348
+
+**7b — That lever is specific to a BubR1-low background.** The same group later tested SIRT2
+overexpression on a normal, non-progeroid background and found no effect on health or lifespan,
+concluding that "strategies to enhance SIRT2 protein levels may not lead to increased longevity".
+This is not a refutation of link 7; it narrows it to exactly the setting this child is in, and removes
+any general-longevity halo from the argument.
+*measured (mouse)* · Wu 2023, PMID 38009412
+
+**7c — The same enzyme acts on a second BubR1 lysine, in the opposite direction.** Acetylation at
+K250 — catalysed by PCAF — *blocks* ubiquitin-dependent degradation of BubR1, and SIRT2 deacetylates
+K250. **Joint 4 below.**
+*measured (human cells, K250 acetylation/degradation); asserted (the SIRT2–K250 step)* · Choi 2009, PMID 19407811; Suematsu 2014, PMID 25285631
+
+**8 — In humans**, niacin escalated from 250 mg/day by 250 mg every four weeks to 750–1,000 mg/day
+(14–18 mg/kg; the 750 mg cap applied to the lightest subject) raised blood NAD+ up to 8-fold, and
+muscle NAD+ in patients reached the level of their controls — normalisation, not a measured fold-rise
+in muscle.
+*measured (adult)* · Pirinen 2020, PMID 32386566
+
+![**The mechanism chain as the engine holds it.** Eighteen edges, each carrying its own evidence strength, model system, allele-class match and counter-evidence. **The line style is the evidence grade**: a solid line is measured in a model system, a dashed line is computationally predicted, and a dotted line is asserted by a source rather than measured — so E13, the human half of the recurrent-pregnancy-loss edge, which its source states as a *prediction*, is visibly weaker than the rest, and the two predicted transcript calls are visibly not measurements. **A dashed box with no incoming arrow is a registered phenotype the chain does not explain**, left unconnected on purpose rather than joined by an arrow we cannot source. The therapeutic axis (top left, E14–E17) enters at the same node the disease axis bottlenecks on — residual BubR1 — which is the whole hypothesis in one picture, and why §8 turns on whether that node is an abundance problem or a function problem.](figures/mechanism.png)
+
+### The four joints where this argument can break
+
+Every chain has a weakest link; this one has four, and naming them precisely is more useful than
+a confidence score. Each is an edge on the mechanism graph with its own counter-evidence field
+(`MECHANISM.md`); what follows is why each matters for the conclusion.
+
+**1. The class assignment for this child's allele is an inference, not a measurement.** Suijkerbuijk
+2010's abstract runs abundance-class ⇒ kinase-domain location. We need the converse, and the paper
+does assert it — but in the body, not the abstract: the Results heading reads "All kinase
+domain-localized mutations in BUBR1 reduce overall BUBR1 protein abundance" (Fig. 3, repeated in the
+Discussion). That universal is quantified over the **five** kinase-domain substitutions from British
+MVA patients the paper tested, not over arbitrary novel variants, and Fig. 2A shows an N-terminal
+TPR-domain substitution lowering abundance as well, just less steeply (2–6-fold across all patient
+lines) — a gradient, not two clean bins. Link 1c cuts the other way entirely: the same domain is
+independently required for PP2A-B56 recruitment, so a substitution inside it can produce a *function*
+lesion with no abundance change at all. The class assignment is therefore **unmeasured**, and §8
+treats it as the pivot it is.
+
+**2. The mouse allele that looks most like this one is a different residue.** The allele in Sieben
+2020 is BubR1L1002P, which the authors state models **human BUBR1 L1012P** ("human L1012
+corresponds to mouse L1002"). This child's missense is at **human residue 1002** — a different
+residue. Nothing in that paper transfers to it directly. Three further bounds: the PCS finding is in
+the Results (Fig. 8A), not the abstract, whose summary sentence reads the other way (several
+progeroid pathologies were *attenuated* in the L1002P compound); the matched-abundance comparison
+holds for MEFs, while the splenocyte data (Fig. 9A) sit in the one tissue where BubR1 levels did
+differ significantly, against historical rather than contemporaneous comparators; and the direction
+is not simply "L1002P is worse" — median lifespan was 343 days for BubR1 H/L1002P against
+196 days for BubR1 H/H.
+
+**3. The therapeutic lever has never been tested on this substrate class.** The caveat is not merely
+"not tested with niacin". *No* NAD+ precursor has been tested on a BUB1B-mutant background. The in
+vivo NMN work was done on wild-type mice and WT / Sirt2-/- MEFs. The lifespan result is in
+BubR1 H/H, whose residual protein is **low in abundance but otherwise normal**, whereas
+this child's residual protein would be a misfolded missense product — a different substrate class.
+No E3 ligase is named in that work, so we cannot tell whether the degradation route K668 acetylation
+protects against is the same route that clears a misfolded kinase-domain mutant. And the K668 axis
+has no independent replication: a PubMed search on 2026-10-19 for `(BubR1 OR BUB1B) AND (K668 OR
+"lysine 668")` returns that paper and nothing else.
+
+**4. The enzyme we are proposing to recruit acts on BubR1 at more than one site, with opposite
+consequences.** SIRT2 deacetylation stabilises BubR1 at K668 and removes a degradation block at
+K250, and which dominates in a BubR1-low, misfolded-missense background has never been measured. We
+grade the K250 arm `asserted` rather than `measured` for a reason we would rather state than hide:
+**the publisher deposited no abstract for PMID 25285631 and we could not obtain its full text**, so
+we cite it for the existence and direction of the SIRT2–K250 link only and quote no result from it.
+A third site, in mouse oocytes, makes the picture harder still (§9). This is why the decisive
+experiment's first readout measures **both** sites (§6): reading K668 alone would make a net-zero
+result look like a failed intervention rather than two opposing effects.
+
+The **therapeutic objective** is a measurable endpoint, not "improve the disease": *restore accurate chromosome segregation by raising functional BubR1 toward the threshold where the SAC engages* — read out as BubR1 abundance/K668 acetylation, mitotic timing / nocodazole arrest index, and the aneuploidy/micronucleus rate (§6). Different candidate classes serve different endpoints and are not pooled.
+
+Two endpoint caveats follow directly from the mechanism and are applied throughout:
+(i) **The aneuploidy rate is a readout, not the primary efficacy endpoint.** Across the allelic series, severity does not rank cleanly with the proportion of aneuploid cells (Sieben 2020 shows allelic effects beyond both protein level and aneuploidy), so a change in aneuploidy percentage alone neither proves nor refutes benefit.
+(ii) **Not every feature is expected to track aneuploidy at all.** Our own causal chain makes this concrete: of the eight registered phenotype terms, the segregation-error mechanism supports a sourced edge to six (the tumour, the growth and muscle features, one perinatal feature, and the parental reproductive observation) and **two are left explicitly unexplained** rather than connected by assertion — a renal feature and one perinatal feature. `MECHANISM.md` lists those two under *Phenotypes not explained by the current chain* (the generator's `unexplained_phenotypes` field), which is a result, not an omission. Note that one of the six is weaker than the rest: the human half of the parental-reproduction edge (E13) is the source authors' own *prediction*, not a measurement, so that edge is graded `asserted` — the lowest strength on our scale — rather than measured. If part of the phenotype arises from the ciliary branch (link 5b), those features will not improve with any aneuploidy biomarker, and an efficacy panel that measures only segregation would miss them. Because the proposed lever raises BubR1 *abundance* — which both the mitotic and the G0/ciliary roles depend on — the hypothesis is not confined to the mitotic branch; but any claim about the ciliary features requires its own readout, which this submission marks as pending rather than assumed.
+
+## 4. Screening method: directionality, four patient gates, input validation
+
+The screen is a small, auditable, disease-agnostic engine (`src/triage.py`, run by `run.sh`). It computes a gate verdict only; the scientific disposition is a separate human judgment in the canonical table, and the two are shown side by side (§5, `computed_vs_human.md`) so the tool's output never masquerades as science.
+
+1. **Directionality prerequisite.** For a defect characterized as checkpoint insufficiency, a candidate must act to *strengthen* the checkpoint. Mitotic/checkpoint inhibitors — the disease's own direction — are auto-rejected.
+2. **Four patient constraint gates**, each driven by a value from the case manifest: oncology (malignancy status), pediatric (age group), renal, growth. Three of them can reject; **the growth gate only raises a flag**, so we no longer describe all four as "hard gates" — one of them cannot stop anything.
+   The gates read a candidate's `properties[]` tags and nothing else, which has a consequence we
+   report rather than paper over: a candidate whose own `safety_assessment` records an axis as
+   *contradictory* or *not assessed*, but which carries no property tag for that axis, **passes that
+   gate without the gate ever seeing the risk**. Our internal cross-check only ran the other way, so
+   this direction went through silently. The engine now computes those **gate-silent axes** for every
+   candidate and prints them beside the verdict; `build_views.py` refuses to build unless the
+   canonical entry declares exactly that set (`safety_gap_declared`); and `computed_vs_human.md`
+   carries them as a column. For the named candidate they are oncology (contradictory) and growth
+   (not assessed) — which is also why niacin can never reach the engine's top tier. No verdict
+   changed when this was added.
+
+3. **Objective classes, so a scenario can change the answer.** Each candidate declares which therapeutic objective it claims to serve (restore / mitigate / deselect / protect). The same drug can be the right direction for one objective and the wrong direction for another, so collapsing them into a single "strengthen/weaken" verdict hides the question. Declaring the class also makes the residual-function scenarios bite: §8 shows the named candidate surviving one scenario, flagged in another and rejected in the third. A candidate that declares no class blocks under a scenario rather than passing.
+4. **Input validation that blocks rather than guesses.** Unknown fields, out-of-range values, non-boolean booleans, and a safety flag that contradicts its own gate (e.g. a "nephrotoxic" property with renal "not observed") all return BLOCKED, never a silently cleaned pass. Two input-laundering bugs found in internal review, and the two gate-reporting blind spots found in adversarial review on 2026-10-19, are now regression-tested, so the engine demonstrably refuses over-confident inputs — itself a rigor signal in an N-of-1 setting where data are sparse and the cost of false confidence is high. Twenty-eight self-tests pin this behaviour: five cover the scenario gate, six more cover malformed scenario blocks, and five run against **this patient's own constraint levels** rather than a permissive default — because until the 2026-10-19 review every self-test ran on an `adult / none / normal / normal` case, where three of the four gates carry empty rule lists and so could not reject anything. The `reject_if`, `require` and `flag_if` branches had no coverage at all; they do now.
+
+**A gate limitation we are reporting rather than patching.** Reading the sirolimus label during eligibility verification turned up a boxed warning for immunosuppression with "possible lymphoma and other malignancies". Our G1 oncology rule rejects `immunosuppressive` only when malignancy status is *active*; at this patient's level — `history` — the reject list is `pro_proliferative`, `pro_tumor`, `increases_CIN`, which does not include it, so the gate lets sirolimus through. In a cancer-predisposition syndrome we judge that to be a real concern.
+   **Sirolimus is not the only candidate affected**, and naming one example would make a structural property of the rule set look like a one-off. The engine derives it instead: any candidate carrying a risk tag that the active level's rule does not act on is printed as an `unactioned-risk-tag` note. On this case that is sirolimus (immunosuppressive, and growth_suppressive which only flags) **and** the dasatinib + quercetin senolytic pair (immunosuppressive) — a senolytic TKI combination passing the oncology gate of a child with a malignancy history is exactly the kind of thing a reader should be able to see without reading the YAML.
+   We still did **not** rewrite the gate rule after seeing which candidates it would catch. Changing a scoring rule once you know its effect on a specific candidate is rule-fitting, and it would invalidate every other verdict the rule produced. What we changed is the engine's reporting, not its scoring: the verdicts are identical before and after. The rule limitation itself is logged for the next revision of the rule set.
+
+A candidate reaches the engine's STRONG tier only with eligibility ELIGIBLE, evidence distance ≥ 3 (a rescue in disease-relevant cells), rescue = true, and every safety gate explicitly assessed with no unresolved risk. By design, no current candidate reaches STRONG — that is the honest result (§10), not a tuning failure, and self-test 12 proves STRONG is still reachable by a clean input.
+
+## 5. Candidate funnel — one denominator, eligibility separated from scientific judgment
+
+All candidates live in one canonical source (`candidates_canonical.json`); every table and the engine fixture are generated from it, so a synonym or a negation in prose can never change a structured verdict. Denominator: **13 interventions + 3 mechanism-branches + 1 negative-control group = 17 entries**, computed once from the canonical source and checked against every deliverable by `make_manifest.py`. The patient layer is `fact_register.csv` (18 registered facts: 7 CONFIRMED, 2 ASSUMED, 9 UNKNOWN); the candidate layer is in `candidate_table.md` (auto-generated) with this shape:
+
+- **Eligibility** (a regulatory fact about a product) and **research judgment** (a scientific disposition) are kept in separate columns. A molecule can be ELIGIBLE and still INSUFFICIENT.
+- The strongest-biology branch, raising BubR1 via SIRT2 (**C-NAD**, NMN/NR), is **INELIGIBLE** as a Track-2 medicine — NMN and NR are supplements, not approved drugs, and nicotinamide is both a supplement and directionally wrong (a sirtuin inhibitor that *lowered* BubR1 in North 2014). Its approved-product instance is evaluated separately as **C-NA** (niacin), the named candidate.
+- Our earlier lead, **4-PBA** (C-PBA, sodium/glycerol phenylbutyrate), is held at **INSUFFICIENT** and is demoted from the named candidate consistently across report, pitch, candidate table and submission record: its mechanism is secretory-cargo export, not a cytosolic chaperone, with zero BUBR1-specific data, and its achievable exposure overlaps its HDAC-inhibitory range so an effect could not be attributed.
+- Mitigation/deselection candidates (NAC, folate+B12, rapamycin, AMPK-deselection) are retained as CONDITIONAL for named endpoints other than raising BubR1; senolytic and mitotic-inhibitor entries are the wrong-direction negative controls.
+
+## 6. Surviving candidate and the decisive experiment (which is also diagnostic)
+
+The named candidate **niacin** survives the rule as **conditional**. One experiment decides it, and the same measurement is diagnostic for this child — it places residual BubR1 on the Sieben 2020 dose × allele-quality map, informing prognosis independent of any drug.
+
+Material (held by the organizers / clinical team; this team does not access it): patient-derived fibroblasts or a lymphoblastoid line; an isogenic (CRISPR-corrected) or healthy control; a BubR1-knockdown positive control (siRNA titration to an H/H-like level).
+
+The experiment is not starting from zero: **ectopic BUBR1 has already been shown to restore checkpoint activity in cells from biallelic MVA patients** (Suijkerbuijk 2010), so a positive control for "more BUBR1 fixes the checkpoint in this disease" exists in the literature. What is untested is whether a *drug* can raise endogenous BUBR1 on this allele background. That single step is what the dose-response arm below measures, and it is the whole distance between the published rescue and a repurposing hypothesis.
+
+| Readout | Question answered | Overturns the candidate if |
+|---|---|---|
+| Total BubR1 (western, vs α-tubulin/Ponceau) + acetylation at **both K668 and K250** (IP / site-specific antibodies), across an NAD+-precursor dose–response (niacin, NR, NMN; nicotinamide as the wrong-direction control) | Does NAD+ repletion raise BubR1 on this allele background — and which of the two SIRT2 sites moves? K668 deacetylation is expected to stabilise; K250 deacetylation removes a degradation block (§3 links 7, 7c). Reading only K668 would make a net-zero result look like a failed intervention rather than two opposing effects | BubR1 does not rise. If K250 deacetylation dominates, the axis is not merely inactive here but pointed the wrong way, which also retires NR and NMN, not just niacin |
+| Nocodazole arrest index and mitotic timing (live imaging) | Does checkpoint function recover? | no recovery even if abundance rises (scenario S2) |
+| Lagging chromosomes / micronuclei / single-cell-sequencing aneuploidy rate | Does the mitotic-branch phenotype improve? (supporting readout — see endpoint caveat (i), not a stand-alone verdict) | no improvement *together with* no checkpoint recovery → downgrade to "abundance-correctable but phenotype not" |
+| Ciliation rate / cilium length in serum-starved (G0) patient cells | Does the non-mitotic branch (link 5b) respond to the same abundance change? | — exploratory; a null result bounds the claim to the mitotic branch rather than overturning it |
+| Cell death, proliferation and clonal fitness, in the same wells | Distinguishes rescue from killing the abnormal cells; tests the tumour-fuelling concern | the **aneuploid fraction of the surviving population**, or the clonal dominance of an aneuploid lineage, increases. Note the criterion is deliberately *not* "any rise in cell survival": a genuine checkpoint rescue reduces the rate at which new aneuploid cells arise and may raise overall survival, so raw survival would reject the very outcome we want. What rejects the candidate is the abnormal compartment growing relative to the normal one |
+| Truncated product (N-terminal antibody) | Scenario S3 discriminator | a truncated product is present and rises with NAD+ repletion → pause all abundance-raising strategies |
+
+Rules: ≥ 3 independent biological replicates, blinded scoring, and death/proliferation measured alongside every "improvement" so a reduction in aneuploid cells by selection is never read as repair. The report states what resources are required and whether they are obtainable; it does not promise a timeline or cost. No dose is specified; the in-cell concentration range is written as *pending in-cell dose–response*.
+
+## 7. Eligibility matrix — product level, with dated sources
+
+Approval is a property of a *product*, not a molecule, so each row is a product (molecule × form/route × jurisdiction × indication × age range × status × checked-date × an openable source URL × any counterexample). Generated from `docs/eligibility_matrix.csv` (public regulatory data, committed) into `docs/eligibility_matrix.md`. Two rows carry weight beyond their own candidate. First, **the two niacin products are not interchangeable**: the immediate-release label states that sustained-release preparations "should not be substituted for equivalent doses of immediate-release (crystalline) nicotinic acid", and that severe hepatic toxicity including fulminant hepatic necrosis has occurred on such substitution. Any niacin hypothesis must name the formulation; "niacin" alone is not a specification. Second, **4-PBA's demotion is not an eligibility problem**: glycerol phenylbutyrate has the broadest pediatric label of anything in the table (established from under 2 months), and it was demoted purely on mechanism. Conversely, ataluren confirms the readthrough route is closed — the EU conditional authorisation was **not renewed on 28 March 2025** because effectiveness was not confirmed, so no approved readthrough agent exists for the truncating allele.
+
+The load-bearing row: niacin extended-release tablets are an approved US prescription product (DailyMed label revised 12/2025, checked 2026-10-19), indicated for dyslipidemia in adults; the label states that *"Safety and effectiveness of niacin therapy in pediatric patients (≤ 16 years) have not been established."* That is precisely why the research judgment is CONDITIONAL and the pediatric path is off-label and specialist-supervised (Colletti 1993), not an approved indication — and note that the pediatric experience we are relying on for feasibility is the same series that reports a 38% discontinuation rate, at doses that overlap what this hypothesis would need (§9).
+
+## 8. Scenario sensitivity — three residual-function hypotheses, three engine runs
+
+Because residual BubR1 function in this child is UNKNOWN (§2), the engine is run on three case files (generated by `scripts/phase1/14_build_scenarios.py`), and the three verdict sets are shown side by side — turning "we don't know" into an analytic output rather than a guess. Each scenario declares which therapeutic-objective classes remain valid, and the engine enforces that: a candidate declares the objective class it claims to serve, and a class marked `invalid` in the active scenario is rejected, `conditional` is flagged. Running the same candidate table against the three scenario case files gives three different answers:
+
+| Scenario | Surviving (CONDITIONAL) | Rejected | The named candidate |
+|---|---|---|---|
+| **S1** stabilizable hypomorph | 7 | 10 | **survives** — niacin CONDITIONAL |
+| **S2** misfolded, non-functional | 5 | 12 | **overturned** — rejected at `objective-validity[S2]`, together with every other restore-class candidate |
+| **S3** truncation escapes NMD | 7 | 10 | **survives but flagged** `objective-restore-conditional[S3]` |
+
+The base case carries no scenario block, so the gate is inert there and the base result is unchanged — the sensitivity is an added analysis, not a silent re-scoring.
+
+| Scenario | Hypothesis | Consequence for the named candidate |
+|---|---|---|
+| **S1** stabilizable hypomorph | missense protein present but unstable; truncating allele decayed | NAD+/SIRT2 stabilization is on-direction; **niacin is CONDITIONAL** |
+| **S2** function lesion | missense protein, even if stabilized, lacks checkpoint function — **directly supported for this domain** by Gama Braga 2020: the pseudokinase domain is required for PP2A-B56 recruitment, and mutating it causes alignment errors independent of abundance | raising abundance cannot help → **niacin overturned**; only mitigation/deselection remains; the reportable gap (§10) becomes the main result |
+| **S3** truncation escapes NMD | a truncated product exists, possible dominant-negative | raising total BubR1 may also raise the truncated product → any strengthen-direction strategy pauses until the truncated product is measured |
+
+The named candidate holds **only under S1**; S2/S3 are discriminated by the first two readouts of the decisive experiment. This dependency is the point, not a weakness — and it has a number attached, which we would rather state than be asked for. `config/scenarios/bub1b_mva.scenarios.yaml` assigns the three scenarios equal prior weight (0.333 / 0.333 / 0.334), because nothing in the evidence favours one. **Under that prior, the named candidate's therapeutic objective class has about a one-in-three chance of being directionally invalid, and another one-in-three of being only conditionally valid.** That is the honest expected value of this hypothesis before the experiment, and it is precisely why the decisive experiment leads with the two readouts that separate S1 from S2 and S3 rather than with an efficacy endpoint.
+
+One caveat on what this sensitivity analysis does and does not demonstrate. The three scenarios differ on a single axis — `objective_validity` for the `restore` class (valid / invalid / conditional); `mitigate`, `deselect` and `protect` are valid in all three. So the analysis tests exactly one thing: how much of the candidate set depends on the restore-class premise. The answer, two candidates of seventeen, is a real result about the funnel's concentration, but it is not a broad robustness check, and the `objective_class` assignment for each candidate was made in a single human pass and is recorded as a judgment, not a measurement.
+
+## 9. Counter-evidence (bounded, not withdrawn)
+
+The strongest arguments against the primary hypothesis, each bounded to its own model and readout rather than extrapolated to a clinical contraindication:
+
+- **The premise that NAD+ repletion will raise BubR1 here is not established, and this is the strongest objection to the whole hypothesis.** North 2014's logic is that BubR1 declines *in normal ageing* because NAD+ declines. In MVA, BubR1 is low for a structural reason — an absent transcript plus a destabilised missense protein — and **no study reports NAD+ status in MVA or in BUB1B-mutant cells** (PubMed, searched 2026-10-19, no hits). SIRT2 can only deacetylate protein that exists; a protein being turned over because it is misfolded may not be rescued by deacetylation at all. The decisive experiment's first readout exists precisely to test this step, and if it fails the hypothesis is dead regardless of everything else in this report.
+- **The second strongest objection is that this allele may be a function lesion, not an abundance problem.** The named candidate works only if the missense allele yields protein that is *scarce but competent*. Gama Braga 2020 shows the pseudokinase domain is required for KARD phosphorylation and PP2A-B56 recruitment, and that mutating it produces checkpoint-silencing and alignment defects directly. A substitution inside that domain could therefore be functionally dead at normal abundance — scenario S2, in which the engine rejects niacin along with every other restore-class candidate. We do not claim the literature settles which class this allele is in. It does not, and we have no measurement of our own.
+- **SIRT2 does not act on BubR1 at one site, and the sites do not agree.** Joint 4 (§3) sets out the K668 / K250 opposition. A third site makes it worse rather than better. In mouse oocytes the *non*-acetylatable BubR1-K243R is the **beneficial** allele: it partly prevents the meiotic deficits of Sirt2 depletion and, in oocytes from aged mice, "lowers the incidence of aneuploid eggs" (Qiu 2018, PMID 29067790). Mouse K243 is plausibly the same conserved residue as human K250 under a different numbering, which we have not resolved. So: one enzyme, at least three mapped sites, consequences for stability and for the aneuploidy endpoint that do not line up, and no measurement of the net effect in a BubR1-low misfolded-missense background. Two bounds on how far we take this: Qiu 2018 is **meiosis in oocytes, not mitosis**, and its rescue comes from over-expressing a mutant BubR1, not from raising endogenous protein or from any drug.
+- **The largest randomised safety dataset for this exact product is a null trial with real harms.** HPS2-THRIVE (Landray 2014, PMID 25014686, N Engl J Med) randomised **25,673** adults with vascular disease to 2 g/day extended-release niacin plus 40 mg laropiprant or placebo. Over a median 3.9 years it "had no significant effect on the incidence of major vascular events (13.2% and 13.7% ... rate ratio, 0.96; 95% CI, 0.90 to 1.03; P=0.29)", with significant absolute excesses of serious adverse events: disturbances in diabetes control +3.7 percentage points, new diabetes diagnoses +1.3, infection +1.4, gastrointestinal +1.0, musculoskeletal +0.7, bleeding +0.7, skin +0.3 (all P≤0.003). **Bounds, stated so this is not read as more than it is:** the comparator contains laropiprant, so attribution to niacin alone is confounded; the population is adults with established atherosclerosis, not children; the endpoint is cardiovascular, not anything in this hypothesis's causal chain; and the drug was given for lipid modification, not NAD+ repletion. One feature cuts the other way and we note it rather than omit it — the trial ran a pre-randomisation run-in that **excluded people who could not tolerate ER niacin**, so the population is enriched for tolerators and real-world harm would plausibly be higher. This does not touch the mechanism argument. It does mean that if this hypothesis ever moved toward a human exposure, the tolerability prior is poor and well quantified.
+- **NAD+ may fuel tumours**, which matters given MVA's cancer predisposition — but that evidence comes from tumour models, not a BubR1-deficient background, and raising BubR1 is itself anti-aneuploidy and tumour-suppressive (Baker 2013, 23242215). Marked *contradictory*; adjudicated by the decisive experiment's clonal-fitness arm.
+- **The niacin metabolite 4PY** is associated with cardiovascular events (Ferrell 2024, 38374343) — in adult cohorts, not extrapolated to a pediatric setting; recorded, not projected.
+- **Nicotinamide lowers BubR1** (North 2014, Fig 1) — bounded to the sirtuin-inhibiting concentration; the conclusion is "NAD+-pathway molecules are not interchangeable," not "the axis fails."
+- **Pediatric niacin experience is not clean, and the dose context does *not* excuse it** (Colletti 1993, PMID 8516088): 21 children aged 4–14, "treated with niacin, 500 to 2250 mg daily" — adverse effects in 16/21 (76%), reversible dose-related transaminase elevation in 6 (29%), discontinuation in 8 (38%) for flushing, abdominal pain, vomiting, headache or transaminase rise. We previously bounded this to "lipid-lowering doses", which invited the reading that the exposure is not transferable. **It is.** That range brackets, and at its top exceeds, the 750–1,000 mg/day to which Pirinen 2020 titrated adults to raise NAD+ — so this is pediatric safety data *at the doses the hypothesis would need*, and it cannot be discounted on indication. Two real bounds remain: the series is retrospective, not a trial, and its efficacy figures are quoted only for the >1,000 mg/day subgroup. This is the basis for CONDITIONAL, not SUPPORTED.
+- **Anemia tendency** (Pirinen 2020) — adults, 10 months; a monitoring item, not a contraindication.
+
+None of these is softened, and none retracts the hypothesis; each is a line on the ledger with a disposition.
+
+## 10. A reportable gap
+
+The strongest link in the mechanism chain — directly stabilizing BubR1, or selectively activating SIRT2 — **has no approved drug**. The gap can now be stated precisely: the disease-relevant rescue (more BUBR1 restores the checkpoint in patient cells) is *published*; the pharmacology to achieve it endogenously is *absent*. Niacin is an indirect, systemic proxy for it. This is a finding, not an omission: it tells follow-up researchers to look toward SIRT2 activators and BubR1-K668 deacetylation, and away from secretory-pathway chaperones (the 4-PBA direction we demoted).
+
+**Two independent checks now stand behind that gap, and they are stronger than our original search.** First, the obvious approved-drug routes to raising BUBR1 have been *tried and reported to fail*, not merely left unsearched: in acute myeloid leukaemia, where BubR1 is frequently repressed, **decitabine produced no significant BubR1 upregulation and the HDAC inhibitor trichostatin A did not stabilise it** — re-expression was achieved only genetically (Schnerch 2013, PMID 23812934). That covers the two routes a reader would reach for first, transcriptional de-repression and acetylation-mediated stabilisation. Second, the gap is visible at target level and not only in label text: Open Targets (BUB1B, ENSG00000156970, data 26.09, queried 2026-10-19) returns Approved Drug, Advanced Clinical and Phase 1 all false across small-molecule, antibody, PROTAC and other-clinical modalities, with no high-quality pocket and no ligand-bound structure; the one positive tractability signal is ubiquitination evidence supporting a **degrader**, which is the opposite of the direction this report needs. A label-text search for "SIRT2 activator", which is what GN-03 originally ran, could never have found a drug raising BUBR1 by another route; these two checks close that recall hole. For this child and for others with checkpoint-insufficiency MVA, naming where the approved-drug space is empty is itself a contribution to how the disease is approached.
+
+## 11. Scalability and boundaries
+
+- **Already demonstrated:** the engine is case-driven — a synthetic gain-of-function case file flips the directionality rule with no code change (`config/cases/synthetic_gof_demo.yaml`). The same rule applies across MVA genes in `MVA_DECISION_TABLE.md`: for each gene, the defect direction, the first experiment, and whether the NAD+/SIRT2 axis is even relevant (it is specific to BUB1B).
+- **Honest boundary:** the engine demonstrates gate logic; candidate generation and evidence grading remain human-curated. This is **not** a cross-disease discovery system, and we do not claim it is.
+- **To move to another disease:** add a case file; if the defect direction is new, add one rule to `config/scoring.yaml`. That is the whole extension surface.
+
+## 11b. Every load-bearing claim is on a ledger
+
+Each statement in this report that affects the conclusion has a row in `registers/claim_ledger.csv` — 36 claims: 18 mechanism (one per link of the causal chain, carrying that link's own evidence strength and its counter-evidence — five of them, E14–E17 and E16b, are the **therapeutic** axis, which until 2026-10-19 was the one part of the argument carried by no ledger at all), 11 regulatory (one per product row of the eligibility matrix, each with a dated label URL), 5 global-negative, and 2 method. The ledger is *generated*, not hand-maintained: `make_claim_ledger.py` builds it from the mechanism chain and the eligibility matrix on every clean run, so a claim cannot drift away from its source.
+
+Two deliberate properties. First, the five **global-negative** claims — the "no approved drug does X" statements that one counterexample would destroy — each carry a dated, reproducible search in `registers/search_strategies.md`, with the verbatim query, the hits and why each hit does not count. Two of the five are marked `unresolved` rather than `bounded`, because they concern the premise the named candidate most depends on. Second, the generator **refuses to emit any row matching a genomic-coordinate or genotype pattern**, and that refusal is exercised as a test: the working evidence ledger from early October contains coordinates, so it is excluded from this artefact by construction rather than by care.
+
+## 12. Reproducibility
+
+`run.sh` runs the self-test, generates all views from the canonical source, runs the real and synthetic cases and the three scenarios, and ends with `make_manifest.py`, all from pinned dependencies in a clean environment; it checks for PyYAML first and tells you how to fix a missing dependency rather than dying three steps in. `make_manifest.py` is the consistency gate: it recomputes the claim-ledger size, the global-negative
+count, the registered-fact count, the product-row count and the self-test count (by executing the
+self-tests, not by counting lines) from their sources, refuses to pass if any deliverable disagrees,
+and cross-checks that this report and `METHODS_AND_AI.md` disclose the same number of
+safety-classifier interruptions. Two fill slots — the frozen date and the pitch-video URL — are reported as PENDING before the freeze and become blocking under `make_manifest.py --freeze`, which is the submission-day run. The 28 self-tests pin the engine's behavior at its edges: unknown input blocks, a safety contradiction cannot reach STRONG, a clean input still can, the scenario gate rejects an invalid objective class, flags a conditional one, blocks an undeclared one, blocks a malformed one, and stays inert when no scenario is active — and five tests run against this patient's own constraint levels so that the gates' reject, require and flag branches are actually exercised. The engine demonstrates gate logic only; scientific judgment lives in the canonical table and this report, not in the code.
+
+## 13. Limitations
+
+Stated plainly, not defended. **Candidate generation was literature-driven, not a database sweep.** Entries were produced by three independent adversarial agent passes over the primary literature, cross-checked against a competitor's public repository, with the originating channel and any convergence recorded per candidate (`registers/candidate_register.csv`, which uses the earlier K/R/A/E identifiers and is kept as the historical channel record; the canonical candidate layer moved to `docs/candidates_canonical.json` on 2026-10-08) — several entries, including the whole wrong-direction mitotic-inhibitor group, were reached by all three channels independently. What this is *not* is a systematic screen over DGIdb / ChEMBL / Open Targets / connectivity-map data, so a non-obvious candidate that only such a screen would surface could have been missed; we do not claim that coverage. Agent passes are a search strategy, not evidence: every surviving claim is backed by a primary source, and agreement between agents is never counted as corroboration. Relatedly, the decision rule in §1 was written alongside the candidate work rather than pre-registered before it — unlike our Track 1 ranking rules, which were committed in advance with a timestamp. We state both rather than implying a rigour we did not have. The `objective_class` assignment that the scenario analysis turns on (§8) was likewise a single human pass, recorded as a judgment rather than a measurement. **One citation in this report is carried at a strength we would normally reject**: the SIRT2–K250 link (§3 link 7c, chain edge E16b) rests on a paper whose publisher deposited no abstract and whose full text we could not obtain, so it is graded `asserted`, cited for direction only, and no result is quoted from it; we judged that disclosing a load-bearing counter-argument we could not fully verify was better than omitting the counter-argument. The automated citation check (`scripts/phase1/16_verify_citations.py`) resolves every PMID against Europe PMC and compares the returned title with the one we recorded. It originally read only the mechanism graph and the claim ledger, which between them miss about two thirds of the citations a reader can see — a PMID cited in the report's prose, in the safety annex or in the eligibility matrix is not a graph-edge source. It now reads all of those too: **35 load-bearing PMIDs, every one with a recorded title to compare against**. The 22 remaining `manual` rows in `citation_check.csv` are UniProt feature annotations pulled in by `--include-uniprot`; none of them carries any part of the argument. No NAD+ booster has been tested in an MVA model or in cells of this allele class — the niacin step is a bridging hypothesis. NAD+ status in MVA has never been measured, so the deficiency the intervention would correct has not been shown to exist. The SIRT2–BubR1 effect is also background-specific: it does nothing on a normal background (Wu 2023), which is reassuring for specificity but means no general evidence supports it. Residual BubR1 function in this child is unmeasured; the candidate holds only under scenario S1. There is no pediatric niacin label. The oncology direction is unresolved. Phase is assumed, not measured. Pathogenicity predictors are predicted, not measured, and are not used as if measured. The engine's gate verdicts are not scientific disposition. Systemic NAD+ repletion is not uniform across tissues — in the adult human study the rise in blood was substantially larger than the rise in muscle — so a blood NAD+ response would not by itself establish that the relevant tissues reached a BubR1-stabilizing exposure. The ciliary branch is supported at the model-organism level only and its readouts are marked exploratory here, not claimed. The decisive experiment requires patient-derived cells this team does not access; we specify it, we do not perform it.
+
+## 14. Methods and AI statement
+
+Full detail in `METHODS_AND_AI.md`. In brief: mechanism and therapeutic objective were frozen before candidate reasoning; candidates passed directionality and four patient gates; each lead met an adversarial review instructed to refute it; every load-bearing citation passed an automated title-resolution check (35 PMIDs, no unresolved mismatches) and an independent human verification pass, both re-run end-to-end on 2026-10-19 after a second adversarial review and recorded in `registers/citation_manual_check_2026-10-19b.md` with its own access limits stated. That round removed one miscited source from the mechanism chain, downgraded one edge from measured to asserted because the source's human result is a prediction, and rejected one claim the reviewer had attributed to a surveillance consensus that does not make it. AI usage: Claude Max (claude.ai and Claude Code) with model-training opt-out enabled in account settings and no feedback given on any output, under Anthropic Consumer Terms; inputs to AI were routinely limited to derived information (HPO terms, protein-level variant representations, mechanism text, code, public literature), and no raw data file was ever opened by an AI tool — every step that reads patient data ran as a plain script in the submitter's own terminal. We additionally disclose two occasions on which coordinate-level content nevertheless reached an assistant conversation: a post-run terminal paste in Track 1, and a working-ledger row seen during an internal audit in Track 2. Our Track 1 methods document states the same thing in the same terms, so a panel comparing the two will find them consistent; both are permitted under the organizers' final AI guidance. **Two** responses were interrupted by the provider's safety classifier — one in a literature-only session (2026-10-14..18) and one on 2026-10-19 while summarising tool output. Neither session contained genotype-level data and no feedback was given on any output. The count here is kept identical to `METHODS_AND_AI.md` and `registers/ai_usage_register.csv`; an earlier draft of this sentence said "one", which was an undercount, and the release manifest now cross-checks the number between this report and `METHODS_AND_AI.md` so it cannot drift apart again; the register itself is the human-maintained record behind both. Settings evidence is archived and available on request.
+
+## 15. Acknowledgement and citation
+
+> *"This work was made possible through the Hackathon, organized by Sage Bionetworks in partnership with the MVA Society, Hugging Face, and BEACON (The Benchmarking, Evaluation, and Assessment Consortium for Science), with prize sponsorship from AWS and Anthropic. We are deeply grateful to the child and their family who generously contributed their data and their story to advance research into this rare disease. We acknowledge their trust in making this Hackathon possible."*
+
+The Hackathon dataset is cited using the reference provided on the Hackathon Synapse page at the time of publication. **What this submission actually contains, stated precisely.** The report body describes the phenotype at category level only. The structured files that the engine reads — `config/cases/bub1b_mva.yaml` and `docs/mechanism_graph.yaml` — carry the eight phenotype observations as named HPO terms with their HP identifiers, because the mechanism chain has to connect specific terms and because the organizers' guidance lists HPO terms among the derived, shareable facts. Variant representation is at transcript and protein level (c. / p. HGVS on a MANE transcript); **no genomic coordinate, no genotype field, no sample identifier and no raw data file appears anywhere in this repository**, and `scripts/phase1/19_public_safety.py` enforces that on every commit — it now also warns on any `HP:` identifier so that each one is a deliberate choice rather than an oversight.
+
+We considered reducing the structured files to category labels as well. We did not, because the mechanism graph's value is that each phenotype term is connected to a sourced edge or explicitly left unexplained, and category labels would make that check unverifiable. We note the residual consideration plainly: in a disease with a few hundred reported cases worldwide, a biallelic *BUB1B* genotype combined with eight specific terms is a narrow description, and anyone reusing this repository should weigh that before adding further detail.
+
+---
+
+*Code and this report: GitHub `https://github.com/Vero79L/mva-hackathon-2026-track2` (private during the Hackathon; public at close under CC BY 4.0). Pitch video: `{{FILL:VIDEO}}`. Frozen `{{FILL:DATE}}`.*

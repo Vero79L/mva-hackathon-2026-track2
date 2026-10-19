@@ -1,0 +1,605 @@
+# 由 scripts/phase1/15_mechanism_graph.py 產生；改 docs/mechanism_graph.yaml，不要改這個檔
+schema: mechanism_graph/1
+case_id: bub1b_mva
+gene: BUB1B
+strength_scale:
+  measured_in_proband: 在這位病人身上量到
+  measured_in_model: 在模型系統量到（物種／細胞／基因型要標）
+  predicted: 計算預測
+  asserted: 他人主張或資料庫註解，未見原始量測
+nodes:
+- id: V1
+  level: variant
+  label: c.2210T>G / p.Leu737Ter（截斷）
+  fact: F-VAR-01
+  label_en: 'p.Leu737Ter
+
+    truncating allele'
+- id: V2
+  level: variant
+  label: c.3006T>G / p.Asn1002Lys（激酶域錯義）
+  fact: F-VAR-02
+  label_en: 'p.Asn1002Lys
+
+    kinase-domain missense allele'
+- id: T1
+  level: transcript
+  label: 截斷型等位基因：NMD_predicted（情境相依）
+  fact: F-TX-01
+  label_en: 'truncating allele: NMD predicted
+
+    (scenario-dependent)'
+- id: T2
+  level: transcript
+  label: 錯義等位基因：末外顯子，不觸發 NMD
+  fact: F-TX-02
+  label_en: 'missense allele: last exon,
+
+    no NMD'
+- id: P
+  level: protein
+  label: 殘餘 BubR1 蛋白量與功能（情境相依）
+  fact: F-RF-01
+  label_en: 'residual BubR1 abundance
+
+    and function (scenario-dependent)'
+- id: C
+  level: complex
+  label: MCC／紡錘體組裝檢查點（SAC）訊號
+  label_en: 'MCC / spindle-assembly
+
+    checkpoint (SAC) signalling'
+- id: F
+  level: cellular_process
+  label: 染色體分離精確度（第 3 節的治療目標 endpoint 定義在這一層）
+  label_en: 'chromosome-segregation accuracy
+
+    (the section 3 endpoint sits here)'
+- id: O
+  level: cellular_outcome
+  label: 鑲嵌性多樣非整倍體、微核、細胞衰老
+  label_en: 'mosaic variegated aneuploidy,
+
+    micronuclei, senescence'
+- id: H1
+  level: phenotype
+  label: Rhabdomyosarcoma
+  label_en: 'Rhabdo-
+
+    myosarcoma'
+  hpo: HP:0002859
+  fact: F-PHEN-01
+- id: H2
+  level: phenotype
+  label: Nephrocalcinosis
+  label_en: 'Nephro-
+
+    calcinosis'
+  hpo: HP:0000121
+  fact: F-PHEN-01
+- id: H3
+  level: phenotype
+  label: Short stature
+  label_en: 'Short
+
+    stature'
+  hpo: HP:0004322
+  fact: F-PHEN-01
+- id: H4
+  level: phenotype
+  label: Failure to thrive
+  label_en: 'Failure to
+
+    thrive'
+  hpo: HP:0001508
+  fact: F-PHEN-01
+- id: H5
+  level: phenotype
+  label: Skeletal muscle atrophy
+  label_en: 'Skeletal muscle
+
+    atrophy'
+  hpo: HP:0003202
+  fact: F-PHEN-01
+- id: H6
+  level: phenotype
+  label: Premature birth
+  label_en: 'Premature
+
+    birth'
+  hpo: HP:0001622
+  fact: F-PHEN-01
+- id: H7
+  level: phenotype
+  label: Small for gestational age
+  label_en: 'Small for
+
+    gestational age'
+  hpo: HP:0001518
+  fact: F-PHEN-01
+- id: H8
+  level: phenotype
+  label: Recurrent spontaneous abortion (parental)
+  label_en: 'Recurrent miscarriage
+
+    (parental)'
+  hpo: HP:0200067
+  fact: F-PHEN-01
+- id: D1
+  level: intervention
+  label: niacin（菸鹼酸）——已核准的緩釋處方產品
+  label_en: 'niacin (nicotinic acid)
+
+    approved ER prescription product'
+- id: D2
+  level: metabolite
+  label: 細胞內／血中 NAD+ 可用量
+  label_en: cellular and circulating NAD+ availability
+- id: D3
+  level: enzyme
+  label: SIRT2 去乙醯酶活性
+  label_en: SIRT2 deacetylase activity
+- id: D4
+  level: ptm
+  label: BubR1 的乙醯化狀態（K668、K250）
+  label_en: BubR1 acetylation state (K668, K250)
+edges:
+- id: E01
+  from: V1
+  to: T1
+  claim: 提前終止密碼子位於 exon 17/23、距最後一個外顯子接合處 748 nt，依 50–55 nt 規則預測觸發 NMD
+  claim_en: The premature termination codon sits in exon 17 of 23, 748 nt upstream of the last exon junction, and triggers
+    no escape rule, so NMD is predicted.
+  strength: predicted
+  model:
+    system: GTF 算術 + 50–55 nt 規則（aenmd 實作的逃逸規則）
+    system_en: GTF arithmetic + the 50-55 nt rule (escape rules as implemented in aenmd)
+    species: human
+    genotype_match: same_variant
+  sources:
+  - file: docs/transcript_facts_public.yaml
+    locator: variants[0].coding.nmd_class
+    strength: predicted
+  counterevidence: 若轉錄本逃過 NMD（情境 S3），本邊不成立；未以病人 RNA 量測
+  counterevidence_en: If the transcript escapes NMD (scenario S3) this edge does not hold; not measured in patient RNA.
+  scenario_dependent: true
+- id: E02
+  from: V2
+  to: T2
+  claim: 錯義變異位於最後一個外顯子（23/23），不符合 NMD 的觸發條件
+  claim_en: The missense variant lies in the last exon (23/23) and therefore does not meet the conditions that trigger NMD.
+  strength: predicted
+  model:
+    system: GTF 算術
+    system_en: GTF arithmetic
+    species: human
+    genotype_match: same_variant
+  sources:
+  - file: docs/transcript_facts_public.yaml
+    locator: variants[1]
+    strength: predicted
+  counterevidence: ''
+  counterevidence_en: ''
+  scenario_dependent: false
+- id: E03
+  from: T1
+  to: P
+  claim: 被 NMD 降解的等位基因不貢獻蛋白，全長 BubR1 只能來自錯義等位基因
+  claim_en: An allele degraded by NMD contributes no protein, so full-length BubR1 can come only from the missense allele.
+  strength: predicted
+  model:
+    system: 推論自 E01
+    system_en: inferred from E01
+    species: human
+    genotype_match: same_variant
+  sources:
+  - file: docs/transcript_facts_public.yaml
+    locator: variants[0].coding
+    strength: predicted
+  counterevidence: 情境 S3 下截斷產物存在，且可能有顯性負效應
+  counterevidence_en: Under scenario S3 a truncated product exists and may act as a dominant negative.
+  scenario_dependent: true
+- id: E04
+  from: T2
+  to: P
+  claim: MVA 的錯義等位基因蛋白週轉率高，使 BUBR1 總量下降；這類錯義取代一致地落在激酶域之內或附近。結構基礎是 BUBR1 的激酶域其實是 pseudokinase——人類保留催化三聯體但催化活性對正確分離並非必需，與 ATP
+    結合的殘基真正負責的是構形穩定性，因此該區域的取代破壞的是穩定性而非催化
+  claim_en: In MVA, the missense allele's protein turns over rapidly and total BUBR1 abundance falls; substitutions of this
+    class consistently occur in or near the kinase domain. The structural basis is that the BUBR1 kinase domain is a pseudokinase
+    — the human protein retains the catalytic triad but catalysis is dispensable for accurate segregation, and the residues
+    that would bind ATP instead govern conformational stability — so a substitution there destabilises the fold rather than
+    abolishing catalysis.
+  strength: measured_in_model
+  model:
+    system: MVA 病人來源細胞株＋功能性蛋白置換；人類 BUBR1 催化缺陷突變體
+    system_en: MVA patient-derived cell lines + functional protein replacement; catalytically dead human BUBR1 mutants
+    species: human
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '20516114'
+    locator: main text; two-class analysis
+    strength: measured_in_model
+    title_hint: Molecular causes for BUBR1 dysfunction in the human cancer predisposition syndrome mosaic variegated aneuploidy
+  - pmid: '22698286'
+    locator: main text
+    strength: measured_in_model
+    title_hint: The vertebrate mitotic checkpoint protein BUBR1 is an unusual pseudokinase
+  - pmid: '33207204'
+    locator: main text
+    strength: measured_in_model
+    title_hint: BUBR1 Pseudokinase Domain Promotes Kinetochore PP2A-B56 Recruitment, Spindle Checkpoint Silencing, and Chromosome
+      Alignment
+  counterevidence: Suijkerbuijk 2010 分出兩類 MVA 突變：降低蛋白量，或特異性損害檢查點活性與微管附著。摘要給的方向是「降量類的錯義一致落在激酶域之內或附近」；該文內文（Results 標題、Fig 3、Discussion）確實也主張反方向——「所有落在激酶域的
+    MVA 突變都降低 BUBR1 總量」——但這個全稱只涵蓋它實測的五個來自英國 MVA 病人的激酶域取代，不是對任意新變異的預測規則；而且 Fig 2A 顯示 N 端 TPR 域的取代也會降低蛋白量（幅度較小，全部病人細胞株為 2–6
+    倍），因此實際是一個梯度而非兩個乾淨的分組。本案的取代未被測過。而 Gama Braga 2020（PMID 33207204）顯示該 pseudokinase 域本身是 KARD 磷酸化與 PP2A-B56 招募所必需，突變它會直接造成檢查點解除受阻與排列錯誤——因此域內錯義完全可能是功能損傷而非量的問題（情境
+    S2），本案無法由文獻判定屬於哪一類
+  counterevidence_en: 'Suijkerbuijk 2010 separates MVA mutations into two classes: those that lower protein abundance, and
+    those that specifically impair checkpoint activity or microtubule attachment. That a kinase-domain missense belongs to
+    the first class is the paper''s generalisation, not a measurement on this allele — The abstract''s direction is abundance-class
+    => kinase-domain location. The body does assert the converse (Results heading and Fig. 3: ''All kinase domain-localized
+    mutations in BUBR1 reduce overall BUBR1 protein abundance''; repeated in the Discussion), but that universal is quantified
+    over the five kinase-domain substitutions from British MVA patients the paper actually tested, not over arbitrary novel
+    variants; and Fig. 2A shows an N-terminal TPR-domain substitution lowering abundance as well, less steeply (2-6 fold across
+    all patient lines), so it reads as a gradient rather than two clean bins. This child''s substitution was not among those
+    tested. Gama Braga 2020 (PMID 33207204) cuts the other way: the pseudokinase domain is itself required for KARD phosphorylation
+    and PP2A-B56 recruitment, and mutating it directly causes impaired checkpoint silencing and alignment errors — so a substitution
+    inside the domain may well be a function lesion rather than an abundance problem (scenario S2). The literature cannot
+    assign this case to either class.'
+  scenario_dependent: true
+- id: E05
+  from: P
+  to: C
+  claim: 雙等位 MVA 病人細胞的 BUBR1 總量低，並表現檢查點受損與染色體排列缺陷；關鍵的是，外源表現 BUBR1 可以回復檢查點活性——證明 BUBR1 功能不足就是病人染色體分離錯誤的原因，也證明『提高 BUBR1』在病人細胞裡是可行的介入點
+  claim_en: Cells from biallelic MVA patients have low total BUBR1 and show an impaired checkpoint with chromosome-alignment
+    defects; critically, ectopic expression of BUBR1 restores checkpoint activity — establishing that BUBR1 insufficiency
+    is what causes the segregation errors in patients, and that raising BUBR1 is a viable intervention point in patient cells.
+  strength: measured_in_model
+  model:
+    system: MVA 病人來源細胞株＋外源 BUBR1 回補
+    system_en: MVA patient-derived cell lines + ectopic BUBR1 rescue
+    species: human
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '20516114'
+    locator: main text; ectopic BUBR1 restores checkpoint
+    strength: measured_in_model
+    title_hint: Molecular causes for BUBR1 dysfunction in the human cancer predisposition syndrome mosaic variegated aneuploidy
+  counterevidence: 回補用的是外源野生型 BUBR1，不是藥物提高內源蛋白量；兩者之間仍有一步未跨越。（2026-10-19 red-team：本邊原本並列 PMID 19407811 為第二來源，該文研究的是正常細胞內 prometaphase
+    的 BubR1 乙醯化如何調節 APC/C 活性與有絲分裂時序，沒有 MVA 病人細胞、沒有總量測定、也沒有外源回補——不支持本邊，已移除。它支持的是 E16／E17 那條乙醯化—穩定性的軸）
+  counterevidence_en: 'The rescue used ectopic wild-type BUBR1, not a drug raising the endogenous protein; one step still
+    separates the two. (2026-10-19 adversarial review: this edge previously listed PMID 19407811 as a second source. That
+    paper studies how BubR1 acetylation at prometaphase modulates APC/C activity and mitotic timing in normal cells — no MVA
+    patient cells, no abundance measurement, no ectopic rescue. It does not support this edge and has been removed; it supports
+    the acetylation–stability edges E16/E17 instead.)'
+  scenario_dependent: true
+- id: E06
+  from: C
+  to: F
+  claim: SAC 減弱使細胞在染色體尚未正確附著時即進入後期，分離精確度下降
+  claim_en: A weakened SAC lets cells enter anaphase before chromosomes are correctly attached, lowering segregation accuracy.
+  strength: measured_in_model
+  model:
+    system: 雙等位 BUB1B 病人細胞（PCS／MVA）
+    system_en: biallelic BUB1B patient cells (PCS / MVA)
+    species: human
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '15475955'
+    locator: main text
+    strength: measured_in_model
+    title_hint: Constitutional aneuploidy and cancer predisposition caused by biallelic mutations in BUB1B
+  - pmid: '10877982'
+    locator: main text
+    strength: measured_in_model
+    title_hint: Chromosomal instability syndrome of total premature chromatid separation with mosaic variegated aneuploidy
+      is defective in mitotic-spindle checkpoint
+  counterevidence: ''
+  counterevidence_en: ''
+  scenario_dependent: false
+- id: E07
+  from: F
+  to: O
+  claim: 持續的分離錯誤在不同細胞產生不同的染色體套數，形成鑲嵌性多樣非整倍體與微核，並驅動細胞衰老
+  claim_en: Persistent segregation errors give different cells different chromosome complements, producing mosaic variegated
+    aneuploidy and micronuclei, and driving cellular senescence.
+  strength: measured_in_model
+  model:
+    system: BubR1 低表現小鼠與 MVA 病人細胞
+    system_en: BubR1-low mice and MVA patient cells
+    species: mouse; human
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '15208629'
+    locator: main text
+    strength: measured_in_model
+    title_hint: BubR1 insufficiency causes early onset of aging-associated phenotypes and infertility in mice
+  - pmid: '31738183'
+    locator: Fig 8. Erratum PMID 33136097. NB the mouse allele L1002P models HUMAN L1012P, which is a different residue from
+      this case
+    strength: measured_in_model
+    title_hint: BubR1 allelic effects drive phenotypic heterogeneity in mosaic-variegated aneuploidy progeria syndrome
+  - pmid: '24981203'
+    locator: main text
+    strength: measured_in_model
+    title_hint: Mosaic variegated aneuploidy in mouse BubR1 deficient embryos and pregnancy loss in human
+  counterevidence: 非整倍體比例不隨疾病嚴重度單調排序（Sieben 2020），因此不可單獨作為主要療效終點
+  counterevidence_en: The aneuploid fraction does not rank monotonically with disease severity (Sieben 2020), so it cannot
+    stand alone as a primary efficacy endpoint.
+  scenario_dependent: false
+- id: E08
+  from: O
+  to: H1
+  claim: 染色體不穩定造成的非整倍體提高胚胎性腫瘤風險；橫紋肌肉瘤屬 MVA 已報告的腫瘤譜
+  claim_en: Aneuploidy arising from chromosomal instability raises embryonal tumour risk; rhabdomyosarcoma is within the tumour
+    spectrum already reported in MVA.
+  strength: measured_in_model
+  model:
+    system: MVA 病人系列與 BubR1 小鼠腫瘤模型
+    system_en: MVA patient series and BubR1 mouse tumour models
+    species: human; mouse
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '15475955'
+    locator: main text
+    strength: measured_in_model
+    title_hint: Constitutional aneuploidy and cancer predisposition caused by biallelic mutations in BUB1B
+  - pmid: '23242215'
+    locator: main text
+    strength: measured_in_model
+    title_hint: Increased expression of BubR1 protects against aneuploidy and cancer and extends healthy lifespan
+  counterevidence: ''
+  counterevidence_en: ''
+  scenario_dependent: false
+- id: E09
+  from: O
+  to: H3
+  claim: BubR1 不足的小鼠出現侏儒化與生長遲滯，對應人類的身材矮小
+  claim_en: BubR1-insufficient mice show dwarfing and growth retardation, corresponding to short stature in humans.
+  strength: measured_in_model
+  model:
+    system: BubR1 低表現小鼠（H/H）
+    system_en: BubR1-low mice (H/H)
+    species: mouse
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '15208629'
+    locator: Fig 2
+    strength: measured_in_model
+    title_hint: BubR1 insufficiency causes early onset of aging-associated phenotypes and infertility in mice
+  counterevidence: ''
+  counterevidence_en: ''
+  scenario_dependent: false
+- id: E10
+  from: O
+  to: H4
+  claim: 同一生長遲滯機制表現為體重增長不良
+  claim_en: The same growth-retardation mechanism presents as poor weight gain.
+  strength: measured_in_model
+  model:
+    system: BubR1 低表現小鼠（H/H）
+    system_en: BubR1-low mice (H/H)
+    species: mouse
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '15208629'
+    locator: Fig 2
+    strength: measured_in_model
+    title_hint: BubR1 insufficiency causes early onset of aging-associated phenotypes and infertility in mice
+  counterevidence: ''
+  counterevidence_en: ''
+  scenario_dependent: false
+- id: E11
+  from: O
+  to: H5
+  claim: BubR1 不足導致肌少症；Sieben 2020 顯示單等位帶因者的肌少症傾向與 mTORC1 過度活化相關
+  claim_en: BubR1 insufficiency causes sarcopenia; Sieben 2020 shows the sarcopenia tendency in monoallelic carriers correlates
+    with mTORC1 hyperactivity.
+  strength: measured_in_model
+  model:
+    system: BubR1 低表現小鼠骨骼肌
+    system_en: skeletal muscle of BubR1-low mice
+    species: mouse
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '15208629'
+    locator: main text
+    strength: measured_in_model
+    title_hint: BubR1 insufficiency causes early onset of aging-associated phenotypes and infertility in mice
+  - pmid: '31738183'
+    locator: Fig 6. Erratum PMID 33136097. NB the mouse allele L1002P models HUMAN L1012P, which is a different residue from
+      this case
+    strength: measured_in_model
+    title_hint: BubR1 allelic effects drive phenotypic heterogeneity in mosaic-variegated aneuploidy progeria syndrome
+  counterevidence: ''
+  counterevidence_en: ''
+  scenario_dependent: false
+- id: E12
+  from: O
+  to: H7
+  claim: BubR1 缺失的小鼠胚胎在著床後不久即有過半細胞為非整倍體，並出現生長遲滯與大量隨機凋亡——產前生長受限與同一分離失敗機制直接相關，不需從出生後資料外推
+  claim_en: BubR1-null mouse embryos have more than half their cells aneuploid shortly after implantation, with growth retardation
+    and widespread random apoptosis — so prenatal growth restriction connects directly to the same segregation-failure mechanism,
+    with no extrapolation from postnatal data.
+  strength: measured_in_model
+  model:
+    system: BubR1(-/-) 小鼠胚胎（E7.5–13.5）
+    system_en: BubR1(-/-) mouse embryos (E7.5-13.5)
+    species: mouse
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '24981203'
+    locator: main text
+    strength: measured_in_model
+    title_hint: Mosaic variegated aneuploidy in mouse BubR1 deficient embryos and pregnancy loss in human
+  counterevidence: 該模型是完全缺失的胚胎致死背景，比本案的 hypomorph 嚴重；方向一致但程度不可直接套用
+  counterevidence_en: That model is a complete-loss, embryonic-lethal background, more severe than this case's hypomorph;
+    the direction carries over, the magnitude does not.
+  scenario_dependent: false
+- id: E13
+  from: O
+  to: H8
+  claim: 同一個分離失敗機制作用在其他受孕時會造成胚胎非整倍體與流產（小鼠實測）；至於人類，該文作者是依小鼠資料與已發表人類資料「推測」BubR1 功能不足可解釋相當比例的重複性流產，不是量測。親代的重複性流產觀察與同一機制相容
+  claim_en: The same segregation-failure mechanism acting on other conceptions would cause embryonic aneuploidy and miscarriage
+    (measured in mouse). For humans, the source authors *predict* — from their mouse data and a re-analysis of published human
+    data — that BubR1 deficiency explains a significant fraction of recurrent pregnancy loss; this is not a measurement. The
+    parental recurrent-miscarriage observation is compatible with the same mechanism.
+  strength: asserted
+  model:
+    system: BubR1(-/-) 小鼠胚胎（實測）＋作者對人類 RPL 的推測
+    system_en: BubR1(-/-) mouse embryos (measured) + the authors' prediction for human RPL
+    species: mouse; human
+    genotype_match: same_gene_LoF
+  sources:
+  - pmid: '24981203'
+    locator: 'abstract: "we predict that deficiency/insufficiency of BubR1 ... are responsible for a significant fraction
+      of both early and late RPLs"'
+    strength: asserted
+    title_hint: Mosaic variegated aneuploidy in mouse BubR1 deficient embryos and pregnancy loss in human
+  counterevidence: 這是親代的觀察，不是先證者細胞的表現型。更重要的是：人類那一半是作者的預測而非量測（2026-10-19 red-team 指出本邊原本標為 measured_in_model，等於把作者的預測當成已測結果——正是本作品宣稱要防的事），強度已降為
+    asserted
+  counterevidence_en: This is a parental observation, not a phenotype of the proband's cells. More importantly, the human
+    half is the authors' prediction rather than a measurement (2026-10-19 adversarial review found this edge labelled measured_in_model,
+    which is exactly the error this submission claims to guard against); the strength has been lowered to asserted.
+  scenario_dependent: false
+- id: E14
+  from: D1
+  to: D2
+  claim: 成人口服菸鹼酸自 250 mg/day 起、每四週加 250 mg 滴定至 750–1,000 mg/day（14–18 mg/kg），血中 NAD+ 最多上升 8 倍，病人肌肉 NAD+ 回到對照水準
+  claim_en: In adults, oral niacin escalated from 250 mg/day by 250 mg every four weeks to 750-1,000 mg/day (14-18 mg/kg)
+    raised blood NAD+ up to 8-fold, and patients' muscle NAD+ reached the level of their controls.
+  strength: measured_in_model
+  model:
+    system: 成人粒線體肌病患者與配對對照的開放標籤試驗（NCT03973203）
+    system_en: open-label study in adults with mitochondrial myopathy and matched controls (NCT03973203)
+    species: human
+    genotype_match: not_applicable
+  sources:
+  - pmid: '32386566'
+    locator: abstract; Methods/Fig 1A dose escalation
+    strength: measured_in_model
+    title_hint: Niacin Cures Systemic NAD+ Deficiency and Improves Muscle Performance in Adult-Onset Mitochondrial Myopathy
+  counterevidence: 受試者是成人，不是兒童；全身 NAD+ 回補並不均勻——血中升幅遠大於肌肉，因此血中反應不能當成標的組織已達到可穩定 BubR1 的暴露。此外肌肉那一項是「回到對照水準」的正常化，不是量到的倍數上升
+  counterevidence_en: The subjects are adults, not children. Systemic NAD+ repletion is not uniform -- the rise in blood was
+    substantially larger than in muscle -- so a blood NAD+ response does not establish that the relevant tissue reached a
+    BubR1-stabilising exposure. Note also that the muscle result is normalisation to control level, not a measured fold-rise.
+  scenario_dependent: false
+- id: E15
+  from: D2
+  to: D3
+  claim: SIRT2 是 NAD+ 依賴型去乙醯酶，其活性隨 NAD+ 可用量變動；NAD+ 前驅物 NMN 可在體內提高 BubR1 蛋白量
+  claim_en: SIRT2 is an NAD+-dependent deacetylase whose activity tracks NAD+ availability; the NAD+ precursor NMN raises
+    BubR1 protein levels in vivo.
+  strength: measured_in_model
+  model:
+    system: 小鼠與小鼠胚胎纖維母細胞
+    system_en: mice and mouse embryonic fibroblasts
+    species: mouse
+    genotype_match: not_applicable
+  sources:
+  - pmid: '24825348'
+    locator: main text; NMN administration
+    strength: measured_in_model
+    title_hint: SIRT2 induces the checkpoint kinase BubR1 to increase lifespan
+  counterevidence: NMN 的體內實驗背景是野生型小鼠與 WT／Sirt2-/- MEF，不是 BUB1B 突變背景；本案的治療分子是 niacin 而非 NMN，兩者之間的橋接未經測試
+  counterevidence_en: The in vivo NMN work was done on a wild-type background (wild-type mice; WT and Sirt2-/- MEFs), not
+    on a BUB1B-mutant background. The molecule proposed here is niacin, not NMN, and that bridge is untested.
+  scenario_dependent: false
+- id: E16
+  from: D3
+  to: D4
+  claim: SIRT2 去乙醯化 BubR1 的 K668（由 CBP 乙醯轉移酶反向作用）
+  claim_en: SIRT2 deacetylates BubR1 at K668, opposed by the CBP acetyltransferase.
+  strength: measured_in_model
+  model:
+    system: 小鼠組織與細胞；位點專一突變體（K668Q／K668R 為乙醯化模擬／不可乙醯化模擬）
+    system_en: mouse tissues and cells; site-specific mutants (K668Q / K668R as acetyl-mimetic / non-acetylatable)
+    species: mouse
+    genotype_match: not_applicable
+  sources:
+  - pmid: '24825348'
+    locator: main text; K668 site mapping
+    strength: measured_in_model
+    title_hint: SIRT2 induces the checkpoint kinase BubR1 to increase lifespan
+  counterevidence: K668Q／K668R 是乙醯化模擬突變，不是本案的致病錯義；全文未使用任何 BUBR1 錯義突變體或 MVA 病人細胞。整條 K668 軸在 PubMed 上沒有獨立複製（2026-10-19 查核：(BubR1
+    OR BUB1B) AND (K668 OR "lysine 668") 只回本文一筆）
+  counterevidence_en: 'K668Q and K668R are acetylation-mimetic mutants, not this child''s disease-causing missense; the paper
+    uses no BUBR1 missense mutant and no MVA patient cell anywhere. The K668 axis has no independent replication in PubMed
+    (checked 2026-10-19: (BubR1 OR BUB1B) AND (K668 OR "lysine 668") returns this paper only).'
+  scenario_dependent: false
+- id: E16b
+  from: D3
+  to: D4
+  claim: 同一個酵素在 BubR1 上還有第二個位點，方向相反：K250 的乙醯化（由 PCAF 催化）阻擋泛素依賴的降解，K250Q 抗降解、K250R 不穩定；而 SIRT2 會去乙醯化 K250。因此 SIRT2 對 BubR1
+    穩定性的淨效應取決於哪個位點占優，在本案背景從未測過
+  claim_en: The same enzyme acts on a second BubR1 lysine with the opposite sign. Acetylation at K250 (by PCAF) blocks ubiquitin-dependent
+    degradation -- K250Q resists degradation while K250R is unstable -- and SIRT2 deacetylates K250. The net effect of SIRT2
+    on BubR1 stability therefore depends on which site dominates, and has never been measured in this background.
+  strength: asserted
+  model:
+    system: 人類細胞（K250 乙醯化/降解為實測）＋ SIRT2-K250 去乙醯化（本團隊僅核對到書目與標題層級，未能取得原文摘要）
+    system_en: human cells (K250 acetylation/degradation measured) + SIRT2-K250 deacetylation (verified by us only at bibliographic/title
+      level; no abstract obtainable)
+    species: human
+    genotype_match: not_applicable
+  sources:
+  - pmid: '19407811'
+    locator: main text; K250 acetylation blocks ubiquitin-dependent degradation; K250Q/K250R
+    strength: measured_in_model
+    title_hint: BubR1 acetylation at prometaphase is required for modulating APC/C activity and timing of mitosis
+  - pmid: '25285631'
+    locator: title only -- the publisher deposited no abstract and no accessible full text (checked 2026-10-19); cited for
+      the existence and direction of the SIRT2-K250 link, NOT for any quantitative result
+    strength: asserted
+    title_hint: Deacetylation of the mitotic checkpoint protein BubR1 at lysine 250 by SIRT2 and subsequent effects on BubR1
+      degradation during the prometaphase/anaphase transition
+  counterevidence: 我們沒能讀到 25285631 的原文或摘要（出版社未存摘要，全文路徑均被擋），因此本邊只標 asserted，且不引用任何該文的量化結果。另一個方向的佐證反而讓情況更複雜：Qiu 2018（PMID 29067790）在小鼠卵母細胞顯示，不可乙醯化的
+    BubR1-K243R 才是有益的等位基因，能降低高齡卵的非整倍體率——而 mouse K243 與 human K250 很可能是同一個保守殘基的不同編號。同一個酵素、至少三個位點、對穩定性與對終點的後果不一致
+  counterevidence_en: 'We could not read the primary text or abstract of PMID 25285631 (the publisher deposited no abstract
+    and every full-text route was blocked), so this edge is graded asserted and no quantitative result from that paper is
+    cited. Evidence from a third site makes the picture harder, not easier: Qiu 2018 (PMID 29067790) shows that in mouse oocytes
+    the NON-acetylatable BubR1-K243R is the beneficial allele, lowering the incidence of aneuploid eggs from aged mice --
+    and mouse K243 is plausibly the same conserved residue as human K250 under different numbering. One enzyme, at least three
+    sites, and the consequences for stability and for the endpoint do not agree.'
+  scenario_dependent: false
+- id: E17
+  from: D4
+  to: P
+  claim: K668 去乙醯化使 BubR1 免於蛋白酶體降解、提高蛋白量；SIRT2 轉殖基因延長 BubR1-H/H 小鼠壽命（中位 +58%）
+  claim_en: K668 deacetylation protects BubR1 from proteasomal degradation and raises its abundance; a SIRT2 transgene extends
+    the lifespan of BubR1-H/H mice (median +58%).
+  strength: measured_in_model
+  model:
+    system: BubR1-H/H 小鼠（量少的野生型蛋白）＋ SIRT2 轉殖基因
+    system_en: BubR1-H/H mice (a low-abundance but otherwise normal protein) + a SIRT2 transgene
+    species: mouse
+    genotype_match: same_gene_other
+  sources:
+  - pmid: '24825348'
+    locator: main text; Fig 4 lifespan
+    strength: measured_in_model
+    title_hint: SIRT2 induces the checkpoint kinase BubR1 to increase lifespan
+  - pmid: '38009412'
+    locator: main text; SIRT2 overexpression on a normal background
+    strength: measured_in_model
+    title_hint: SIRT2 transgenic over-expression does not impact lifespan in mice
+  counterevidence: 這是本假說最關鍵也最脆弱的一步。(1) 基質類別不同：BubR1-H/H 的殘餘蛋白是量少的「正常」蛋白，本案的殘餘蛋白是錯摺的錯義蛋白；去乙醯化能保護正常蛋白免於降解，未必救得回因摺疊問題被清除的蛋白。(2)
+    背景特異性：SIRT2 過表現在正常背景對健康與壽命無效（Wu 2023），這限縮了適用範圍，也表示沒有一般性證據支持它。(3) 沒有指名 E3 ligase，因此無法判斷 K668 所保護的降解路徑與清除錯摺蛋白的路徑是否同一條——這正是整個假說最可能破的接縫。(4)
+    見 E16b：同一酵素在 K250 的作用方向相反。本案背景的淨效應未測
+  counterevidence_en: 'This is the most load-bearing and most fragile step in the hypothesis. (1) Different substrate class:
+    the residual protein in BubR1-H/H is a low-abundance but otherwise normal protein, whereas this case''s residual protein
+    is a misfolded missense product; deacetylation that protects a normal protein from degradation need not rescue one being
+    cleared because it is misfolded. (2) Background specificity: SIRT2 overexpression does nothing to health or lifespan on
+    a normal background (Wu 2023), which narrows the claim to a BubR1-low setting and means no general evidence supports it.
+    (3) No E3 ligase is named, so it cannot be determined whether the degradation route K668 acetylation protects against
+    is the same route that destroys a misfolded kinase-domain mutant -- this is the joint at which the whole hypothesis is
+    most likely to fail. (4) See E16b: the same enzyme acts in the opposite direction at K250. The net effect in this background
+    is unmeasured.'
+  scenario_dependent: true
+unexplained_phenotypes:
+- H2
+- H6
+warnings:
+- 'E04: rule 4 - this measured claim rests on premise T2, which is supported only by predicted/asserted edges, so the report
+  must word it as "if T2 holds"'
+- 找不到 hpo_terms.tsv：跳過「每個 HPO term 都有節點」的檢查
+generated_at: '2026-10-19T09:38:45+00:00'

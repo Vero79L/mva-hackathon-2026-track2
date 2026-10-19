@@ -1,0 +1,38 @@
+# 情境表（Spec 1 v1.1 第 5 節）。尖括號是要填的地方；填不出來就寫 pending，不要填推算值。
+# 規則：只有 drives 裡的事實可以在情境之間不同；drives = fact_register.csv 裡
+#       would_change_direction=yes 而且 status 不是 CONFIRMED 的那些（14 會核對）。
+schema: scenarios/1
+case_id: <CASE_ID>
+prior_weights: {S1: 0.333, S2: 0.333, S3: 0.334}   # 沒有理由偏向哪一個就等權；第三階段做敏感度分析
+drives: [F-TX-01, F-PROT-02, F-RF-01]              # 換成你登錄表裡的實際 fact_id
+scenarios:
+  - id: S1
+    label: "<例如 stabilizable_hypomorph>"
+    assumptions:                                    # fact_id → 這個情境採用的值（每個 drive 都要有）
+      F-TX-01: "<等位基因 1 的轉錄本命運在此情境的假定值>"
+      F-PROT-02: "<等位基因 2 的蛋白層後果在此情境的假定值>"
+      F-RF-01: "<殘餘功能在此情境的假定值>"
+    implications:
+      molecular_target_valid: true                  # case 檔 molecular_target 在此情境是否成立
+      objective_validity: {restore: valid, mitigate: valid, deselect: valid, protect: valid}
+    what_would_confirm: "<哪個量測、什麼結果會確認這個情境>"
+  - id: S2
+    label: "<>"
+    assumptions:
+      F-TX-01: "<>"
+      F-PROT-02: "<>"
+      F-RF-01: "<>"
+    implications:
+      molecular_target_valid: false
+      objective_validity: {restore: invalid, mitigate: valid, deselect: valid, protect: valid}
+    what_would_confirm: "<>"
+  - id: S3
+    label: "<>"
+    assumptions:
+      F-TX-01: "<>"
+      F-PROT-02: "<>"
+      F-RF-01: "<>"
+    implications:
+      molecular_target_valid: true
+      objective_validity: {restore: conditional, mitigate: valid, deselect: valid, protect: valid}
+    what_would_confirm: "<>"

@@ -1,0 +1,408 @@
+# 由 scripts/phase1/12_domain_map.py 產生，不要手改
+schema: domain_map/2
+generated_at: '2026-10-19T12:33:20+08:00'
+gene: BUB1B
+uniprot: O60566
+uniprot_entry_version: 234
+protein_length: 1050
+isoform_check:
+  uniprot_isoform_from_vep: O60566-1
+  status: identical
+  transcript_protein_length: 1050
+alphafold:
+  entry: AF-O60566-F1
+  version: 6
+features:
+- type: Domain
+  start: 62
+  end: 226
+  description: BUB1 N-terminal
+- &id001
+  type: Domain
+  start: 766
+  end: 1050
+  description: Protein kinase
+- type: Region
+  start: 152
+  end: 185
+  description: Necessary for interaction with KNL1
+  pmids:
+  - '17981135'
+- type: Region
+  start: 368
+  end: 393
+  description: Disordered
+- type: Region
+  start: 456
+  end: 480
+  description: Disordered
+- type: Motif
+  start: 111
+  end: 118
+  description: Nuclear localization signal
+- type: Motif
+  start: 224
+  end: 232
+  description: D-box
+  pmids:
+  - '27509861'
+- type: Active site
+  start: 882
+  end: 882
+  description: Proton acceptor
+- type: Binding site
+  start: 772
+  end: 780
+  description: ''
+- type: Binding site
+  start: 795
+  end: 795
+  description: ''
+- type: Site
+  start: 579
+  end: 580
+  description: Cleavage; by caspase-3
+  pmids:
+  - '16227576'
+- type: Site
+  start: 610
+  end: 611
+  description: Cleavage; by caspase-3
+  pmids:
+  - '16227576'
+- type: Modified residue
+  start: 250
+  end: 250
+  description: N6-acetyllysine; by PCAF
+  pmids:
+  - '19407811'
+- type: Modified residue
+  start: 367
+  end: 367
+  description: Phosphoserine
+  pmids:
+  - '23186163'
+- type: Modified residue
+  start: 435
+  end: 435
+  description: Phosphoserine
+  pmids:
+  - '19015317'
+  - '23186163'
+- type: Modified residue
+  start: 543
+  end: 543
+  description: Phosphoserine
+  pmids:
+  - '19015317'
+  - '21406692'
+  - '23186163'
+- type: Modified residue
+  start: 665
+  end: 665
+  description: Phosphoserine
+  pmids:
+  - '23186163'
+- type: Modified residue
+  start: 670
+  end: 670
+  description: Phosphoserine
+  pmids:
+  - '18669648'
+  - '18691976'
+  - '19015317'
+  - '20068231'
+  - '23186163'
+- type: Modified residue
+  start: 676
+  end: 676
+  description: Phosphoserine; by PLK1
+  pmids:
+  - '17785528'
+- type: Modified residue
+  start: 697
+  end: 697
+  description: Phosphoserine
+  pmids:
+  - '23186163'
+- type: Modified residue
+  start: 792
+  end: 792
+  description: Phosphothreonine; by PLK1
+  pmids:
+  - '17376779'
+- type: Modified residue
+  start: 1008
+  end: 1008
+  description: Phosphothreonine; by PLK1
+  pmids:
+  - '17376779'
+- type: Modified residue
+  start: 1042
+  end: 1042
+  description: Phosphothreonine
+  pmids:
+  - '20068231'
+- type: Modified residue
+  start: 1043
+  end: 1043
+  description: Phosphoserine
+  pmids:
+  - '19015317'
+- type: Natural variant
+  start: 15
+  end: 15
+  description: in a colorectal cancer cell line; dbSNP:rs1392369693
+  original: M
+  alternative: T
+  pmids:
+  - '9521327'
+- type: Natural variant
+  start: 36
+  end: 36
+  description: in PCS; dbSNP:rs534297115
+  original: R
+  alternative: Q
+  pmids:
+  - '16411201'
+- type: Natural variant
+  start: 40
+  end: 40
+  description: in dbSNP:rs56079734
+  original: T
+  alternative: M
+  pmids:
+  - '17344846'
+- type: Natural variant
+  start: 349
+  end: 349
+  description: in dbSNP:rs1801376
+  original: R
+  alternative: Q
+  pmids:
+  - '10366450'
+  - '14702039'
+  - '15489334'
+  - '17344846'
+  - '9521327'
+  - '9618306'
+  - '9660858'
+  - '9763420'
+- type: Natural variant
+  start: 378
+  end: 378
+  description: in dbSNP:rs17851677
+  original: P
+  alternative: S
+  pmids:
+  - '15489334'
+- type: Natural variant
+  start: 390
+  end: 390
+  description: in dbSNP:rs1017842
+  original: E
+  alternative: D
+  pmids:
+  - '17344846'
+- type: Natural variant
+  start: 550
+  end: 550
+  description: in MVA1; heterozygous compound with nonsense mutation; dbSNP:rs28989187
+  original: R
+  alternative: Q
+  pmids:
+  - '15475955'
+- type: Natural variant
+  start: 618
+  end: 618
+  description: in dbSNP:rs1801528
+  original: V
+  alternative: A
+  pmids:
+  - '10366450'
+  - '17344846'
+- type: Natural variant
+  start: 814
+  end: 814
+  description: in MVA1; heterozygous compound with nonsense mutation; dbSNP:rs28989182
+  original: R
+  alternative: H
+  pmids:
+  - '15475955'
+- type: Natural variant
+  start: 844
+  end: 844
+  description: in MVA1; associated with H-921; heterozygous compound with nonsense
+    mutation; dbSNP:rs28989181
+  original: L
+  alternative: F
+  pmids:
+  - '15475955'
+- type: Natural variant
+  start: 909
+  end: 909
+  description: in MVA1; heterozygous compound with nonsense mutation; dbSNP:rs28989184
+  original: I
+  alternative: T
+  pmids:
+  - '15475955'
+- type: Natural variant
+  start: 921
+  end: 921
+  description: in MVA1; associated with F-844; heterozygous compound with nonsense
+    mutation; dbSNP:rs28989183
+  original: Q
+  alternative: H
+  pmids:
+  - '15475955'
+- type: Natural variant
+  start: 1012
+  end: 1012
+  description: in MVA1; heterozygous compound with nonsense mutation; dbSNP:rs28989185
+  original: L
+  alternative: P
+  pmids:
+  - '15475955'
+- type: Mutagenesis
+  start: 159
+  end: 159
+  description: Loss of interaction with KNL1.
+  original: A
+  alternative: W
+  pmids:
+  - '17981135'
+- type: Mutagenesis
+  start: 175
+  end: 175
+  description: Loss of interaction with KNL1.
+  original: F
+  alternative: A
+  pmids:
+  - '17981135'
+- type: Mutagenesis
+  start: 579
+  end: 579
+  description: Abolishes the cleavage by caspase-3.
+  original: D
+  alternative: E
+  pmids:
+  - '16227576'
+- type: Mutagenesis
+  start: 610
+  end: 610
+  description: Abolishes the cleavage by caspase-3.
+  original: D
+  alternative: E
+  pmids:
+  - '16227576'
+- type: Mutagenesis
+  start: 620
+  end: 620
+  description: Induces chromosome congression defects and mitotic delay.
+  original: T
+  alternative: A
+  pmids:
+  - '17785528'
+- type: Mutagenesis
+  start: 795
+  end: 795
+  description: Does not abolish the capacity to inhibit APC/CDC20.
+  original: K
+  alternative: A
+  pmids:
+  - '11702782'
+  - '12925705'
+- type: Mutagenesis
+  start: 795
+  end: 795
+  description: Inhibits kinase activity.
+  original: K
+  alternative: R
+  pmids:
+  - '11702782'
+  - '12925705'
+- type: Helix
+  start: 60
+  end: 65
+  description: ''
+- type: Helix
+  start: 75
+  end: 88
+  description: ''
+- type: Helix
+  start: 94
+  end: 96
+  description: ''
+- type: Helix
+  start: 98
+  end: 108
+  description: ''
+- type: Helix
+  start: 113
+  end: 115
+  description: ''
+- type: Helix
+  start: 119
+  end: 131
+  description: ''
+- type: Helix
+  start: 135
+  end: 144
+  description: ''
+- type: Helix
+  start: 152
+  end: 164
+  description: ''
+- type: Helix
+  start: 168
+  end: 180
+  description: ''
+- type: Helix
+  start: 186
+  end: 218
+  description: ''
+- type: Helix
+  start: 669
+  end: 671
+  description: ''
+variants:
+- id: V1
+  hgvs_p: ENSP00000287598.7:p.Leu737Ter
+  class: stop_gained
+  residue: 737
+  features_at_residue: []
+  same_residue_experimental: []
+  features_lost_downstream:
+  - *id001
+  fraction_of_protein_lost: 0.299
+  plddt_at_residue: 73.56
+  plddt_window_mean: 75.0
+  strength:
+    features: asserted（UniProt 人工策劃）
+    plddt: predicted（AlphaFold）
+    mutagenesis: measured_in_model（UniProt 引用的實驗；要回原文確認）
+- id: V2
+  hgvs_p: ENSP00000287598.7:p.Asn1002Lys
+  class: missense
+  residue: 1002
+  features_at_residue:
+  - *id001
+  same_residue_experimental: []
+  plddt_at_residue: 91.06
+  plddt_window_mean: 89.6
+  strength:
+    features: asserted（UniProt 人工策劃）
+    plddt: predicted（AlphaFold）
+    mutagenesis: measured_in_model（UniProt 引用的實驗；要回原文確認）
+limitations:
+- pLDDT 低不代表不重要：無序區段常常有功能
+- UniProt 特徵是註解不是本病人的實驗；特徵邊界是人工畫的
+- 截斷型變異的「下游喪失特徵」是結構推論；蛋白是否存在要看第 2 節的 NMD 預測與第 5 節的情境
+limitations_en:
+- 'A low pLDDT does not mean a region is unimportant: disordered segments are often
+  functional.'
+- UniProt features are annotation, not an experiment on this patient, and feature
+  boundaries are drawn by hand.
+- For a truncating variant, 'features lost downstream' is a structural inference.
+  Whether any protein exists at all depends on the NMD prediction in report section
+  2 and on the scenarios in section 8.

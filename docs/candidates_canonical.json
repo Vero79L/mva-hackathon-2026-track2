@@ -1,14 +1,15 @@
 {
   "schema_version": "1.0",
   "generated_for": "MVA1 (biallelic BUB1B: p.Leu737Ter + p.Asn1002Lys); checkpoint insufficiency",
-  "updated": "2026-10-08",
+  "updated": "2026-10-19",
   "legend": {
     "entity_type": "intervention = a specific drug/combination; mechanism_branch = a strategy class; negative_control = wrong-direction reference",
     "competition_eligibility": "ELIGIBLE (approved + pediatric path for a defensible repurposing) | INELIGIBLE (not approved / lost approval / investigational / preclinical) | UNKNOWN (status not yet verified)",
     "research_judgment": "SUPPORTED | CONDITIONAL | INSUFFICIENT (not enough evidence, not proven ineffective) | REJECTED (wrong direction or proven unsuitable)",
     "evidence_distance": "0 database/association | 1 pathway effect in unrelated system | 2 affects BUB1B/SAC biology | 3 rescues BUB1B-deficient cellular phenotype | 4 improves CIN phenotype in relevant model | 5 human/clinical",
     "directionality": "compensate = right direction for checkpoint insufficiency; worsen = increases CIN / weakens checkpoint; mitigate = reduces downstream consequence; deselect = removes abnormal cells",
-    "engine_inputs": "Explicit, schema-validated engine inputs (net_effect, evidence_distance, rescue_in_relevant_cells, competition_eligibility, properties[], safety_assessment{oncology,renal,growth: confirmed_risk|not_observed|not_assessed|contradictory}). Generated views read THESE fields; narrative prose is never parsed into engine flags."
+    "engine_inputs": "Explicit, schema-validated engine inputs (net_effect, evidence_distance, rescue_in_relevant_cells, competition_eligibility, properties[], safety_assessment{oncology,renal,growth: confirmed_risk|not_observed|not_assessed|contradictory}). Generated views read THESE fields; narrative prose is never parsed into engine flags.",
+    "objective_class": "candidate 聲稱服務哪一類治療目標（restore｜mitigate｜deselect｜protect）。情境檔啟用時，引擎會查該情境的 objective_validity：invalid → REJECT，conditional → flag。沒有宣告 class 的候選在情境下 BLOCK，不會默默通過。"
   },
   "candidates": [
     {
@@ -17,7 +18,7 @@
       "entity_type": "mechanism_branch",
       "branch": "C functional-compensation (SIRT2-BubR1 axis)",
       "competition_eligibility": "INELIGIBLE",
-      "eligibility_note": "NMN/NR are SUPPLEMENTS, not approved drugs -> INELIGIBLE as a Track-2 approved medication. nicotinamide is also a supplement AND directionally opposite. nicotinic acid (niacin) is approved but adult-only and SIRT2/BubR1 relevance unestablished. No clean eligible pediatric approved product for this axis.",
+      "eligibility_note": "NMN/NR are SUPPLEMENTS, not approved drugs -> INELIGIBLE as a Track-2 approved medication; nicotinamide is also a supplement AND directionally opposite (sirtuin inhibitor). The approved prescription product on this axis, niacin (nicotinic acid, extended-release Rx tablets; adult dyslipidemia label), is evaluated separately as C-NA (added 2026-10-19). This branch entry keeps the mechanism judgment; C-NA carries the product-level eligibility.",
       "research_judgment": "CONDITIONAL",
       "directionality": "compensate",
       "net_effect": "strengthen",
@@ -31,7 +32,7 @@
       "best_evidence": "North BJ et al., EMBO J 2014, PMID 24825348 (SIRT2 deacetylates BubR1-K668). NOTE: NMN experiments were in aging/WT/Sirt2-null contexts; BubR1^H/H lifespan used a SIRT2 TRANSGENE. NMN untested in the MVA model. Counter-evidence: nicotinamide (sirtuin inhibitor) lowered BubR1 in North 2014 Fig 1 — NAD-pathway molecules are NOT interchangeable.",
       "disposition_reason": "On-mechanism rationale is real, but the NMN/NR drug step is a bridging hypothesis unvalidated in the MVA model and in N1002K; oncology direction contested (raise BubR1 suppresses vs NAD+ fuels tumors).",
       "decisive_experiment": "In patient/isogenic N1002K cells: NAD+ precursor dose-response -> BubR1-K668 acetylation + total BubR1, mitotic timing, aneuploidy; PLUS clonal-fitness/transformation arm for the tumor-fuelling concern.",
-      "version": "2026-10-08",
+      "version": "2026-10-19",
       "engine_inputs": {
         "net_effect": "strengthen",
         "evidence_distance": 2,
@@ -42,7 +43,53 @@
           "oncology": "contradictory",
           "renal": "not_observed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "restore",
+        "safety_gap_declared": [
+          "growth",
+          "oncology"
+        ]
+      }
+    },
+    {
+      "id": "C-NA",
+      "drug": "Niacin (nicotinic acid), extended-release prescription tablets",
+      "entity_type": "intervention",
+      "branch": "C functional-compensation (NAD+ -> SIRT2 -> BubR1-K668 deacetylation / stabilization)",
+      "competition_eligibility": "ELIGIBLE",
+      "eligibility_note": "Approved prescription product: niacin extended-release tablets (US, DailyMed label revised 12/2025, checked 2026-10-19; setid 6e604319-e164-4056-ab80-b78b98c519c7), indicated for dyslipidemia in adults. Pediatric Use (label, verbatim): 'Safety and effectiveness of niacin therapy in pediatric patients (<= 16 years) have not been established.' Pediatric path = off-label, specialist-supervised use in severe pediatric hypercholesterolemia (Colletti 1993, PMID 8516088: 21 children aged 4-14; adverse effects in 76%, reversible aminotransferase elevation in 29%, discontinuation in 38%). ELIGIBLE as an approved medication; NOT an approved pediatric indication — this is why the research judgment is CONDITIONAL, not SUPPORTED.",
+      "research_judgment": "CONDITIONAL",
+      "directionality": "compensate",
+      "net_effect": "strengthen",
+      "evidence_distance": 2,
+      "gates": {
+        "G1_oncology": "contested: raising BubR1 is tumour-suppressive in mice (Baker 2013), NAD+ supply is pro-tumour in some models -> contradictory",
+        "G2_pediatric": "no pediatric label; off-label specialist experience with frequent adverse effects = credible but not clean path",
+        "G3_renal": "ok: no nephrotoxicity signal; monitor",
+        "G4_growth": "not assessed"
+      },
+      "best_evidence": "CHAIN (all measured): Suijkerbuijk 2010, PMID 20516114 — in biallelic MVA patient cell lines BUBR1 abundance is low, the checkpoint is impaired, and ECTOPIC BUBR1 RESTORES CHECKPOINT ACTIVITY; MVA mutations split into an abundance-lowering class (truncating transcript loss + high turnover of missense mutants, which 'consistently occur in or near the kinase domain') and a function-lesion class. Suijkerbuijk 2012, PMID 22698286 — that domain is a pseudokinase: catalysis is dispensable, ATP-pocket residues govern conformational stability, so a substitution there destabilises rather than inactivates. North 2014, PMID 24825348 — NAD+/SIRT2 deacetylates BubR1-K668 and raises BubR1 abundance in vivo; SIRT2 transgene extends BubR1-H/H lifespan. Pirinen 2020, PMID 32386566 — niacin raised blood NAD+ up to 8-fold in adults. COUNTER-EVIDENCE: Wu 2023, PMID 38009412 — SIRT2 overexpression on a WILD-TYPE background does not affect health or lifespan, so the axis is specific to a BubR1-low setting and carries no general-longevity support. No study reports NAD+ status in MVA or BUB1B-mutant cells (PubMed, 2026-10-19), so the deficiency the drug would correct has not been shown to exist. nicotinamide (sirtuin inhibitor) LOWERED BubR1 in North 2014 — NAD+ vitamers are not interchangeable. Ferrell 2024, PMID 38374343 — 4PY and cardiovascular events in adults.",
+      "disposition_reason": "The only approved prescription product on the SIRT2-BubR1 axis, and the axis now rests on patient-cell evidence that raising BUBR1 restores the checkpoint in this disease (20516114) plus a structural account of why a kinase-domain missense lowers abundance rather than catalysis (22698286). What remains unbridged is the drug step: no NAD+ booster has been tested in MVA or on this allele class, NAD+ status in MVA is unmeasured, there is no pediatric label, and the oncology direction is unresolved. Named CONDITIONAL candidate from 2026-10-19 (replaces 4-PBA); a hypothesis for follow-up, not a recommendation; holds only in scenario S1.",
+      "decisive_experiment": "Patient-derived fibroblasts or LCL vs isogenic (CRISPR-corrected) or healthy control, with a BubR1-knockdown positive control: NAD+-precursor dose-response (niacin, NR, NMN; nicotinamide as the wrong-direction control) -> total BubR1 and K668 acetylation (western / IP), nocodazole arrest index and mitotic timing (live imaging), lagging chromosomes / micronuclei / single-cell aneuploidy, with cell death, proliferation and clonal fitness measured in the same wells; N-terminal antibody for a truncated product (S3). >= 3 biological replicates, blinded scoring. REJECT if BubR1 does not rise or the checkpoint does not recover, or if aneuploid-cell survival or proliferation increases.",
+      "version": "2026-10-19",
+      "engine_inputs": {
+        "net_effect": "strengthen",
+        "evidence_distance": 2,
+        "rescue_in_relevant_cells": false,
+        "competition_eligibility": "ELIGIBLE",
+        "properties": [
+          "approved_or_credible_pediatric_path"
+        ],
+        "safety_assessment": {
+          "oncology": "contradictory",
+          "renal": "not_observed",
+          "growth": "not_assessed"
+        },
+        "objective_class": "restore",
+        "safety_gap_declared": [
+          "growth",
+          "oncology"
+        ]
       }
     },
     {
@@ -63,7 +110,7 @@
         "G4_growth": "n/a"
       },
       "best_evidence": "Trzaska 2020 Nat Commun PMID 32198346 (DAP UGA readthrough); Toledano 2024 Nat Genet PMID 39174735 (genome-scale readthrough). Full-length restoration precedent is CFTR (Sharma 2021 PMID 34272367), not BUB1B.",
-      "disposition_reason": "Corrected: readthrough gives a near-full-length product (old 'truncated' reason withdrawn). Coordinates recomputed (readthrough_coordinates_2026-10-08.md): stop UGA at c.2209-2211 (g.40209700-702), +1 context base = c.2212 = g.40209703 (raw log's c.2213 was off by one). Blocker = NMD (PREDICTED, not measured; needs allele-specific mRNA) + no renal-safe approved UGA agent. One-allele rescue judged by functional threshold, not allele count.",
+      "disposition_reason": "Corrected: readthrough gives a near-full-length product (old 'truncated' reason withdrawn). Coordinates recomputed (readthrough_coordinates_2026-10-08.md): stop UGA at c.2209-2211, +1 context base = c.2212 (raw log's c.2213 was off by one). Blocker = NMD (PREDICTED, not measured; needs allele-specific mRNA) + no renal-safe approved UGA agent. One-allele rescue judged by functional threshold, not allele count.",
       "decisive_experiment": "Allele-specific BUBR1 mRNA + full-length protein under NMD-inhibition alone / readthrough agent alone / combination, with SAC-competence readout.",
       "version": "2026-10-08",
       "engine_inputs": {
@@ -76,7 +123,13 @@
           "oncology": "not_assessed",
           "renal": "confirmed_risk",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "restore",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     },
     {
@@ -96,10 +149,10 @@
         "G3_renal": "Na+ load caution",
         "G4_growth": "ok"
       },
-      "best_evidence": "Mechanism = COPII/secretory-cargo export, NOT a cytosolic chaperone (Ma W & Goldberg J, eLife 2017, PMID 28594326). Zero BUBR1-specific data.",
-      "disposition_reason": "Mechanism mismatch (BUBR1 is cytosolic/mitotic) + achievable exposure (0.2-1.3 mM total) overlaps the HDAC range. Thresholds are NOT a measured N1002K ECx -> 'direct rescue and exposure feasibility not established' (deprioritized), NOT 'no window proven'.",
+      "best_evidence": "Mechanism = COPII/secretory-cargo export, NOT a cytosolic chaperone (Ma W & Goldberg J, eLife 2017, PMID 28594326 (verified 2026-10-19: 'ER retention is imposed by COPII protein sorting and attenuated by 4-phenylbutyrate', eLife 2017)). Zero BUBR1-specific data.",
+      "disposition_reason": "Mechanism mismatch (BUBR1 is cytosolic/mitotic) + achievable exposure (0.2-1.3 mM total) overlaps the HDAC range. Thresholds are NOT a measured N1002K ECx -> 'direct rescue and exposure feasibility not established' (deprioritized), NOT 'no window proven'. Demoted from named candidate to INSUFFICIENT consistently across report, pitch, candidate table and submission record on 2026-10-19; the named conditional candidate is C-NA.",
       "decisive_experiment": "In-cell EC50 for N1002K-BUBR1 stabilization across 0.05-10 mM vs a histone-H3/H4-acetylation (HDAC) readout in the same cells.",
-      "version": "2026-10-08",
+      "version": "2026-10-19",
       "engine_inputs": {
         "net_effect": "strengthen",
         "evidence_distance": 1,
@@ -112,7 +165,9 @@
           "oncology": "not_observed",
           "renal": "not_observed",
           "growth": "not_observed"
-        }
+        },
+        "objective_class": "restore",
+        "safety_gap_declared": []
       }
     },
     {
@@ -148,7 +203,11 @@
           "oncology": "not_assessed",
           "renal": "not_observed",
           "growth": "not_observed"
-        }
+        },
+        "objective_class": "mitigate",
+        "safety_gap_declared": [
+          "oncology"
+        ]
       }
     },
     {
@@ -185,7 +244,12 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "deselect",
+        "safety_gap_declared": [
+          "growth",
+          "oncology"
+        ]
       }
     },
     {
@@ -222,7 +286,9 @@
           "oncology": "not_assessed",
           "renal": "not_observed",
           "growth": "not_observed"
-        }
+        },
+        "objective_class": "deselect",
+        "safety_gap_declared": []
       }
     },
     {
@@ -258,7 +324,11 @@
           "oncology": "not_assessed",
           "renal": "not_observed",
           "growth": "not_observed"
-        }
+        },
+        "objective_class": "mitigate",
+        "safety_gap_declared": [
+          "oncology"
+        ]
       }
     },
     {
@@ -267,21 +337,21 @@
       "entity_type": "intervention",
       "branch": "oncologic-protective",
       "competition_eligibility": "ELIGIBLE",
-      "eligibility_note": "sirolimus approved but pediatric on-label only >=13yr -> off-label for a younger child.",
+      "eligibility_note": "sirolimus approved but pediatric on-label only >=13yr -> off-label for a younger child. Label verified 2026-10-19: renal-transplant indication is >= 13 years; pediatric <13 y not established; LAM <18 y not established.",
       "research_judgment": "CONDITIONAL",
       "directionality": "oncologic-protective only",
       "net_effect": "strengthen",
       "evidence_distance": 2,
       "gates": {
-        "G1_oncology": "anti-cancer favorable",
+        "G1_oncology": "BOXED WARNING: immunosuppression with increased susceptibility to infection and possible lymphoma and other malignancies (US label, revised 5/2026). Material in a cancer-predisposition syndrome.",
         "G2_pediatric": "ok",
         "G3_renal": "ok",
         "G4_growth": "growth-suppressive"
       },
       "best_evidence": "Baker DJ et al. 2013 (p21 attenuates/drives senescence in BubR1 progeroid mice), PMID 23602569: the preliminary rapamycin-feeding observation is UNPUBLISHED DATA in its discussion — a negative signal only, not a powered experiment. (NOT PMID 23242215, which is the separate BubR1-overexpression paper.)",
-      "disposition_reason": "Keep as conditional on the oncologic-protective axis; the 'genome-stabilizing' story is not supported; the null is an unpublished preliminary signal, not proof of equivalence or inefficacy.",
+      "disposition_reason": "Keep as conditional on the oncologic-protective axis; the 'genome-stabilizing' story is not supported; the null is an unpublished preliminary signal, not proof of equivalence or inefficacy. Safety input corrected 2026-10-19 after reading the label: carries a boxed warning for lymphoma and other malignancies, so oncology is recorded as confirmed_risk and STRONG is unreachable. Note that our G1 rule at this patient's 'history' level rejects pro_proliferative, pro_tumor and increases_CIN, so it does not act on the immunosuppressive tag at all; the engine prints that as an unactioned-risk-tag note, so the gate does NOT reject it - we are flagging that limitation rather than rewriting the rule after seeing the result.",
       "decisive_experiment": "Patient-target-phenotype vs dose/exposure compatibility; do not substitute an anti-aging endpoint for patient benefit.",
-      "version": "2026-10-08",
+      "version": "2026-10-19",
       "engine_inputs": {
         "net_effect": "strengthen",
         "evidence_distance": 2,
@@ -289,13 +359,16 @@
         "competition_eligibility": "ELIGIBLE",
         "properties": [
           "approved_or_credible_pediatric_path",
-          "growth_suppressive"
+          "growth_suppressive",
+          "immunosuppressive"
         ],
         "safety_assessment": {
-          "oncology": "not_observed",
+          "oncology": "confirmed_risk",
           "renal": "not_observed",
           "growth": "confirmed_risk"
-        }
+        },
+        "objective_class": "protect",
+        "safety_gap_declared": []
       }
     },
     {
@@ -331,7 +404,12 @@
           "oncology": "confirmed_risk",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "restore",
+        "safety_gap_declared": [
+          "growth",
+          "renal"
+        ]
       }
     },
     {
@@ -362,7 +440,13 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "mitigate",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     },
     {
@@ -391,7 +475,13 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "protect",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     },
     {
@@ -420,7 +510,13 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "protect",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     },
     {
@@ -449,7 +545,13 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "deselect",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     },
     {
@@ -478,7 +580,13 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "deselect",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     },
     {
@@ -507,7 +615,13 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "deselect",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     },
     {
@@ -536,7 +650,13 @@
           "oncology": "not_assessed",
           "renal": "not_assessed",
           "growth": "not_assessed"
-        }
+        },
+        "objective_class": "mitigate",
+        "safety_gap_declared": [
+          "growth",
+          "oncology",
+          "renal"
+        ]
       }
     }
   ]

@@ -1,0 +1,13 @@
+fact_id,domain,statement,status,basis,source,strength,alternative,resolution_path,available_in_hackathon,would_change_direction,scenario_link,report_section,checked_date
+F-VAR-01,variant_identity,<V1 的身分：基因 + HGVS（含轉錄本版本）>,<CONFIRMED|ASSUMED|UNKNOWN>,<例：排行榜 full match（模式 A）>,results/track2/handoff_from_track1.yaml#track1.feedback,clinically_validated,,,,no,,§2 Patient basis,
+F-VAR-02,variant_identity,<V2 的身分>,<CONFIRMED|ASSUMED|UNKNOWN>,<同上>,results/track2/handoff_from_track1.yaml#track1.feedback,clinically_validated,,,,no,,§2 Patient basis,
+F-PHASE-01,phase,<兩個變異在不同染色體上（trans）>,ASSUMED,<例：PID 不同，短讀段連不起來>,results/track2/handoff_from_track1.yaml#phase,predicted,<替代假設：兩個變異在同一條染色體（cis），致病需要第三個變異>,父母樣本或長讀段定序,no,yes,S3,§2 Patient basis,
+F-INH-01,inheritance,<隱性遺傳>,ASSUMED,<例：MVA 已知基因皆為隱性；兩個稀有等位基因>,<PMID>,asserted,<替代假設>,父母樣本,no,no,,§2 Patient basis,
+F-TX-01,transcript_fate,<V1 的轉錄本命運：nmd_class>,UNKNOWN,<第 11 步：PTC 到最後接合處 N nt>,docs/transcript_facts_public.yaml#variants[0].coding,predicted,,病人細胞的 allele-specific RNA 定量,no,yes,S1;S2,§3 Mechanism,
+F-TX-02,transcript_fate,<V2 的轉錄本命運>,UNKNOWN,<第 11 步>,docs/transcript_facts_public.yaml#variants[1],predicted,,同上,no,yes,S1;S2,§3 Mechanism,
+F-PROT-01,protein_consequence,<V1 的蛋白層後果>,UNKNOWN,<結構域對映只是脈絡>,docs/domain_map.yaml#variants[0],predicted,,病人細胞或同基因型模型的蛋白量與功能,no,yes,S1;S2,§3 Mechanism,
+F-PROT-02,protein_consequence,<V2 的蛋白層後果>,UNKNOWN,<>,docs/domain_map.yaml#variants[1],predicted,,同上,no,yes,S1;S2,§3 Mechanism,
+F-RF-01,residual_function,<殘餘功能>,UNKNOWN,<兩個等位基因的組合效果未量測>,<PMID 或 dossier>,predicted,,病人細胞的功能分析,no,yes,S1;S2;S3,§3 Mechanism,
+F-PHEN-01,phenotype,<HPO term 名稱（HP:xxxxxxx）>,CONFIRMED,主辦方表現型檔,results/track1/hpo_terms.tsv,measured_in_proband,,,,no,,§2 Patient basis,
+F-CLIN-age,clinical_constraint,<年齡層（觀察到的）>,CONFIRMED,主辦方表現型檔,results/track1/hpo_terms.tsv,measured_in_proband,,,,no,,§5 Safety gates,
+F-CLIN-renal-fn,clinical_constraint,<目前腎功能數值>,UNKNOWN,資料集只有病徵沒有數值,—,asserted,,臨床檢驗（比賽期間拿不到）,no,yes,S2,§5 Safety gates,

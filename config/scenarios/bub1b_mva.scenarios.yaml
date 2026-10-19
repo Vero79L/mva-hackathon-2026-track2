@@ -1,0 +1,53 @@
+# 情境表（Spec 1 v1.1 第 5 節）。三個情境的差異只在「殘餘 BubR1 功能」這條軸上；
+# 臨床閘門驅動值（-fn）在三個情境裡保持同一個保守值，因為它們是未知但不隨本軸變動的量。
+# drives 必須等於 fact_register.csv 裡 would_change_direction=yes 且 status != CONFIRMED 的事實。
+schema: scenarios/1
+case_id: bub1b_mva
+prior_weights: {S1: 0.333, S2: 0.333, S3: 0.334}   # 沒有證據偏向任何一個，等權；敏感度分析在第三階段
+drives: [F-PHASE-01, F-TX-01, F-TX-02, F-PROT-01, F-PROT-02, F-RF-01, F-CLIN-renal-fn, F-CLIN-malig-fn]
+scenarios:
+  - id: S1
+    label: "stabilizable_hypomorph"
+    assumptions:
+      F-PHASE-01: "trans（複合雜合）——三個情境共同前提；若為 cis 則整個前提不成立"
+      F-TX-01: "截斷型等位基因的轉錄本被 NMD 降解，不產生蛋白"
+      F-TX-02: "錯義等位基因的 mRNA 量正常（未量測，假定不受影響）"
+      F-PROT-01: "無截斷蛋白產物"
+      F-PROT-02: "錯義蛋白有表現但不穩定、加速降解；本身保有檢查點功能"
+      F-RF-01: "殘餘功能偏低且僅來自錯義等位基因，但可藉提高蛋白量回升"
+      F-CLIN-renal-fn: "保守假定：腎功能狀態未知，依病徵層級套用腎閘門"
+      F-CLIN-malig-fn: "保守假定：腫瘤活性狀態未知，依易感性層級套用腫瘤閘門"
+    implications:
+      molecular_target_valid: true
+      objective_validity: {restore: valid, mitigate: valid, deselect: valid, protect: valid}
+    what_would_confirm: "病人來源細胞：總 BubR1 蛋白量低於對照，且在蛋白酶體抑制或 NAD+ 前驅物滴定後上升，同時 nocodazole 停滯指數改善"
+  - id: S2
+    label: "function_lesion"
+    assumptions:
+      F-PHASE-01: "trans（複合雜合）——三個情境共同前提；若為 cis 則整個前提不成立"
+      F-TX-01: "截斷型等位基因的轉錄本被 NMD 降解，不產生蛋白"
+      F-TX-02: "錯義等位基因的 mRNA 量正常（未量測，假定不受影響）"
+      F-PROT-01: "無截斷蛋白產物"
+      F-PROT-02: "錯義蛋白有表現且量可能接近正常，但激酶域的取代使其失去檢查點功能"
+      F-RF-01: "殘餘功能實質為零：提高蛋白量不會恢復功能"
+      F-CLIN-renal-fn: "保守假定：腎功能狀態未知，依病徵層級套用腎閘門"
+      F-CLIN-malig-fn: "保守假定：腫瘤活性狀態未知，依易感性層級套用腫瘤閘門"
+    implications:
+      molecular_target_valid: false
+      objective_validity: {restore: invalid, mitigate: valid, deselect: valid, protect: valid}
+    what_would_confirm: "病人來源細胞：總 BubR1 蛋白量接近對照，但 nocodazole 停滯指數與落後染色體率仍異常；提高蛋白量後表型不改善"
+  - id: S3
+    label: "nmd_escape"
+    assumptions:
+      F-PHASE-01: "trans（複合雜合）——三個情境共同前提；若為 cis 則整個前提不成立"
+      F-TX-01: "截斷型等位基因的轉錄本逃過 NMD，仍被轉譯"
+      F-TX-02: "錯義等位基因的 mRNA 量正常（未量測，假定不受影響）"
+      F-PROT-01: "存在穩定的截斷蛋白產物，可能具顯性負效應"
+      F-PROT-02: "錯義蛋白有表現但不穩定、加速降解；本身保有檢查點功能"
+      F-RF-01: "殘餘功能偏低，且被截斷產物的顯性負效應進一步壓低"
+      F-CLIN-renal-fn: "保守假定：腎功能狀態未知，依病徵層級套用腎閘門"
+      F-CLIN-malig-fn: "保守假定：腫瘤活性狀態未知，依易感性層級套用腫瘤閘門"
+    implications:
+      molecular_target_valid: true
+      objective_validity: {restore: conditional, mitigate: valid, deselect: valid, protect: valid}
+    what_would_confirm: "病人來源細胞：以 N 端抗體偵測到截斷產物；提高總 BubR1 時截斷產物同步上升，且檢查點功能未同比例改善"

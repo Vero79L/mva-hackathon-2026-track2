@@ -1,0 +1,53 @@
+digraph G {
+  rankdir=TB; nodesep=0.22; ranksep=0.45; node [shape=box, style="rounded", fontname="Helvetica", fontsize=15];
+  edge [fontname="Helvetica", fontsize=12, color="#45534D"];
+  { rank=same; D1; }
+  { rank=same; D2; }
+  { rank=same; D3; }
+  { rank=same; D4; }
+  { rank=same; V1; V2; }
+  { rank=same; T1; T2; }
+  { rank=same; P; }
+  { rank=same; C; }
+  { rank=same; F; }
+  { rank=same; O; }
+  { rank=same; H1; H2; H3; H4; H5; H6; H7; H8; }
+  V1 [label="p.Leu737Ter\ntruncating allele"];
+  V2 [label="p.Asn1002Lys\nkinase-domain missense allele"];
+  T1 [label="truncating allele: NMD predicted\n(scenario-dependent)"];
+  T2 [label="missense allele: last exon,\nno NMD"];
+  P [label="residual BubR1 abundance\nand function (scenario-dependent)"];
+  C [label="MCC / spindle-assembly\ncheckpoint (SAC) signalling"];
+  F [label="chromosome-segregation accuracy\n(the section 3 endpoint sits here)"];
+  O [label="mosaic variegated aneuploidy,\nmicronuclei, senescence"];
+  H1 [label="Rhabdo-\nmyosarcoma"];
+  H2 [label="Nephro-\ncalcinosis", style="rounded,dashed"];
+  H3 [label="Short\nstature"];
+  H4 [label="Failure to\nthrive"];
+  H5 [label="Skeletal muscle\natrophy"];
+  H6 [label="Premature\nbirth", style="rounded,dashed"];
+  H7 [label="Small for\ngestational age"];
+  H8 [label="Recurrent miscarriage\n(parental)"];
+  D1 [label="niacin (nicotinic acid)\napproved ER prescription product"];
+  D2 [label="cellular and circulating NAD+ availability"];
+  D3 [label="SIRT2 deacetylase activity"];
+  D4 [label="BubR1 acetylation state (K668, K250)"];
+  V1 -> T1 [style=dashed, penwidth=1.8, label="E01"];
+  V2 -> T2 [style=dashed, penwidth=1.8, label="E02"];
+  T1 -> P [style=dashed, penwidth=1.8, label="E03"];
+  T2 -> P [style=solid, penwidth=1.8, label="E04"];
+  P -> C [style=solid, penwidth=1.8, label="E05"];
+  C -> F [style=solid, penwidth=1.8, label="E06"];
+  F -> O [style=solid, penwidth=1.8, label="E07"];
+  O -> H1 [style=solid, penwidth=1.8, label="E08"];
+  O -> H3 [style=solid, penwidth=1.8, label="E09"];
+  O -> H4 [style=solid, penwidth=1.8, label="E10"];
+  O -> H5 [style=solid, penwidth=1.8, label="E11"];
+  O -> H7 [style=solid, penwidth=1.8, label="E12"];
+  O -> H8 [style=dotted, penwidth=1.8, label="E13"];
+  D1 -> D2 [style=solid, penwidth=1.8, label="E14"];
+  D2 -> D3 [style=solid, penwidth=1.8, label="E15"];
+  D3 -> D4 [style=solid, penwidth=1.8, xlabel="E16"];
+  D3 -> D4 [style=dotted, penwidth=1.8, xlabel="E16b"];
+  D4 -> P [style=solid, penwidth=1.8, label="E17"];
+}

@@ -1,29 +1,150 @@
 == selftest ==
-[PASS] adult_positive: STRONG
-[PASS] wrong_direction: REJECT
-[PASS] unknown_direction: ["unknown defect_direction 'unmapped' (known: ['channel_overactivity', 'checkpoint_insufficiency', 'loss_of_function_generic'])"]
-[PASS] unknown_age: ["G2_pediatric: constraint 'age_group'='adlut' is unknown (known: ['adolescent', 'adult', 'child', 'infant', 'neonate'])"]
-[PASS] bad_types: BLOCKED
+[PASS] positive_strong: STRONG
+[PASS] unassessed_not_strong: CONDITIONAL
+[PASS] ineligible_not_strong: REJECT
+[PASS] unknown_property_blocked: BLOCKED
+[PASS] null_candidate_blocked: BLOCKED
+[PASS] wrong_direction: directionality
+[PASS] unknown_direction: case
+[PASS] bad_types_blocked: BLOCKED
+[PASS] assessed_but_risky_not_strong: CONDITIONAL
+[PASS] contradictory_not_strong: CONDITIONAL
+[PASS] risk_input_conflict_blocked: risk-input-conflict
+[PASS] clean_still_strong: STRONG
+[PASS] objective_invalid_rejected: objective-validity[S2]
+[PASS] objective_conditional_flagged: ['objective-restore-conditional[S3]']
+[PASS] objective_class_missing_blocked: objective-class-missing
+[PASS] no_scenario_gate_inert: STRONG
+[PASS] objective_conditional_not_strong: CONDITIONAL
+[PASS] malformed_scenario_blocked__ov_not_a_mapping: scenario-validation
+[PASS] malformed_scenario_blocked__implications_missing: scenario-validation
+[PASS] malformed_scenario_blocked__key_typo: scenario-validation
+[PASS] malformed_scenario_blocked__scenario_not_a_mapping: scenario-validation
+[PASS] unknown_validity_blocked: scenario-validation
+[PASS] incomplete_validity_blocked: scenario-validation
+[PASS] gate_require_pediatric_rejects: G2_pediatric
+[PASS] gate_reject_if_renal_rejects: G3_renal
+[PASS] gate_flag_if_growth_flags: ['G4_growth']
+[PASS] gate_silent_axes_reported: ['growth', 'oncology']
+[PASS] unactioned_risk_tag_reported: ["G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it"]
 ALL PASS
-
+== generate views ==
+  eligibility matrix: 11 product rows -> docs/eligibility_matrix.md
+Generated 4 views from 17 canonical entries (13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries).
+  research judgment: CONDITIONAL=6, INSUFFICIENT=2, REJECTED=9
+  computed-vs-human divergences (explained): ['C-NAD', 'C-RT', 'C-PBA', 'C-AMPK', 'C-DQ', 'C-FOL', 'N-CQ']
 == real case ==
 
 === Triage: bub1b_mva (Mosaic Variegated Aneuploidy type 1 (MVA1)) ===
-[CONDITIONAL] Sodium / glycerol phenylbutyrate (4-PBA) (passed)
-[CONDITIONAL] Folate (folinic/5-MTHF) + B12  (passed)
-[CONDITIONAL] Rapamycin / sirolimus          (passed) flags=['G4_growth']
-[REJECT     ] NAD+ precursor (NMN / NR; niacinamide) (G2_pediatric)
-[REJECT     ] PTC readthrough of L737X (DAP / ELX-02;  (G2_pediatric)
-[REJECT     ] N-acetylcysteine               (G1_oncology)
-[REJECT     ] AMPK aneuploid-deselection (metformin; n (G2_pediatric)
-[REJECT     ] Dasatinib + Quercetin (senolytic) (G1_oncology)
-[REJECT     ] MPS1/TTK, Aurora B, PLK1, KIF11 inhibito (directionality)
-[REJECT     ] NAD-inhibitor forms; AICAR/17-AAG (inves (directionality)
-Summary: {'STRONG': 0, 'CONDITIONAL': 3, 'REJECT': 7, 'BLOCKED': 0}
-
+[CONDITIONAL] Niacin (nicotinic acid), extended- (passed) gate-silent=['growth', 'oncology']
+[CONDITIONAL] Sodium / glycerol phenylbutyrate ( (passed)
+[CONDITIONAL] N-acetylcysteine                   (passed) gate-silent=['oncology']
+[CONDITIONAL] Dasatinib + Quercetin (senolytic)  (passed) unactioned-risk-tag
+[CONDITIONAL] Folate (folinic/5-MTHF) + B12      (passed) gate-silent=['oncology']
+[CONDITIONAL] Rapamycin / sirolimus              (passed) flags=['G4_growth'] unactioned-risk-tag
+[CONDITIONAL] Chloroquine / hydroxychloroquine   (passed) gate-silent=['growth', 'oncology', 'renal']
+[REJECT     ] NAD+ precursor (NMN / NR)          (eligibility)
+[REJECT     ] PTC readthrough of L737X (DAP / EL (eligibility)
+[REJECT     ] AMPK aneuploid-deselection (metfor (G3_renal)
+[REJECT     ] MPS1/TTK, Aurora B, PLK1, KIF11 in (directionality)
+[REJECT     ] Aspirin                            (directionality)
+[REJECT     ] Isotretinoin                       (directionality)
+[REJECT     ] AICAR / 17-AAG                     (eligibility)
+[REJECT     ] Navitoclax                         (eligibility)
+[REJECT     ] Fisetin                            (eligibility)
+[REJECT     ] Bulk nucleoside loading            (eligibility)
+  note C-DQ: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G4_growth[restricted]: 'growth_suppressive' is a recognised risk tag but this level's rule does not act on it
+Summary: {'STRONG': 0, 'CONDITIONAL': 7, 'REJECT': 10, 'BLOCKED': 0}
 == synthetic case ==
 
 === Triage: synthetic_gof_demo (Synthetic GoF channelopathy (demonstration only)) ===
-[STRONG     ] Channel-inhibitor-X            (passed)
-[REJECT     ] Channel-opener-Y               (directionality)
-Summary: {'STRONG': 1, 'CONDITIONAL': 0, 'REJECT': 1, 'BLOCKED': 0}
+[CONDITIONAL] Channel-inhibitor-X                (passed) gate-silent=['growth', 'oncology', 'renal']
+[REJECT     ] Channel-opener-Y                   (directionality)
+Summary: {'STRONG': 0, 'CONDITIONAL': 1, 'REJECT': 1, 'BLOCKED': 0}
+== scenario S1 ==
+
+=== Triage: bub1b_mva_S1 (Mosaic Variegated Aneuploidy type 1 (MVA1)) ===
+[CONDITIONAL] Niacin (nicotinic acid), extended- (passed) gate-silent=['growth', 'oncology']
+[CONDITIONAL] Sodium / glycerol phenylbutyrate ( (passed)
+[CONDITIONAL] N-acetylcysteine                   (passed) gate-silent=['oncology']
+[CONDITIONAL] Dasatinib + Quercetin (senolytic)  (passed) unactioned-risk-tag
+[CONDITIONAL] Folate (folinic/5-MTHF) + B12      (passed) gate-silent=['oncology']
+[CONDITIONAL] Rapamycin / sirolimus              (passed) flags=['G4_growth'] unactioned-risk-tag
+[CONDITIONAL] Chloroquine / hydroxychloroquine   (passed) gate-silent=['growth', 'oncology', 'renal']
+[REJECT     ] NAD+ precursor (NMN / NR)          (eligibility)
+[REJECT     ] PTC readthrough of L737X (DAP / EL (eligibility)
+[REJECT     ] AMPK aneuploid-deselection (metfor (G3_renal)
+[REJECT     ] MPS1/TTK, Aurora B, PLK1, KIF11 in (directionality)
+[REJECT     ] Aspirin                            (directionality)
+[REJECT     ] Isotretinoin                       (directionality)
+[REJECT     ] AICAR / 17-AAG                     (eligibility)
+[REJECT     ] Navitoclax                         (eligibility)
+[REJECT     ] Fisetin                            (eligibility)
+[REJECT     ] Bulk nucleoside loading            (eligibility)
+  note C-DQ: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G4_growth[restricted]: 'growth_suppressive' is a recognised risk tag but this level's rule does not act on it
+Summary: {'STRONG': 0, 'CONDITIONAL': 7, 'REJECT': 10, 'BLOCKED': 0}
+== scenario S2 ==
+
+=== Triage: bub1b_mva_S2 (Mosaic Variegated Aneuploidy type 1 (MVA1)) ===
+[CONDITIONAL] N-acetylcysteine                   (passed) gate-silent=['oncology']
+[CONDITIONAL] Dasatinib + Quercetin (senolytic)  (passed) unactioned-risk-tag
+[CONDITIONAL] Folate (folinic/5-MTHF) + B12      (passed) gate-silent=['oncology']
+[CONDITIONAL] Rapamycin / sirolimus              (passed) flags=['G4_growth'] unactioned-risk-tag
+[CONDITIONAL] Chloroquine / hydroxychloroquine   (passed) gate-silent=['growth', 'oncology', 'renal']
+[REJECT     ] NAD+ precursor (NMN / NR)          (eligibility)
+[REJECT     ] Niacin (nicotinic acid), extended- (objective-validity[S2])
+[REJECT     ] PTC readthrough of L737X (DAP / EL (eligibility)
+[REJECT     ] Sodium / glycerol phenylbutyrate ( (objective-validity[S2])
+[REJECT     ] AMPK aneuploid-deselection (metfor (G3_renal)
+[REJECT     ] MPS1/TTK, Aurora B, PLK1, KIF11 in (directionality)
+[REJECT     ] Aspirin                            (directionality)
+[REJECT     ] Isotretinoin                       (directionality)
+[REJECT     ] AICAR / 17-AAG                     (eligibility)
+[REJECT     ] Navitoclax                         (eligibility)
+[REJECT     ] Fisetin                            (eligibility)
+[REJECT     ] Bulk nucleoside loading            (eligibility)
+  note C-DQ: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G4_growth[restricted]: 'growth_suppressive' is a recognised risk tag but this level's rule does not act on it
+Summary: {'STRONG': 0, 'CONDITIONAL': 5, 'REJECT': 12, 'BLOCKED': 0}
+== scenario S3 ==
+
+=== Triage: bub1b_mva_S3 (Mosaic Variegated Aneuploidy type 1 (MVA1)) ===
+[CONDITIONAL] Niacin (nicotinic acid), extended- (passed) flags=['objective-restore-conditional[S3]'] gate-silent=['growth', 'oncology']
+[CONDITIONAL] Sodium / glycerol phenylbutyrate ( (passed) flags=['objective-restore-conditional[S3]']
+[CONDITIONAL] N-acetylcysteine                   (passed) gate-silent=['oncology']
+[CONDITIONAL] Dasatinib + Quercetin (senolytic)  (passed) unactioned-risk-tag
+[CONDITIONAL] Folate (folinic/5-MTHF) + B12      (passed) gate-silent=['oncology']
+[CONDITIONAL] Rapamycin / sirolimus              (passed) flags=['G4_growth'] unactioned-risk-tag
+[CONDITIONAL] Chloroquine / hydroxychloroquine   (passed) gate-silent=['growth', 'oncology', 'renal']
+[REJECT     ] NAD+ precursor (NMN / NR)          (eligibility)
+[REJECT     ] PTC readthrough of L737X (DAP / EL (eligibility)
+[REJECT     ] AMPK aneuploid-deselection (metfor (G3_renal)
+[REJECT     ] MPS1/TTK, Aurora B, PLK1, KIF11 in (directionality)
+[REJECT     ] Aspirin                            (directionality)
+[REJECT     ] Isotretinoin                       (directionality)
+[REJECT     ] AICAR / 17-AAG                     (eligibility)
+[REJECT     ] Navitoclax                         (eligibility)
+[REJECT     ] Fisetin                            (eligibility)
+[REJECT     ] Bulk nucleoside loading            (eligibility)
+  note C-DQ: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
+  note C-RAPA: G4_growth[restricted]: 'growth_suppressive' is a recognised risk tag but this level's rule does not act on it
+Summary: {'STRONG': 0, 'CONDITIONAL': 7, 'REJECT': 10, 'BLOCKED': 0}
+== claim ledger ==
+claim_ledger.csv: 36 claims -> /sessions/rcw-01v3z1lhckhutum2htls471x/mnt/opportunity-quest/mva/research/registers/claim_ledger.csv
+  by type: {'mechanism': 18, 'regulatory': 11, 'global_negative': 5, 'method': 2}
+  by strength: {'predicted': 3, 'measured': 26, 'asserted': 7}
+== manifest ==
+manifest OK
+  PENDING (filled at freeze; run with --freeze to make this blocking): docs/REPORT.md: slots still to fill at freeze ['{{FILL:DATE}}', '{{FILL:VIDEO}}']
+  PENDING (filled at freeze; run with --freeze to make this blocking): registers/citation_check.csv is older than docs/mechanism_graph.yaml — re-run scripts/phase1/16_verify_citations.py from a network that can reach Europe PMC/Crossref
+ counts verified: claims=36, global-negative=5, product rows=11, registered facts=18, self-tests=28
+ denominator: 13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries
+ primary    : A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experi…
+ files      : 9 hashed -> outputs/manifest.json
+DONE

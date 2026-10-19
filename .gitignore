@@ -19,3 +19,17 @@ shots/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Track 2 Spec 1: private files with coordinates (second guard; they live outside the repo anyway)
+config/local.env
+handoff_from_track1.yaml
+transcript_facts.yaml
+t2_variants.*
+
+# Working registers and run outputs live outside the repo; guard in case they are copied in
+# (registers/evidence_ledger.csv carries genomic coordinates and must never be committed).
+registers/
+results/
+# Superseded drafts, superseded by docs/REPORT.md and docs/PITCH.md
+docs/REPORT_v2.md
+docs/PITCH_v2.md

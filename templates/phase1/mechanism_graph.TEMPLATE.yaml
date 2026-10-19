@@ -1,0 +1,43 @@
+# 因果鏈（Spec 1 v1.1 第 6 節）。這是你手寫的來源檔；15_mechanism_graph.py 只讀不改。
+# 尖括號是要填的地方。填不出來的邊不要硬寫：讓那個表現型留在 unexplained_phenotypes。
+schema: mechanism_graph/1
+case_id: <CASE_ID>
+gene: <GENE>
+strength_scale:                    # 固定四級，和 fact_register 一致（由強到弱）
+  measured_in_proband: 在這位病人身上量到
+  measured_in_model: 在模型系統量到（物種／細胞／基因型要標）
+  predicted: 計算預測
+  asserted: 他人主張或資料庫註解，未見原始量測
+nodes:
+  - {id: V1, level: variant, label: "<hgvs_c / hgvs_p>", fact: F-VAR-01}
+  - {id: V2, level: variant, label: "<hgvs_c / hgvs_p>", fact: F-VAR-02}
+  - {id: T1, level: transcript, label: "<等位基因 1 的轉錄本命運>", fact: F-TX-01}
+  - {id: T2, level: transcript, label: "<等位基因 2 的轉錄本命運>", fact: F-TX-02}
+  - {id: P, level: protein, label: "<蛋白產物狀態；情境相依>", fact: F-RF-01}
+  - {id: C, level: complex, label: "<所屬複合體／路徑角色>"}
+  - {id: F, level: cellular_process, label: "<被影響的細胞過程：這一層定義第 8 節的 endpoint>"}
+  - {id: O, level: cellular_outcome, label: "<細胞層結果>"}
+  - {id: H1, level: phenotype, label: "<HPO term 名稱>", hpo: "HP:0000000", fact: F-PHEN-01}
+  # … hpo_terms.tsv 裡每個 term 一個節點（15 會核對）
+edges:
+  - id: E01
+    from: V1
+    to: T1
+    claim: "<一句話：為什麼 V1 導致 T1>"
+    strength: predicted
+    model: {system: "GTF 算術 + 50–55 nt 規則", species: human, genotype_match: same_variant}
+    sources:
+      - {file: "docs/transcript_facts_public.yaml", locator: "variants[0].coding.nmd_class", strength: predicted}
+      - {pmid: "<規則的原始文獻 PMID>", locator: "<章節／圖>", title_hint: "<文章標題，16 會比對>"}
+    counterevidence: ""
+    scenario_dependent: false
+  - id: E05
+    from: P
+    to: C
+    claim: "<蛋白量／功能下降如何影響複合體>"
+    strength: measured_in_model
+    model: {system: "<細胞株或動物>", species: "<>", genotype_match: same_gene_LoF}
+    sources:
+      - {pmid: "<>", locator: "Fig <n>", strength: measured_in_model, title_hint: "<>"}
+    counterevidence: "<有就寫，並說明它限定了什麼>"
+    scenario_dependent: true
