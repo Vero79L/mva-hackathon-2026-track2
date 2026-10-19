@@ -29,9 +29,22 @@ HDR = ["claim_id", "claim_text", "claim_type", "report_location", "source_url",
        "source_locator", "checked_date", "strength", "counterevidence", "disposition",
        "reviewed_by"]
 DATE = "2026-10-19"
-# METHODS_AND_AI describes a per-claim sign-off (reviewer + date). Until 2026-10-19 the generated
-# ledger had no column for the reviewer half of that, so the claim was not checkable. It is now.
-REVIEWER = "Vero (submitter) - human adjudication"
+# Per-claim sign-off. An earlier version of this script stamped every row with the same
+# "human adjudication" string, which is self-certification: it proves nothing, and it is the very
+# pattern we criticise the hard gates for elsewhere. The reviewer column is now populated ONLY from
+# registers/claim_signoff.csv, a file a human edits. A claim nobody has signed off stays BLANK, and
+# the release manifest reports how many are unsigned.
+def _load_signoff():
+    f = HERE.parent / "registers" / "claim_signoff.csv"
+    if not f.exists():
+        return {}
+    with f.open(newline="", encoding="utf-8") as fh:
+        return {r["claim_id"]: f'{r.get("reviewed_by","").strip()}'
+                + (f' ({r["reviewed_date"].strip()})' if r.get("reviewed_date", "").strip() else "")
+                for r in csv.DictReader(fh) if r.get("claim_id", "").strip()}
+
+
+SIGNOFF = {}
 PM = "https://pubmed.ncbi.nlm.nih.gov/{}/"
 # the graph's four-level scale -> the ledger's wording scale
 STRENGTH = {"measured_in_proband": "measured", "measured_in_model": "measured",
@@ -90,7 +103,7 @@ for e in g["edges"]:
         "checked_date": DATE, "strength": STRENGTH.get(e.get("strength"), e.get("strength", "")),
         "counterevidence": ce or "searched_none_found",
         "disposition": "bounded" if ce else "retained_with_caveat",
-        "reviewed_by": REVIEWER})
+        "reviewed_by": ""})
 
 with (HERE / "docs" / "eligibility_matrix.csv").open(newline="", encoding="utf-8") as fh:
     for i, r in enumerate(csv.DictReader(fh), 1):
@@ -103,13 +116,13 @@ with (HERE / "docs" / "eligibility_matrix.csv").open(newline="", encoding="utf-8
             "checked_date": r["status_date"], "strength": "measured",
             "counterevidence": ce or "searched_none_found",
             "disposition": "bounded" if ce else "retained_with_caveat",
-            "reviewed_by": REVIEWER})
+            "reviewed_by": ""})
 
 for cid, text, loc, strat, hits, disp in GLOBAL_NEGATIVES:
     rows.append({"claim_id": cid, "claim_text": text, "claim_type": "global_negative",
                  "report_location": loc, "source_url": "see registers/search_strategies.md",
                  "source_locator": strat, "checked_date": DATE, "strength": "asserted",
-                 "counterevidence": hits, "disposition": disp, "reviewed_by": REVIEWER})
+                 "counterevidence": hits, "disposition": disp, "reviewed_by": ""})
 
 rows.append({"claim_id": "CL-METH-01",
   "claim_text": "Method B (GTF arithmetic) agrees with VEP 116 on 1,319 of 1,320 variant x MANE-transcript PAIRS (99.9%) across 400 public ClinVar variants -- a pair counts as agreeing only if every applicable field agrees. Field-level: 6,269/6,270 (99.98%), but strand and transcript_version contribute 2,640 of those and are identical by construction; the discriminating field is protein_first_changed at 333/334.",
@@ -117,14 +130,19 @@ rows.append({"claim_id": "CL-METH-01",
   "source_url": "docs/METHODS_AND_AI.md", "source_locator": "Method validation table",
   "checked_date": DATE, "strength": "measured",
   "counterevidence": "1 residual disagreement in protein_first_changed (333/334), disclosed",
-  "disposition": "retained_with_caveat", "reviewed_by": REVIEWER})
+  "disposition": "retained_with_caveat", "reviewed_by": ""})
 rows.append({"claim_id": "CL-METH-02",
   "claim_text": "The triage engine's 28 self-tests pin its edge behaviour, including that an objective class marked invalid in the active scenario is rejected, that a malformed scenario block BLOCKS rather than falling back to 'no scenario', that the gate is inert when no scenario is active, and that the four patient gates' reject / require / flag branches are exercised against this patient's own constraint levels.",
   "claim_type": "method", "report_location": "section 4 Screening method; section 12",
   "source_url": "src/triage.py", "source_locator": "selftest()",
   "checked_date": DATE, "strength": "measured",
   "counterevidence": "searched_none_found", "disposition": "retained_with_caveat",
-  "reviewed_by": REVIEWER})
+  "reviewed_by": ""})
+
+SIGNOFF = _load_signoff()
+for r in rows:
+    r["reviewed_by"] = SIGNOFF.get(r["claim_id"], "")
+_signed = sum(1 for r in rows if r["reviewed_by"])
 
 OUT.parent.mkdir(exist_ok=True)
 with OUT.open("w", newline="", encoding="utf-8") as fh:
@@ -141,5 +159,6 @@ if bad:
     print("REFUSING: coordinate- or genotype-like text reached the ledger:", sorted(set(bad))); sys.exit(1)
 from collections import Counter
 print(f"claim_ledger.csv: {len(rows)} claims -> {OUT}")
+print(f"  human sign-off: {_signed}/{len(rows)} signed (registers/claim_signoff.csv)")
 print("  by type:", dict(Counter(r["claim_type"] for r in rows)))
 print("  by strength:", dict(Counter(r["strength"] for r in rows)))

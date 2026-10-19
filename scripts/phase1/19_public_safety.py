@@ -59,7 +59,7 @@ def git_files(eng, staged):
         cmd = [["git", "ls-files"], ["git", "ls-files", "--others", "--exclude-standard"]]
     out = []
     for c in cmd:
-        r = subprocess.run(c, cwd=eng, capture_output=True, text=True)
+        r = subprocess.run(c, cwd=eng, capture_output=True, text=True, encoding="utf-8", errors="replace")
         if r.returncode != 0:
             C.die(f"{' '.join(c)} 失敗：{r.stderr.strip()}（engine 是 git repo 嗎？）")
         out += [l for l in r.stdout.splitlines() if l.strip()]
@@ -112,7 +112,7 @@ def scan(eng, files, allow, staged=False):
         except UnicodeDecodeError:
             continue
         if staged:   # pre-commit：檢查暫存區的版本，不是工作目錄
-            r = subprocess.run(["git", "show", f":{rel}"], cwd=eng, capture_output=True, text=True)
+            r = subprocess.run(["git", "show", f":{rel}"], cwd=eng, capture_output=True, text=True, encoding="utf-8", errors="replace")
             if r.returncode == 0:
                 text = r.stdout
         for name, rx in FAIL_PATTERNS:

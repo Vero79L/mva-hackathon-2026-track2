@@ -94,7 +94,7 @@ def query_vcf(bcftools, vcf, key):
     fmt = "%CHROM\t%POS\t%ID\t%REF\t%ALT\t%FILTER\t[%GT\t%GQ\t%DP\t%AD\t%PGT\t%PID]\n"
     try:
         out = subprocess.run([bcftools, "query", "-r", f"{chrom}:{pos}-{pos}", "-f", fmt, str(vcf)],
-                             capture_output=True, text=True, check=True).stdout
+                             capture_output=True, text=True, encoding="utf-8", errors="replace", check=True).stdout
     except subprocess.CalledProcessError as ex:
         C.die(f"bcftools query 失敗：{ex.stderr.strip()}（{vcf} 有索引嗎？）")
     for line in out.splitlines():

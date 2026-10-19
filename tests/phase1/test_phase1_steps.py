@@ -82,7 +82,7 @@ class Sandbox(unittest.TestCase):
         if env_extra:
             env.update(env_extra)
         return subprocess.run([PY, str(self.eng / "scripts" / "phase1" / script), *args], capture_output=True,
-                              text=True, env=env, input=stdin, cwd=self.tmp)
+                              text=True, encoding="utf-8", errors="replace", env=env, input=stdin, cwd=self.tmp)
 
 
 # ------------------------------------------------------------------------------------------- 第 10 步
@@ -625,7 +625,7 @@ class TestStep11Glue(Sandbox):
     def test_step11_end_to_end_with_fake_vep(self):
         env = {**os.environ, "CONDA_BASE": str(self.base), "PATH": f"{self.base}/envs/mva/bin:{os.environ['PATH']}"}
         r = subprocess.run(["bash", str(self.eng / "scripts" / "phase1" / "11_transcript_facts.sh")],
-                           capture_output=True, text=True, env=env)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", env=env)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         pub = yaml.safe_load((self.eng / "docs" / "transcript_facts_public.yaml").read_text(encoding="utf-8"))
         self.assertEqual(pub["variants"][0]["coding"]["class"], "stop_gained")
@@ -636,7 +636,7 @@ class TestStep11Glue(Sandbox):
         self.assertNotIn(str(self.g), r.stdout + r.stderr)
         # 第二次跑：迷你 VCF 沒變 → VEP 那一步跳過
         r2 = subprocess.run(["bash", str(self.eng / "scripts" / "phase1" / "11_transcript_facts.sh")],
-                            capture_output=True, text=True, env=env)
+                            capture_output=True, text=True, encoding="utf-8", errors="replace", env=env)
         self.assertEqual(r2.returncode, 0, r2.stdout + r2.stderr)
         self.assertIn("已是最新", r2.stdout)
 
@@ -644,7 +644,7 @@ class TestStep11Glue(Sandbox):
         (self.tmp / "vep_out.tsv").write_text((self.tmp / "vep_out.tsv").read_text(encoding="utf-8").replace("2/4", "3/4"))
         env = {**os.environ, "CONDA_BASE": str(self.base), "PATH": f"{self.base}/envs/mva/bin:{os.environ['PATH']}"}
         r = subprocess.run(["bash", str(self.eng / "scripts" / "phase1" / "11_transcript_facts.sh")],
-                           capture_output=True, text=True, env=env)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", env=env)
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("交叉檢查有不一致", r.stdout + r.stderr)
 
@@ -664,7 +664,7 @@ class TestConfigAndBash(Sandbox):
         code = ("import sys; sys.path.insert(0, %r); import t2common as C; e = C.load_env(envfile=%r); "
                 "print(e['RES']); print(e['REF']); print(e['T2_RESULTS']); print(e['T1_WORK'])") % (
             str(self.eng / "scripts" / "phase1"), str(ef))
-        r = subprocess.run([PY, "-c", code], capture_output=True, text=True,
+        r = subprocess.run([PY, "-c", code], capture_output=True, text=True, encoding="utf-8", errors="replace",
                            env={**os.environ, "T1_CONF": str(t1), "HOME": "/Users/x"})
         self.assertEqual(r.returncode, 0, r.stderr)
         lines = r.stdout.splitlines()
@@ -675,7 +675,7 @@ class TestConfigAndBash(Sandbox):
 
     def test_bash_scripts_parse_and_avoid_gnu_only_syntax(self):
         for sh in sorted((self.eng / "scripts" / "phase1").glob("*.sh")):
-            r = subprocess.run(["bash", "-n", str(sh)], capture_output=True, text=True)
+            r = subprocess.run(["bash", "-n", str(sh)], capture_output=True, text=True, encoding="utf-8", errors="replace")
             self.assertEqual(r.returncode, 0, f"{sh.name}: {r.stderr}")
             text = "\n".join(l for l in sh.read_text(encoding="utf-8").splitlines() if not l.lstrip().startswith("#"))
             for pat in BASH_FORBIDDEN:
@@ -685,7 +685,7 @@ class TestConfigAndBash(Sandbox):
         cfg = self.eng / "config" / "local.env"
         cfg.write_text(self.envfile.read_text(encoding="utf-8"))
         r = subprocess.run(["bash", str(self.eng / "scripts" / "phase1" / "00_preflight.sh")], capture_output=True,
-                           text=True, env={**os.environ, "CLAUDECODE": "", "T2_PREFLIGHT_SKIP_NETWORK": "1"})
+                           text=True, encoding="utf-8", errors="replace", env={**os.environ, "CLAUDECODE": "", "T2_PREFLIGHT_SKIP_NETWORK": "1"})
         self.assertIn("9/9", r.stdout, r.stdout + r.stderr)
         self.assertEqual(r.returncode, 1)                     # 這個假環境缺很多東西，應該要列出 ✗
         self.assertNotIn("unbound variable", r.stderr)

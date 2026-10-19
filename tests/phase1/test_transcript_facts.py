@@ -267,7 +267,7 @@ class TestCrossCheck(Base):
         cmd = [sys.executable, str(P1 / "transcript_facts.py"), "facts", "--handoff", str(h), "--vep", str(d / "v.tsv"),
                "--gtf", str(self.gtf_path), "--ref", str(self.fa_path), "--out", str(d / "private.yaml"),
                "--public", str(d / "public.yaml"), "--protein-cache", str(d / "cache")]
-        p = subprocess.run(cmd, capture_output=True, text=True)
+        p = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(p.returncode, expect_rc, p.stdout + p.stderr)
         return TF.C.read_yaml(d / "private.yaml"), TF.C.read_yaml(d / "public.yaml"), d
 
@@ -338,7 +338,7 @@ class TestCrossCheck(Base):
         write_vep(d / "v.tsv", rows)
         p = subprocess.run([sys.executable, str(P1 / "transcript_facts.py"), "facts", "--handoff", str(h),
                             "--vep", str(d / "v.tsv"), "--gtf", str(self.gtf_path), "--ref", str(self.fa_path),
-                            "--out", str(d / "o.yaml"), "--public", str(d / "p.yaml")], capture_output=True, text=True)
+                            "--out", str(d / "o.yaml"), "--public", str(d / "p.yaml")], capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
 
     def test_public_yaml_and_screen_never_show_coordinates(self):
@@ -352,7 +352,7 @@ class TestCrossCheck(Base):
         write_vep(d / "v.tsv", rows)
         p = subprocess.run([sys.executable, str(P1 / "transcript_facts.py"), "facts", "--handoff", str(d / "h.yaml"),
                             "--vep", str(d / "v.tsv"), "--gtf", str(self.gtf_path), "--ref", str(self.fa_path),
-                            "--out", str(d / "o.yaml"), "--public", str(d / "p.yaml")], capture_output=True, text=True)
+                            "--out", str(d / "o.yaml"), "--public", str(d / "p.yaml")], capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(p.returncode, 3)
         pub = (d / "p.yaml").read_text(encoding="utf-8")
         self.assertIn("manual_review", pub)
@@ -418,7 +418,7 @@ class TestSelftest(Base):
         write_vep(d / "s.tsv", rows)
         p = subprocess.run([sys.executable, str(P1 / "transcript_facts.py"), "selftest", "--vcf", str(d / "s.vcf"),
                             "--vep", str(d / "s.tsv"), "--gtf", str(self.gtf_path), "--ref", str(self.fa_path),
-                            "--report", str(d / "r.tsv")], capture_output=True, text=True)
+                            "--report", str(d / "r.tsv")], capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
         self.assertIn("100.0%", p.stdout)
         with open(d / "r.tsv", encoding="utf-8") as fh:

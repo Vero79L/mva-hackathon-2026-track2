@@ -177,18 +177,16 @@ therapeutic_objectives:
 disease_direction_test: 一個候選若其已知作用會進一步降低有功能的 BubR1 量、削弱 SAC 訊號、或提高染色體錯分離率，即屬疾病自身的方向，不論它聲稱服務哪一類目標都淘汰。
 
 # provenance：由 scripts/phase1/18_case_provenance.py 產生（放在檔案最後）
-
-# provenance：由 scripts/phase1/18_case_provenance.py 產生（放在檔案最後）
 provenance:
   transcript_facts_public:
     file: docs/transcript_facts_public.yaml
     sha256: 0e69844ad6fbe621df59205ed82d1a12b1237c83e7f7e7d0221194b8a66bb03c
   domain_map:
     file: docs/domain_map.yaml
-    sha256: d682cf3344ca83e1df86f9ce0da260b168ba97b56a5ee1babab8501565a00247
+    sha256: 6602dcef5290c4108edc3a2149a4c75b99377a75948a922ae3a8af22c7f5af1d
   mechanism_graph:
     file: docs/mechanism_graph.yaml
-    sha256: 61c137439683332808a51b81dae0ae48cecb6b7123038995b7a3881891c6db36
+    sha256: 35bdf7385b71506b1ebb340d7ef5aa41a020fbda843206e7513547200253cfec
   scenarios:
     file: config/scenarios/bub1b_mva.scenarios.yaml
     sha256: e59bc42c64d18f321fde5189560fbd9a181ba7d35e16fd5bd13e719b0764c408
@@ -196,4 +194,4 @@ provenance:
     file: research/registers/fact_register.csv
     sha256: 12ccdf52f606b5a5468c28b0667dc73c351915ed55d9f59e32f76916172882ef
     rows: 18
-  built_at: '2026-10-19T06:37:20+00:00'
+  built_at: '2026-10-19T10:05:01+00:00'

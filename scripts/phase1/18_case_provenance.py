@@ -174,7 +174,7 @@ def main():
         C.ok(f"provenance 已更新（{len(prov) - 1} 個來源檔）")
     if a.run_engine:
         r = subprocess.run([sys.executable, "src/triage.py", "--case", f"config/cases/{cid}.yaml", "--candidates",
-                            a.candidates], cwd=eng, capture_output=True, text=True)
+                            a.candidates], cwd=eng, capture_output=True, text=True, encoding="utf-8", errors="replace")
         if r.returncode != 0:
             print(r.stdout[-2000:], r.stderr[-2000:])
             C.die("引擎讀 case 檔 v2 失敗")

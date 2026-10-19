@@ -93,7 +93,7 @@ class Fasta:
             else:
                 regions = [f"{chrom}:{s}-{e}" for s, e in need]
                 try:
-                    out = subprocess.run(["samtools", "faidx", self.path] + regions, capture_output=True, text=True,
+                    out = subprocess.run(["samtools", "faidx", self.path] + regions, capture_output=True, text=True, encoding="utf-8", errors="replace",
                                          check=True).stdout
                 except FileNotFoundError:
                     C.die("找不到 samtools：先 conda activate mva（或用 run_t2_phase1.sh 執行）")

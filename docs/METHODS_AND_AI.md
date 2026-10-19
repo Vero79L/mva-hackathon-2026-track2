@@ -51,10 +51,17 @@ candidate reasoning. Candidates passed a directionality prerequisite and four pa
 constraints (oncology / pediatric / renal / growth). Each lead was then sent to an
 independent adversarial review instructed to refute it. A single-standard re-score removed
 survivorship bias. Load-bearing citations were put through an independent verification pass;
-corrections are logged in the evidence ledger. `registers/claim_ledger.csv` carries a per-claim `reviewed_by` and `checked_date` column recording
-who adjudicated each claim and when. (Until 2026-10-19 this paragraph described a sign-off sheet
-that the generated ledger did not actually have a column for; the column was added rather than the
-sentence deleted.) The candidate set lives in one
+corrections are logged in the evidence ledger. `registers/claim_ledger.csv` carries a per-claim `reviewed_by` column, populated **only** from
+`registers/claim_signoff.csv` — a file a human edits. A claim nobody has signed off stays blank, and
+the release manifest reports the unsigned count and blocks on it under `--freeze`.
+
+We record two corrections here rather than quietly fixing them. This paragraph first described a
+sign-off sheet the generated ledger had no column for. The column was then added — but the generator
+stamped every row with the same "human adjudication" string, which proves nothing: it is exactly the
+self-certification we criticise the hard gates for elsewhere in this report, and an external audit
+caught it. The generator no longer writes that field at all. As of this writing the honest number is
+**0 of 36 claims individually signed off**: the ledger can prove where each claim came from, and it
+cannot prove that a person has read each one. The candidate set lives in one
 canonical table (`candidates_canonical.json`) from which the engine fixture and all tables
 are generated.
 

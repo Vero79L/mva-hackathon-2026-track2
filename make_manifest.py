@@ -166,10 +166,52 @@ for rel in CHECKED_FOR_COUNTS:
 # submission environment may not have; --freeze makes it blocking.
 _cc = HERE.parent / "registers" / "citation_check.csv"
 _mg = DOCS / "mechanism_graph.yaml"
-if _cc.exists() and _mg.exists() and _cc.stat().st_mtime < _mg.stat().st_mtime:
+if not _cc.exists():
+    # A MISSING artefact must not be quieter than a stale one. Before 2026-10-19 this check only
+    # fired when the file existed and was old, so deleting it bought silence -- including under
+    # --freeze. An external audit exploited exactly that.
     (problems if FREEZE else pending).append(
-        "registers/citation_check.csv is older than docs/mechanism_graph.yaml — re-run "
+        "registers/citation_check.csv does not exist - the citation verification has never been run "
+        "for this tree; run scripts/phase1/16_verify_citations.py --include-uniprot")
+elif _mg.exists() and _cc.stat().st_mtime < _mg.stat().st_mtime:
+    (problems if FREEZE else pending).append(
+        "registers/citation_check.csv is older than docs/mechanism_graph.yaml - re-run "
         "scripts/phase1/16_verify_citations.py from a network that can reach Europe PMC/Crossref")
+elif _cc.exists():
+    import csv as _csv2
+    with _cc.open(newline="", encoding="utf-8") as _fh:
+        _bad = [r["id"] for r in _csv2.DictReader(_fh)
+                if r.get("status") not in ("OK", "", None) or r.get("title_check") == "mismatch"]
+    if _bad:
+        problems.append(f"citation_check.csv has {len(_bad)} unresolved rows: {_bad[:6]}")
+
+# ---- claim sign-off is a human act; report how much of it has actually happened ----
+_led = HERE.parent / "registers" / "claim_ledger.csv"
+if _led.exists():
+    import csv as _csv3
+    with _led.open(newline="", encoding="utf-8") as _fh:
+        _rows = list(_csv3.DictReader(_fh))
+    _unsigned = [r["claim_id"] for r in _rows if not (r.get("reviewed_by") or "").strip()]
+    if _unsigned:
+        (problems if FREEZE else pending).append(
+            f"{len(_unsigned)}/{len(_rows)} claim-ledger rows carry no human sign-off "
+            f"(registers/claim_signoff.csv). A generated ledger can prove its sources; it cannot "
+            f"prove that a person read them.")
+
+# ---- provenance hashes in the case manifest must match the files they name ----
+_case = HERE / "config" / "cases" / "bub1b_mva.yaml"
+if _case.exists():
+    import hashlib as _hl, yaml as _yaml
+    _prov = (_yaml.safe_load(_case.read_text(encoding="utf-8")) or {}).get("provenance") or {}
+    for _k, _v in _prov.items():
+        if not isinstance(_v, dict) or "file" not in _v or "sha256" not in _v:
+            continue
+        _f = HERE / _v["file"]
+        if not _f.exists():
+            continue
+        if _hl.sha256(_f.read_bytes()).hexdigest() != _v["sha256"]:
+            problems.append(f"provenance hash for {_v['file']} no longer matches the file - "
+                            f"re-run scripts/phase1/18_case_provenance.py")
 
 # ---- the two AI-disclosure documents must report the same number of interruptions ----
 INTERRUPT = re.compile(NUM_RE + r"\**\s+responses?\s+(?:was|were)\s+interrupted", re.I)

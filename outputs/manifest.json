@@ -1,12 +1,12 @@
 {
   "generated_from": "docs/candidates_canonical.json 2026-10-19",
   "denominator": "13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries",
-  "primary_hypothesis": "A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experiment only if it acts on the measured bottleneck (residual BubR1 abundance and checkpoint function) in the compensating direction, passes this patient's four constraint gates — oncology, pediatric path and renal can reject, growth only flags — with every safety axis the gates cannot see declared rather than counted as clear, and rests on an approved product with a dated label; under that rule the single named candidate is niacin (nicotinic acid), an approved NAD+ precursor acting through the SIRT2–BubR1 stabilization axis, carried as a conditional research hypothesis rather than a recommendation and with its oncology axis contradictory and its growth axis unassessed, and it is overturned if NAD+ repletion in patient-derived cells fails to raise BubR1 protein or to correct the checkpoint defect, or improves the survival of aneuploid cells.",
+  "primary_hypothesis": "A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experiment only if it acts in the compensating direction on the bottleneck the decisive experiment is built to measure — residual BubR1 abundance and checkpoint function, both of which are UNKNOWN in this child — passes this patient's constraint gates with every safety axis those gates cannot see declared rather than counted as clear, and rests on an approved product with a dated label. Under that rule the single named candidate is niacin (nicotinic acid), an approved NAD+ precursor acting through the SIRT2–BubR1 stabilization axis, carried as a conditional research hypothesis and not a recommendation: its oncology axis is contradictory and its growth axis unassessed. It is overturned if NAD+ repletion in patient-derived cells fails to raise BubR1 protein, fails to correct the checkpoint defect, or raises the aneuploid fraction of the surviving population — a fraction, never raw survival, because a real checkpoint rescue can raise overall survival.",
   "files": {
-    "docs/REPORT.md": "a2ce28fa62de0d89b5808e98c3addf3640fa97c00abb33cc0f8d8b20eaf3661f",
-    "docs/PITCH.md": "19573addcad158341d2ec582c369f5bfd52035b029a9006e3dbbb58bbb3957e6",
-    "docs/METHODS_AND_AI.md": "0c8cf1cc26fc79804b4d8fc48ab8b9607893cbb31ca96dd73ff505747baebc92",
-    "docs/PRIMARY_HYPOTHESIS.md": "604ef921dc32e708c96d662a01f7c6d841cb414aa77b55a824235df8f30fd6cb",
+    "docs/REPORT.md": "99fba0d13b2f4abad200add3d20569ddb33ca0d8f053795970869661f14bd726",
+    "docs/PITCH.md": "4266acc8189b3342b74511588801bb14365ab24af7f0e7f47da655e4e92b617b",
+    "docs/METHODS_AND_AI.md": "a7674af05a90d6c4a263277b710ee52568ef7c358c2161359709e45a4063450a",
+    "docs/PRIMARY_HYPOTHESIS.md": "3ddcfa4a437b44eefd524ce05feff3a8c5e4fd9da04a8779c9091574118bbbda",
     "docs/SAFETY_ANNEX.md": "f8819bc75b80f890313312adc9d19f0efaa39e4208b27cc60d9400ea1356ac6f",
     "docs/MVA_DECISION_TABLE.md": "a4a60cb28473ec90c5e4ce7fe480f085d38f75abe3822569e6eeaebf887b1cd7",
     "docs/candidate_table.md": "b86410c6abc0f01b8d7e50d39850cf04e14bfcf220021820d5905a2fb099bdbd",
