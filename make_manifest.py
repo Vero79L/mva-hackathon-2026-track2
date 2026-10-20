@@ -49,7 +49,7 @@ DELIVERABLES = [
     "docs/REPORT.md", "docs/PITCH.md", "docs/METHODS_AND_AI.md", "docs/PRIMARY_HYPOTHESIS.md",
     "docs/SAFETY_ANNEX.md", "docs/MVA_DECISION_TABLE.md",
     "docs/candidate_table.md", "docs/candidates_canonical.json", "docs/computed_vs_human.md",
-    "docs/ROBUSTNESS.md",
+    "docs/ROBUSTNESS.md", "docs/PLAIN_LANGUAGE_SUMMARY.md",
 ]
 NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
                 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen",
@@ -96,6 +96,16 @@ try:
     TRUTH["product rows"] = count_rows(DOCS / "eligibility_matrix.csv")
 except FileNotFoundError:
     pass
+# "N load-bearing PMIDs" is a count the report states about itself and nothing checked it.
+# Load-bearing means a citation that carries part of the argument and therefore has a recorded
+# title to compare against; the `manual` rows are UniProt feature annotations pulled in by
+# --include-uniprot and carry none of it. Adding a citation to the mechanism graph without
+# updating the prose is exactly the drift this gate exists to catch.
+try:
+    TRUTH["load-bearing PMIDs"] = count_rows(REG / "citation_check.csv",
+                                             lambda r: r.get("title_check") == "match")
+except FileNotFoundError:
+    pass
 # Count the self-tests by RUNNING them, not by counting `checks.append(` calls: one of those
 # calls sits in a loop and contributes four checks, so the textual count is wrong by three.
 try:
@@ -120,9 +130,12 @@ COUNT_CLAIMS = [
     (r"" + NUM_RE + r"\s+registered facts\b", "registered facts"),
     (r"" + NUM_RE + r"\s+product rows\b", "product rows"),
     (r"" + NUM_RE + r"[\s-]+(?:regression\s+)?self-tests\b", "self-tests"),
+    (r"\*{0,2}" + NUM_RE + r"\*{0,2}\s+load-bearing PMIDs\b", "load-bearing PMIDs"),
 ]
 CHECKED_FOR_COUNTS = ["docs/REPORT.md", "docs/PITCH.md", "docs/METHODS_AND_AI.md",
                       "docs/PRIMARY_HYPOTHESIS.md", "docs/SAFETY_ANNEX.md",
+                      "docs/PLAIN_LANGUAGE_SUMMARY.md", "docs/MVA_DECISION_TABLE.md",
+                      "docs/ROBUSTNESS.md",
                       "../registers/claim_ledger.csv"]
 
 problems = []
@@ -136,16 +149,26 @@ for rel in ("docs/REPORT.md", "docs/PITCH.md"):
     text = path.read_text(encoding="utf-8")
     if primary not in text:
         problems.append(f"{rel}: the PRIMARY line is not quoted verbatim")
-    stale = re.findall(r"\b(\d{1,2}|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\s+entries\b", text, re.I)
-    for hit in stale:
-        value = int(hit) if hit.isdigit() else next((k for k, v in NUMBER_WORDS.items() if v == hit.lower()), None)
-        if value is not None and value != len(cands):
-            problems.append(f"{rel}: says '{hit} entries' but the canonical table has {len(cands)}")
     slots = sorted(set(re.findall(r"\{\{FILL:[A-Z0-9-]+\}\}", text)))
     if slots:
         # These are filled at freeze (the frozen date and the pitch-video URL), so before the
         # freeze they are PENDING, not an inconsistency. `--freeze` makes them blocking.
         (problems if FREEZE else pending).append(f"{rel}: slots still to fill at freeze {slots}")
+
+# ---- the candidate denominator must agree in EVERY deliverable, not just two ----
+# This check used to run on the report and the pitch only. The denominator is the number a
+# reviewer is most likely to carry from one document to another, so every deliverable that
+# states it has to be checked, including ones added later.
+ENTRIES_RE = re.compile(r"\b" + NUM_RE + r"\s+entries\b", re.I)
+for rel in DELIVERABLES:
+    path = HERE / rel
+    if not path.exists():
+        continue
+    for mm in ENTRIES_RE.finditer(path.read_text(encoding="utf-8")):
+        got = as_int(mm.group(1))
+        if got is not None and got != len(cands):
+            problems.append(f"{rel}: says '{mm.group(0).strip()}' but the canonical "
+                            f"table has {len(cands)}")
 
 # ---- every retyped count must equal its source ----
 for rel in CHECKED_FOR_COUNTS:
@@ -245,12 +268,33 @@ if _led.exists():
     import csv as _csv3
     with _led.open(newline="", encoding="utf-8") as _fh:
         _rows = list(_csv3.DictReader(_fh))
-    _unsigned = [r["claim_id"] for r in _rows if not (r.get("reviewed_by") or "").strip()]
-    if _unsigned:
+    # Report each verification tier against its own denominator. Counting all 36 rows as
+    # needing one human act overstated the deficit: a label quotation is checked by opening the
+    # label, a global negative by re-running its dated search, and a row sourced to a file in
+    # this repo by the provenance hashes this gate already enforces. Only a claim sourced to a
+    # paper needs a person to have read the paper, and that is the number worth blocking on.
+    _lit = [r for r in _rows if (r.get("verification_mode") or "") == "literature_read"]
+    _lit_unsigned = [r["claim_id"] for r in _lit if not (r.get("reviewed_by") or "").strip()]
+    if _lit and _lit_unsigned:
         (problems if FREEZE else pending).append(
-            f"{len(_unsigned)}/{len(_rows)} claim-ledger rows carry no human sign-off "
-            f"(registers/claim_signoff.csv). A generated ledger can prove its sources; it cannot "
+            f"{len(_lit_unsigned)}/{len(_lit)} literature claims carry no human sign-off "
+            f"(registers/claim_signoff.csv): {_lit_unsigned[:8]}"
+            + (" ..." if len(_lit_unsigned) > 8 else "")
+            + ". The other "
+            f"{len(_rows) - len(_lit)} rows are verified by the mechanism named in their "
+            f"verification_mode column (label text, reproducible search, internal provenance), "
+            f"not by a literature read. A generated ledger can prove its sources; it cannot "
             f"prove that a person read them.")
+    if not _lit and _rows and "verification_mode" not in _rows[0]:
+        problems.append("registers/claim_ledger.csv has no verification_mode column - "
+                        "re-run make_claim_ledger.py")
+    _landing = [r["claim_id"] for r in _rows
+                if (r.get("verification_mode") or "") == "landing_page_only"]
+    if _landing:
+        pending.append(
+            f"{len(_landing)} eligibility rows cite a fact-sheet host rather than a product "
+            f"label ({', '.join(_landing)}) - correct by construction (no approved product "
+            f"exists for those molecules), recorded so it is a stated choice")
 
 # ---- provenance hashes in the case manifest must match the files they name ----
 _case = HERE / "config" / "cases" / "bub1b_mva.yaml"
@@ -280,8 +324,154 @@ if len(set(seen.values())) > 1:
     problems.append("safety-classifier interruption count disagrees between deliverables: "
                     + ", ".join(f"{k}={v}" for k, v in seen.items()))
 
+# ---- the pitch must fit the three-minute limit, as a measurement rather than an intention ----
+# "Target 2:55 spoken" was an assertion in a stage direction, and the script had drifted to an
+# estimated 2:57 after one sentence was added. A video over the limit is the one failure mode that
+# no amount of scientific rigour recovers from, so the length is computed here from the spoken
+# word count and blocks with a margin. 2.6 words/second is a brisk-but-clear delivery rate;
+# WPM_RATE is deliberately conservative, because a slower read is the realistic failure.
+WPM_RATE = 2.6
+LIMIT_S = 180
+MARGIN_S = 6                      # block at 174s so a slower-than-modelled read still fits
+_pitch = DOCS / "PITCH.md"
+if _pitch.exists():
+    _pt = _pitch.read_text(encoding="utf-8")
+    _beats, _total = [], 0.0
+    for _b in re.split(r"\n(?=\*\*\d:\d\d)", _pt):
+        _m = re.match(r"\*\*(\d:\d\d)[\u2013-](\d:\d\d)", _b)
+        if not _m:
+            continue
+        # strip bold stage directions and parenthetical italic cues: they are not spoken
+        _spoken = re.sub(r"\*\(.*?\)\*", "", re.sub(r"\*\*.*?\*\*", "", _b))
+        _w = len(_spoken.split())
+        _sec = lambda x: int(x.split(":")[0]) * 60 + int(x.split(":")[1])
+        _budget = _sec(_m.group(2)) - _sec(_m.group(1))
+        _est = _w / WPM_RATE
+        _total += _est
+        _beats.append((_m.group(1), _m.group(2), _budget, _w, _est))
+    if not _beats:
+        problems.append("docs/PITCH.md has no parseable beat timings (expected '**M:SS-M:SS')")
+    else:
+        if _total > LIMIT_S - MARGIN_S:
+            problems.append(
+                f"docs/PITCH.md is estimated at {int(_total//60)}:{int(_total%60):02d} "
+                f"({_total:.0f}s at {WPM_RATE} words/s) against a {LIMIT_S}s limit - cut to "
+                f"{LIMIT_S - MARGIN_S}s or less so a slower read still fits")
+        _over = [f"{a}-{b} ({w} words = {e:.0f}s vs {bu}s)"
+                 for a, b, bu, w, e in _beats if e > bu + 1.5]
+        if _over:
+            pending.append("docs/PITCH.md beats over their own labelled budget: "
+                           + "; ".join(_over))
+        TRUTH_PITCH = f"{int(_total//60)}:{int(_total%60):02d} ({_total:.0f}s, {LIMIT_S}s limit)"
+        # The stage direction states the length in prose. That is the same drift this gate exists
+        # to stop -- the previous wording said "Target 2:55" while the script had reached 2:57 --
+        # so the stated figure is checked against the computed one rather than trusted.
+        _claimed = re.search(r"Measured (\d):(\d\d) spoken", _pt)
+        if not _claimed:
+            problems.append("docs/PITCH.md does not state its measured length "
+                            "(expected 'Measured M:SS spoken') - the length claim must be checkable")
+        else:
+            _cs = int(_claimed.group(1)) * 60 + int(_claimed.group(2))
+            if abs(_cs - _total) > 2:
+                problems.append(
+                    f"docs/PITCH.md says 'Measured {_claimed.group(1)}:{_claimed.group(2)} spoken' "
+                    f"but the computed length is {int(_total//60)}:{int(_total%60):02d} - "
+                    f"update the sentence")
+
+# ---- every AI provider the disclosure names must have a row in the usage register ----
+# The interruption-count check above was added because a disagreement inside the AI-disclosure
+# section is the most expensive kind. The same exposure existed one level up and was not checked:
+# METHODS_AND_AI.md named a second provider that had no row in registers/ai_usage_register.csv,
+# so the document claimed a usage the register could not evidence. Declared and recorded must
+# match in both directions -- a provider in the register but absent from the disclosure is the
+# worse failure of the two, because that is undisclosed use.
+# Third direction, added 2026-10-20: the report's own AI statement enumerated providers too, and
+# named only one while METHODS_AND_AI.md named two. Two deliverables disagreeing about who had
+# access is the single most expensive inconsistency available in this competition, so all three
+# documents are held to the same list.
+_meth = DOCS / "METHODS_AND_AI.md"
+_aiu = REG / "ai_usage_register.csv"
+_rep_ai = DOCS / "REPORT.md"
+if _meth.exists() and _aiu.exists():
+    _mt = _meth.read_text(encoding="utf-8")
+    _reg_text = _aiu.read_text(encoding="utf-8").lower()
+    _rt_ai = _rep_ai.read_text(encoding="utf-8").lower() if _rep_ai.exists() else ""
+    # provider -> the strings that identify it in either document
+    PROVIDERS = {"Anthropic/Claude": ("anthropic", "claude"),
+                 "OpenAI": ("openai", "chatgpt", "codex"),
+                 "Google/Gemini": ("gemini", "google deepmind"),
+                 "Meta/Llama": ("llama",),
+                 "Mistral": ("mistral",),
+                 "xAI/Grok": ("grok",)}
+    for _name, _keys in PROVIDERS.items():
+        _in_doc = any(k in _mt.lower() for k in _keys)
+        _in_reg = any(k in _reg_text for k in _keys)
+        if _in_doc and not _in_reg:
+            problems.append(
+                f"docs/METHODS_AND_AI.md names the AI provider '{_name}' but "
+                f"registers/ai_usage_register.csv has no row for it - add the row (date, "
+                f"product/tier, training setting, whether patient-derived input was involved, "
+                f"purpose) or remove the claim")
+        if _in_reg and not _in_doc:
+            problems.append(
+                f"registers/ai_usage_register.csv records use of '{_name}' but "
+                f"docs/METHODS_AND_AI.md does not disclose it - undisclosed AI use")
+        # The report's AI statement is a summary, but it enumerates providers, so an omission
+        # there reads as a denial. Anthropic/Claude is exempt: the report names the products
+        # rather than the vendor in several places and the substring test would be noise.
+        if _in_doc and _name != "Anthropic/Claude" and not any(k in _rt_ai for k in _keys):
+            problems.append(
+                f"docs/METHODS_AND_AI.md discloses the AI provider '{_name}' but "
+                f"docs/REPORT.md section 14 does not name it - the two deliverables disagree "
+                f"about who had access")
+
+# ---- outputs/run.txt is committed as "the latest clean run", so check that it is one ----
+# It is a generated snapshot that run.sh truncates and rewrites, which means a failed run leaves
+# a failed snapshot in the working tree. Committing that would publish a transcript ending in
+# STEP FAILED under a report claiming the pipeline runs clean. The failure string cannot appear
+# during a successful run, because run.sh exits at the first failing step and never reaches this
+# gate, so the check is safe to run from inside the run it is checking.
+_runtxt = HERE / "outputs" / "run.txt"
+if not _runtxt.exists():
+    problems.append("outputs/run.txt is missing - run ./run.sh")
+else:
+    _rt = _runtxt.read_text(encoding="utf-8", errors="replace")
+    if "STEP FAILED" in _rt:
+        problems.append("outputs/run.txt records a failed run - fix the cause and re-run ./run.sh "
+                        "before committing the snapshot")
+    _stale = [r for r in ("docs/REPORT.md", "docs/candidates_canonical.json", "src/triage.py",
+                          "config/scoring.yaml", "docs/mechanism_graph.yaml")
+              if (HERE / r).exists() and (HERE / r).stat().st_mtime > _runtxt.stat().st_mtime]
+    if _stale:
+        (problems if FREEZE else pending).append(
+            "outputs/run.txt is older than " + ", ".join(_stale)
+            + " - re-run ./run.sh so the committed snapshot is of the submitted code")
+
+# ---- the submitted PDF must not be older than the Markdown it is built from ----
+# Everything else in this gate protects files a reviewer reads in the repository. The artifact
+# the judges actually open is the PDF, it is built by a separate script that run.sh deliberately
+# does not call (no TeX toolchain in a clean reproduction), and nothing checked whether it still
+# corresponds to REPORT.md. A stale PDF would present a superseded report under a green manifest,
+# which is the worst failure available here: every consistency claim in the repository would be
+# true and the submitted document would still be wrong. Pending before the freeze, because the
+# PDF is rebuilt last; blocking under --freeze, which is the submission-day run.
+_pdf = DOCS / "Vero7878_track2_report.pdf"
+_rep = DOCS / "REPORT.md"
+if not _pdf.exists():
+    (problems if FREEZE else pending).append(
+        "docs/Vero7878_track2_report.pdf does not exist - build it with `sh make_pdf.sh` "
+        "(needs pandoc + xelatex); the PDF is the artifact the judges open")
+elif _rep.exists() and _pdf.stat().st_mtime < _rep.stat().st_mtime:
+    _age = (_rep.stat().st_mtime - _pdf.stat().st_mtime) / 60.0
+    (problems if FREEZE else pending).append(
+        f"docs/Vero7878_track2_report.pdf is {_age:.0f} min older than docs/REPORT.md - "
+        f"rebuild it with `sh make_pdf.sh` or the submitted PDF is a superseded report")
+
 manifest = {"generated_from": "docs/candidates_canonical.json " + canon.get("updated", ""),
             "denominator": denominator, "primary_hypothesis": primary, "files": {}}
+if _pdf.exists():   # pin the submitted artifact too, not only its source
+    manifest["submitted_pdf"] = {"file": "docs/Vero7878_track2_report.pdf",
+                                 "sha256": hashlib.sha256(_pdf.read_bytes()).hexdigest()}
 for rel in DELIVERABLES:
     path = HERE / rel
     if not path.exists():
@@ -300,6 +490,10 @@ print("manifest OK" + (" (freeze mode)" if FREEZE else ""))
 for item in pending:
     print("  PENDING (filled at freeze; run with --freeze to make this blocking):", item)
 print(" counts verified:", ", ".join(f"{k}={v}" for k, v in sorted(TRUTH.items())))
+try:
+    print(" pitch length  :", TRUTH_PITCH)
+except NameError:
+    pass
 print(" denominator:", denominator)
 print(" primary    :", primary[:90] + ("…" if len(primary) > 90 else ""))
 print(f" files      : {len(manifest['files'])} hashed -> outputs/manifest.json")

@@ -59,9 +59,7 @@ We record two corrections here rather than quietly fixing them. This paragraph f
 sign-off sheet the generated ledger had no column for. The column was then added — but the generator
 stamped every row with the same "human adjudication" string, which proves nothing: it is exactly the
 self-certification we criticise the hard gates for elsewhere in this report, and an external audit
-caught it. The generator no longer writes that field at all. As of this writing the honest number is
-**0 of 36 claims individually signed off**: the ledger can prove where each claim came from, and it
-cannot prove that a person has read each one. The candidate set lives in one
+caught it. The generator no longer writes that field at all. The second correction is the denominator. "0 of 36 claims" was itself a misleading number, because the 36 rows do not ask the same thing of a human. The ledger now carries a `verification_mode` per row, derived from the source: **15 rows rest on a paper** and can be verified only by a person reading it; 9 are verified by opening a dated product label and matching the quoted string; 5 are dated, reproducible searches recorded in `search_strategies.md`; 5 point at files in this repository, whose integrity the release manifest already hashes; and 2 point at an NIH fact sheet rather than a product label, because the substance has no approved product, which the manifest reports as its own pending item. Counting label checks and internal provenance as unread literature overstated the gap; the number that actually blocks is the literature one, and the release manifest blocks on unsigned `literature_read` rows alone and prints the live count. As of this writing **none of those 15 rows is signed**: the ledger can prove where each claim came from, and it cannot prove that a person has read each one. The candidate set lives in one
 canonical table (`candidates_canonical.json`) from which the engine fixture and all tables
 are generated.
 

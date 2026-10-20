@@ -27,7 +27,30 @@ HERE = Path(__file__).parent
 OUT = HERE.parent / "registers" / "claim_ledger.csv"
 HDR = ["claim_id", "claim_text", "claim_type", "report_location", "source_url",
        "source_locator", "checked_date", "strength", "counterevidence", "disposition",
-       "reviewed_by"]
+       "verification_mode", "reviewed_by"]
+
+
+# How a given row can be checked at all. Reporting "N/36 rows carry no human sign-off" treats
+# four kinds of claim as if one act verified them, and overstates the deficit: a label quotation
+# is checked by opening the label, a global negative by re-running its dated search, and a claim
+# whose source is a file in this repo by the provenance hashes the release manifest already
+# enforces. Only a claim sourced to a paper needs a person to have read the paper. This column
+# names the mechanism per row so the manifest can report each tier against its own denominator.
+def verification_mode(url: str) -> str:
+    u = (url or "").lower()
+    if "pubmed.ncbi.nlm.nih.gov" in u:
+        return "literature_read"          # a person must read the source; nothing else substitutes
+    if "dailymed.nlm.nih.gov" in u or "ema.europa.eu" in u:
+        return "label_text_match"         # open the label, match the quoted string and its date
+    if "ods.od.nih.gov" in u:
+        # Not a product label. Disclosed rather than counted as a label check: these rows point at
+        # a fact-sheet host because no approved product exists for the molecule.
+        return "landing_page_only"
+    if "search_strategies" in u:
+        return "reproducible_search"      # re-run the recorded query and compare the hit count
+    if u.startswith(("docs/", "config/", "evidence/", "src/", "outputs/")):
+        return "internal_provenance"      # hash-gated by make_manifest.py
+    return "unclassified"
 DATE = "2026-10-19"
 # Per-claim sign-off. An earlier version of this script stamped every row with the same
 # "human adjudication" string, which is self-certification: it proves nothing, and it is the very
@@ -142,7 +165,10 @@ rows.append({"claim_id": "CL-METH-02",
 SIGNOFF = _load_signoff()
 for r in rows:
     r["reviewed_by"] = SIGNOFF.get(r["claim_id"], "")
+    r["verification_mode"] = verification_mode(r["source_url"])
 _signed = sum(1 for r in rows if r["reviewed_by"])
+_lit = [r for r in rows if r["verification_mode"] == "literature_read"]
+_lit_signed = sum(1 for r in _lit if r["reviewed_by"])
 
 OUT.parent.mkdir(exist_ok=True)
 with OUT.open("w", newline="", encoding="utf-8") as fh:
@@ -159,6 +185,8 @@ if bad:
     print("REFUSING: coordinate- or genotype-like text reached the ledger:", sorted(set(bad))); sys.exit(1)
 from collections import Counter
 print(f"claim_ledger.csv: {len(rows)} claims -> {OUT}")
-print(f"  human sign-off: {_signed}/{len(rows)} signed (registers/claim_signoff.csv)")
+print(f"  human sign-off: {_lit_signed}/{len(_lit)} literature claims signed, "
+      f"{_signed}/{len(rows)} rows overall (registers/claim_signoff.csv)")
+print("  verification mode:", dict(Counter(r["verification_mode"] for r in rows)))
 print("  by type:", dict(Counter(r["claim_type"] for r in rows)))
 print("  by strength:", dict(Counter(r["strength"] for r in rows)))

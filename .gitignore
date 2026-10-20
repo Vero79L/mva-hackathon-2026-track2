@@ -14,6 +14,13 @@ work/
 .userdata-*
 shots/
 *.png
+# ...except the one generated figure the PDF build needs. `*.png` above exists to keep
+# screenshots out, because a screenshot can contain anything that was on the screen. The
+# mechanism figure is generated from docs/mechanism_graph.yaml and contains no patient
+# data, and make_pdf.sh reads the PNG specifically -- without it a fresh clone cannot
+# build the submission PDF, and step 15 cannot regenerate it because that step stats the
+# controlled area. Narrow exception rather than dropping the rule.
+!docs/figures/mechanism.png
 # Env
 .venv/
 __pycache__/
@@ -33,3 +40,14 @@ results/
 # Superseded drafts, superseded by docs/REPORT.md and docs/PITCH.md
 docs/REPORT_v2.md
 docs/PITCH_v2.md
+
+# Per-tool local operating notes. CLAUDE.md is committed because reviewers should see the
+# data-handling tiers the work actually ran under; AGENTS.md is the same file mechanically
+# rewritten for a second tool and is NOT a deliverable. The reviewed AI disclosure is
+# docs/METHODS_AND_AI.md, evidenced by registers/ai_usage_register.csv.
+AGENTS.md
+
+# docs/PITCH_STORYBOARD.md — how to record the pitch (slide plan, what must not appear on
+# camera, upload order). A production aid, not a submission deliverable: PITCH.md is the
+# script of record and the manifest gates it. Kept local for the same reason as AGENTS.md.
+docs/PITCH_STORYBOARD.md

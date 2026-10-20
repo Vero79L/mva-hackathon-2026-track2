@@ -61,7 +61,23 @@ mva_path() {
 start_log() {
   mkdir -p "$T2_RESULTS/logs"
   LOGFILE="$T2_RESULTS/logs/$1_$(date +%Y%m%d-%H%M%S).log"
-  exec > >(tee -a "$LOGFILE") 2>&1
+  # 有些受限環境（OS sandbox、部分容器）不給 /dev/fd，下面的 process substitution 會以
+  # "Operation not permitted" 讓整個步驟還沒開始就死掉。先探測，不支援就退回只寫 stdout，
+  # 寧可少一份 log 也不要讓步驟失敗。
+  local fifo
+  if (echo probe > >(cat >/dev/null)) >/dev/null 2>&1; then
+    exec > >(tee -a "$LOGFILE") 2>&1
+  else
+    # 退路：具名管線。log 還是要有（tier 3 的步驟要能事後審），只是改用 mkfifo。
+    fifo="${TMPDIR:-/tmp}/t2log.$$.$RANDOM"
+    if mkfifo "$fifo" 2>/dev/null; then
+      tee -a "$LOGFILE" < "$fifo" &
+      exec > "$fifo" 2>&1
+      rm -f "$fifo"
+    else
+      say "注意：這個環境既不提供 /dev/fd 也不能建立具名管線，輸出不複製到檔案（${LOGFILE} 不會產生）"
+    fi
+  fi
   say "$1 開始於 $(date '+%Y-%m-%d %H:%M:%S')（紀錄：${LOGFILE}）"
 }
 

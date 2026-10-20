@@ -27,7 +27,19 @@ import t2common as C  # noqa: E402
 PHASE1_OUTPUTS = ["docs/transcript_facts_public.yaml", "docs/domain_map.yaml", "docs/domain_map.md",
                   "docs/mechanism_graph.yaml", "docs/mechanism_graph.resolved.yaml", "docs/MECHANISM.md",
                   "docs/figures/domain_map.svg", "docs/figures/mechanism.mmd", "docs/figures/mechanism.dot",
-                  "docs/figures/mechanism.svg", "config/scenarios", "config/cases"]
+                  "docs/figures/mechanism.svg", "config/scenarios", "config/cases",
+                  # Red-team 2026-10-20: until today this gate scanned only the GENERATED Phase-1
+                  # outputs, so the documents a reviewer actually opens -- the report, the pitch
+                  # script, the care-team annex, the plain-language page -- were never checked,
+                  # even though the pre-commit hook runs this script on every commit. Those are
+                  # the files a human types prose into, which is where a coordinate or a genotype
+                  # gets pasted by accident.
+                  "docs/REPORT.md", "docs/PITCH.md", "docs/PLAIN_LANGUAGE_SUMMARY.md",
+                  "docs/SAFETY_ANNEX.md", "docs/METHODS_AND_AI.md", "docs/PRIMARY_HYPOTHESIS.md",
+                  "docs/MVA_DECISION_TABLE.md", "docs/ROBUSTNESS.md", "docs/computed_vs_human.md",
+                  "docs/candidate_table.md", "docs/candidates_canonical.json",
+                  "docs/eligibility_matrix.md", "docs/eligibility_matrix.csv",
+                  "README.md", "outputs/run.txt"]
 PRIVATE_NAMES = re.compile(r"(^|/)(handoff_from_track1\.yaml|transcript_facts\.yaml|t2_variants\.(vcf|vep\.tsv)|"
                            r"fact_register\.csv|citation_check\.csv|claim_ledger\.csv|evidence_ledger\.csv|"
                            r"hpo_terms\.tsv|norm\.vcf\.gz)$"

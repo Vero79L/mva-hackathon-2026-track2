@@ -187,7 +187,7 @@
         "G3_renal": "ok",
         "G4_growth": "ok"
       },
-      "best_evidence": "As a disease modifier: rejected (effective 0.5-5 mM vs reachable plasma ~2-25 uM oral). As mitigation: reduces oxidative/senescence load (consequence endpoint).",
+      "best_evidence": "As a disease modifier: rejected (effective 0.5-5 mM vs reachable plasma ~2-25 uM oral). As mitigation: reduces oxidative/senescence load (consequence endpoint). Independent model-organism support for the mitigation lane itself appeared in 2026: in a Drosophila MVA model built by depleting one SAC gene in the neural-stem-cell compartment (Nat Commun, PMID 41820377), proteostasis failure and mitochondrial dysfunction were shown to mediate how complex aneuploidy damages stemness, and overexpressing ROS scavengers or mitochondrial chaperones, or blocking apoptosis, dampened the aneuploidy-driven loss of brain size. Bounds: Drosophila, genetic manipulation rather than a drug, an organ-size endpoint, and NAC itself was not tested - this raises the prior on the mitigation lane, not on this molecule at this exposure.",
       "disposition_reason": "Conditional as downstream mitigation (a lane the strategy permits), NOT a disease modifier; exposure for the mitigation endpoint unproven; keep tumor-promotion watch.",
       "decisive_experiment": "In patient cells: ROS + senescence markers (SA-beta-gal/p16/p21) + proliferative lifespan at achievable exposure; explicitly a mitigation readout, not a fidelity fix.",
       "version": "2026-10-08",
