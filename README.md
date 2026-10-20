@@ -44,7 +44,20 @@ Or with uv (single-file inline deps): `uv run src/triage.py --case config/cases/
 sh make_pdf.sh          # -> docs/Vero7878_track2_report.pdf
 ```
 
-Needs `pandoc` and a LaTeX install with `xelatex`. It is deliberately **not** part of `run.sh`:
+Needs `pandoc` and a LaTeX install with `xelatex`. If you have neither, there is a second build
+that needs only Node and Google Chrome and produces the same landscape figure page:
+
+```sh
+sh make_pdf_chrome.sh    # -> docs/Vero7878_track2_report.pdf
+```
+
+It exists because a build path that is not installed is not a build path: on 2026-10-20 the machine
+holding this submission had no pandoc and no TeX engine, so the documented command could not rebuild
+the one artifact the judges open. `make_pdf.sh` remains the reference build; this one is the fallback
+that always runs. Either way the release manifest blocks under `--freeze` if the PDF is older than
+`docs/REPORT.md`.
+
+Both are deliberately **not** part of `run.sh`:
 `run.sh` must stay runnable in a clean Python-only environment, and a reviewer reproducing the
 engine does not need a TeX toolchain. The script builds from a temporary copy of `docs/REPORT.md`
 so the Markdown stays clean for GitHub, and gives the mechanism figure its own landscape page —

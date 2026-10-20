@@ -106,6 +106,17 @@ E14–E17, each with its own strength, genotype match and counter-evidence. **Jo
 has the furthest to travel of anything in the chain.**
 *measured (mouse, cell); substrate class differs from this case* · North 2014, PMID 24825348
 
+**7a — And that lifespan result is sex-dependent, which we had not recorded.** North 2014's own
+abstract states the SIRT2 transgene increased median lifespan "with a greater effect in male mice".
+A third verification round on 2026-10-20 re-read the abstract and found this bound missing from every
+deliverable, including the sentence above and the pitch script. It matters more here than it would in
+a cohort study: the single load-bearing result of the whole therapeutic axis is sex-dependent, and an
+n-of-1 patient has one sex. We state it as a bound on the transferability of the lifespan endpoint,
+not as a prediction about this child, because the paper reports an effect size difference and not a
+mechanism for it — and the endpoint our decisive experiment measures is BubR1 abundance in cells,
+not lifespan, so the sex-dependence bounds the *motivating* result rather than the proposed readout.
+*measured (mouse); sex-dependent effect size* · North 2014, PMID 24825348
+
 **7b — That lever is specific to a BubR1-low background.** The same group later tested SIRT2
 overexpression on a normal, non-progeroid background and found no effect on health or lifespan,
 concluding that "strategies to enhance SIRT2 protein levels may not lead to increased longevity".
