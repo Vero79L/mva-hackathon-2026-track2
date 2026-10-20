@@ -49,6 +49,7 @@ DELIVERABLES = [
     "docs/REPORT.md", "docs/PITCH.md", "docs/METHODS_AND_AI.md", "docs/PRIMARY_HYPOTHESIS.md",
     "docs/SAFETY_ANNEX.md", "docs/MVA_DECISION_TABLE.md",
     "docs/candidate_table.md", "docs/candidates_canonical.json", "docs/computed_vs_human.md",
+    "docs/ROBUSTNESS.md",
 ]
 NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
                 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen",
@@ -174,9 +175,40 @@ if not _cc.exists():
         "registers/citation_check.csv does not exist - the citation verification has never been run "
         "for this tree; run scripts/phase1/16_verify_citations.py --include-uniprot")
 elif _mg.exists() and _cc.stat().st_mtime < _mg.stat().st_mtime:
+    # Say WHY it is stale, not just that it is. The operator needs to know whether the
+    # graph edit introduced a PMID that has never been checked (serious) or only touched
+    # prose around PMIDs already verified (still stale, still blocking at freeze, but a
+    # different kind of problem). This reports the gap; it does not forgive it. The gate
+    # stays exactly as strict -- weakening a check after watching it fire against us is
+    # the rule-fitting this report criticises elsewhere.
+    import csv as _csv1
+    _verified = set()
+    with _cc.open(newline="", encoding="utf-8") as _fh:
+        for _r in _csv1.DictReader(_fh):
+            _rid = (_r.get("id") or "").strip()
+            if _rid.isdigit():
+                _verified.add(_rid)
+    # PMIDs live in structured `sources[].pmid` fields, not in prose. An earlier version
+    # of this diagnostic regex-scanned the raw YAML for "PMID 1234567" and found 4 of the
+    # 14, because most citations never spell the prefix -- and it would also have matched
+    # 7-digit HPO identifiers. A diagnostic that reports the wrong number is worse than no
+    # diagnostic, so this parses the graph.
+    import yaml as _yaml1
+    _g = _yaml1.safe_load(_mg.read_text(encoding="utf-8")) or {}
+    _in_graph = {str(_src["pmid"]).strip()
+                 for _e in _g.get("edges", []) or []
+                 for _src in (_e.get("sources") or [])
+                 if isinstance(_src, dict) and _src.get("pmid")}
+    _uncovered = sorted(_in_graph - _verified)
+    _detail = (f"; all {len(_in_graph)} PMIDs in the graph already have a verified row, "
+               f"so this is a timestamp ordering rather than an unchecked citation"
+               if not _uncovered else
+               f"; {len(_uncovered)} PMID(s) in the graph have NO verified row: "
+               f"{_uncovered[:6]}")
     (problems if FREEZE else pending).append(
         "registers/citation_check.csv is older than docs/mechanism_graph.yaml - re-run "
-        "scripts/phase1/16_verify_citations.py from a network that can reach Europe PMC/Crossref")
+        "scripts/phase1/16_verify_citations.py --include-uniprot from a network that can "
+        "reach Europe PMC/Crossref" + _detail)
 elif _cc.exists():
     import csv as _csv2
     with _cc.open(newline="", encoding="utf-8") as _fh:
@@ -184,6 +216,28 @@ elif _cc.exists():
                 if r.get("status") not in ("OK", "", None) or r.get("title_check") == "mismatch"]
     if _bad:
         problems.append(f"citation_check.csv has {len(_bad)} unresolved rows: {_bad[:6]}")
+
+# ---- the robustness report must describe the engine as it is now ----
+# ROBUSTNESS.md states what the engine does under ablation, blinding and probe injection.
+# If the engine changes and the report does not, it becomes a confident false statement
+# about code that no longer exists -- worse than having no robustness report at all.
+# Unlike the citation check this needs no network, so there is no excuse for staleness and
+# it BLOCKS rather than pends.
+_rb = DOCS / "ROBUSTNESS.md"
+_rb_inputs = [HERE / "src/triage.py", HERE / "config/scoring.yaml",
+              HERE / "evidence/candidates_from_canonical.yaml",
+              HERE / "config/cases/bub1b_mva.yaml", DOCS / "mechanism_graph.yaml"]
+if not _rb.exists():
+    problems.append("docs/ROBUSTNESS.md does not exist - run scripts/phase1/20_robustness.py")
+else:
+    _newer = [str(f.relative_to(HERE)) for f in _rb_inputs
+              if f.exists() and f.stat().st_mtime > _rb.stat().st_mtime]
+    if _newer:
+        problems.append("docs/ROBUSTNESS.md is older than " + ", ".join(_newer)
+                        + " - re-run scripts/phase1/20_robustness.py")
+    if "**FAIL**" in _rb.read_text(encoding="utf-8"):
+        problems.append("docs/ROBUSTNESS.md records a failed assertion - the engine is "
+                        "name-dependent or a gate is not biting; fix the engine, not the doc")
 
 # ---- claim sign-off is a human act; report how much of it has actually happened ----
 _led = HERE.parent / "registers" / "claim_ledger.csv"

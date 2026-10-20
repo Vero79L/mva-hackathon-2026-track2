@@ -87,7 +87,8 @@ measures from the edge **nearest** the transcript. Downstream variants happened 
 both strands, which is why single-point tests had not caught it. The error equals the variant's
 span length, so SNVs were unaffected. Fixed (nearest-edge rule) and pinned with two regression
 tests covering all four strand x direction combinations; the synthetic test suite went from 57 to
-59 tests, and the new test is verified to fail against the pre-fix code. Any residual
+59 tests at that point, and the new test is verified to fail against the pre-fix code. (It stands at 64
+today; the five added since are described below.) Any residual
 disagreement after the rerun is listed field-by-field in the self-test report and carried as a
 known, bounded limitation rather than suppressed.
 
@@ -156,7 +157,11 @@ must agree before a fact enters the report (both variants passed: 6/6 and 7/7 ch
 and synthetic cases and the three residual-function scenarios, and ends with
 `make_manifest.py` (the consistency gate: the denominator, the verbatim PRIMARY sentence, unfilled
 slots, five counts recomputed from their source files, the safety-classifier cross-check and the
-deliverable hashes), all from pinned dependencies in a clean environment. Twenty-eight regression self-tests pin the gate logic: five cover the scenario-aware objective gate
+deliverable hashes), all from pinned dependencies in a clean environment.
+
+`run.sh` additionally runs a robustness harness (`scripts/phase1/20_robustness.py`, reported in `docs/ROBUSTNESS.md` and summarised in REPORT.md §8b) that perturbs the engine on five axes: ablating each rule in turn, changing one patient constraint at a time, blinding every candidate's identifier and drug name, injecting six synthetic probes with known-correct answers, and removing each supporting paper from the therapeutic chain. The name-blinding and probe experiments are assertions and exit non-zero, so an engine change that made a verdict depend on a candidate's name fails the build. **Five further tests check that this harness can fail**: they deliberately make the engine name-dependent and deliberately stop a gate from biting, and require the harness to catch both. A check that passes under every condition, including a broken engine, measures nothing. The harness's most consequential output is not a pass: leave-one-source-out shows the therapeutic chain has two single points of failure, which is recorded in the report's limitations rather than left for a reviewer to discover.
+
+Twenty-eight regression self-tests pin the gate logic: five cover the scenario-aware objective gate
 that makes the three scenarios give different answers, six cover malformed scenario blocks, and five
 run against this patient's own constraint levels so that the gates' reject, require and flag branches
 are exercised rather than assumed. The engine demonstrates gate logic only; scientific judgment is in the canonical

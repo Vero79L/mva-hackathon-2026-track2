@@ -135,6 +135,13 @@ Summary: {'STRONG': 0, 'CONDITIONAL': 5, 'REJECT': 12, 'BLOCKED': 0}
   note C-RAPA: G1_oncology[history]: 'immunosuppressive' is a recognised risk tag but this level's rule does not act on it
   note C-RAPA: G4_growth[restricted]: 'growth_suppressive' is a recognised risk tag but this level's rule does not act on it
 Summary: {'STRONG': 0, 'CONDITIONAL': 7, 'REJECT': 10, 'BLOCKED': 0}
+== robustness ==
+wrote docs/ROBUSTNESS.md
+  R1 ablations: 6   over-determined rejections: 9/10
+  R2 perturbations: 10
+  R3 name blinding: PASS
+  R4 probes: 6/6 passed
+  R5 chain sources: 5 papers tested
 == claim ledger ==
 claim_ledger.csv: 36 claims -> /sessions/rcw-01v3z1lhckhutum2htls471x/mnt/opportunity-quest/mva/research/registers/claim_ledger.csv
   human sign-off: 0/36 signed (registers/claim_signoff.csv)
@@ -143,10 +150,10 @@ claim_ledger.csv: 36 claims -> /sessions/rcw-01v3z1lhckhutum2htls471x/mnt/opport
 == manifest ==
 manifest OK
   PENDING (filled at freeze; run with --freeze to make this blocking): docs/REPORT.md: slots still to fill at freeze ['{{FILL:DATE}}', '{{FILL:VIDEO}}']
-  PENDING (filled at freeze; run with --freeze to make this blocking): registers/citation_check.csv is older than docs/mechanism_graph.yaml - re-run scripts/phase1/16_verify_citations.py from a network that can reach Europe PMC/Crossref
+  PENDING (filled at freeze; run with --freeze to make this blocking): registers/citation_check.csv is older than docs/mechanism_graph.yaml - re-run scripts/phase1/16_verify_citations.py --include-uniprot from a network that can reach Europe PMC/Crossref; all 14 PMIDs in the graph already have a verified row, so this is a timestamp ordering rather than an unchecked citation
   PENDING (filled at freeze; run with --freeze to make this blocking): 36/36 claim-ledger rows carry no human sign-off (registers/claim_signoff.csv). A generated ledger can prove its sources; it cannot prove that a person read them.
  counts verified: claims=36, global-negative=5, product rows=11, registered facts=18, self-tests=28
  denominator: 13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries
  primary    : A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experi…
- files      : 9 hashed -> outputs/manifest.json
+ files      : 10 hashed -> outputs/manifest.json
 DONE

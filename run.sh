@@ -35,6 +35,10 @@ for sc in S1 S2 S3; do
     echo "== scenario $sc == (skipped: config/cases/bub1b_mva_$sc.yaml not present yet)" >> "$OUT"
   fi
 done
+# Robustness harness: ablation, constraint perturbation, name blinding, synthetic
+# probes, leave-one-source-out. R3/R4 are assertions and exit non-zero on failure,
+# so a regression that makes the engine name-dependent fails the build here.
+step robustness "$PY" scripts/phase1/20_robustness.py
 step "claim ledger" "$PY" make_claim_ledger.py
 # Release manifest: the four deliverables must agree with the canonical sources (Spec 0 §1.2)
 step "manifest" "$PY" make_manifest.py
