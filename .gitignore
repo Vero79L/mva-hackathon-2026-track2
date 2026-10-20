@@ -51,3 +51,7 @@ AGENTS.md
 # camera, upload order). A production aid, not a submission deliverable: PITCH.md is the
 # script of record and the manifest gates it. Kept local for the same reason as AGENTS.md.
 docs/PITCH_STORYBOARD.md
+
+# Pitch deck (production aid, like PITCH_STORYBOARD.md): not a submission deliverable.
+docs/pitch_deck.html
+docs/pitch_deck.pdf
