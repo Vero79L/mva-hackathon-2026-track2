@@ -238,7 +238,7 @@ edges:
   counterevidence: Suijkerbuijk 2010 分出兩類 MVA 突變：降低蛋白量，或特異性損害檢查點活性與微管附著。摘要給的方向是「降量類的錯義一致落在激酶域之內或附近」；該文內文（Results 標題、Fig 3、Discussion）確實也主張反方向——「所有落在激酶域的
     MVA 突變都降低 BUBR1 總量」——但這個全稱只涵蓋它實測的五個來自英國 MVA 病人的激酶域取代，不是對任意新變異的預測規則；而且 Fig 2A 顯示 N 端 TPR 域的取代也會降低蛋白量（幅度較小，全部病人細胞株為 2–6
     倍），因此實際是一個梯度而非兩個乾淨的分組。本案的取代未被測過。而 Gama Braga 2020（PMID 33207204）顯示該 pseudokinase 域本身是 KARD 磷酸化與 PP2A-B56 招募所必需，突變它會直接造成檢查點解除受阻與排列錯誤——因此域內錯義完全可能是功能損傷而非量的問題（情境
-    S2），本案無法由文獻判定屬於哪一類。2026 年新增一個 Suijkerbuijk 面板以外的人類資料點，方向支持本邊但不能關閉兩類之爭：Li 2026（PMID 42434306）在兩個不相關家系的重複性流產 proband 身上找到兩個新的
+    S2），本案無法由文獻判定屬於哪一類。2026 年新增一個 Suijkerbuijk 面板以外的人類資料點，方向支持本邊但不能關閉兩類之爭：Wei 2026（PMID 42434306）在兩個不相關家系的重複性流產 proband 身上找到兩個新的
     BUB1B 錯義，淋巴細胞 PCS 率對 20 名對照顯著上升，Western blot 顯示 BUBR1 蛋白「a trend toward reduced」。設界要寫清楚：這兩位是**雜合**而非雙等位、兩個變異依 ACMG 都是
     VUS、蛋白只到 trend 而非定量下降、n=2、而且 p.W722R 與 p.A739S 都落在激酶域（766–1050）**之外、N 端側**，因此它測的是「域附近的錯義會降低蛋白量」，不是「域內錯義屬於降量類」。本案的域內取代仍未被任何已發表資料測過
   counterevidence_en: 'Suijkerbuijk 2010 separates MVA mutations into two classes: those that lower protein abundance, and
@@ -253,7 +253,7 @@ edges:
     and PP2A-B56 recruitment, and mutating it directly causes impaired checkpoint silencing and alignment errors — so a substitution
     inside the domain may well be a function lesion rather than an abundance problem (scenario S2). The literature cannot
     assign this case to either class. One human data point from outside the Suijkerbuijk panel was added in 2026, and it points
-    in this edge''s direction without settling the two-class question: Li 2026 (PMID 42434306) found two novel BUB1B missense
+    in this edge''s direction without settling the two-class question: Wei 2026 (PMID 42434306) found two novel BUB1B missense
     variants in the probands of two unrelated recurrent-pregnancy-loss families, with PCS rates in lymphocytes significantly
     above 20 controls and a Western-blot "trend toward reduced" BUBR1 protein. The bounds matter and are stated rather than
     buried: both probands are **heterozygous**, not biallelic; both variants are VUS under ACMG/AMP; the protein result is
@@ -480,7 +480,7 @@ edges:
       counseling for recurrent pregnancy loss
   counterevidence: 這是親代的觀察，不是先證者細胞的表現型。更重要的是：Schmid 2014 的人類那一半是作者的預測而非量測（2026-10-19 red-team 指出本邊原本標為 measured_in_model，等於把作者的預測當成已測結果——正是本作品宣稱要防的事），強度已降為
     asserted。2026-10-20 新增 PMID 42434306 後，人類那一端第一次有了臨床加細胞遺傳學的量測：BUB1B 雜合變異攜帶者的流產物呈隨機非整倍體、淋巴細胞 PCS 顯著升高。但**本邊的強度仍維持 asserted**，因為最弱的一環沒有變：這個家庭的親代從未被檢測，把
-    BUB1B 功能不足認定為他們流產的原因仍是推論。Li 2026 本身的界也要記住：兩個變異都是 VUS、n=2、作者只主張「preliminary functional support」
+    BUB1B 功能不足認定為他們流產的原因仍是推論。Wei 2026 本身的界也要記住：兩個變異都是 VUS、n=2、作者只主張「preliminary functional support」
   counterevidence_en: 'This is a parental observation, not a phenotype of the proband''s cells. More importantly, the human
     half of Schmid 2014 is the authors'' prediction rather than a measurement (2026-10-19 adversarial review found this edge
     labelled measured_in_model, which is exactly the error this submission claims to guard against); the strength has been
@@ -488,7 +488,7 @@ edges:
     measurement for the first time: miscarriage specimens from BUB1B heterozygous carriers showed random aneuploidies and
     the carriers'' lymphocytes showed significantly elevated PCS. **The edge''s strength nevertheless stays `asserted`**,
     because the weakest link has not moved: the parents in this family were never tested, so attributing their losses to BUB1B
-    insufficiency remains an inference. Li 2026 carries its own bounds — both variants are VUS, n = 2, and the authors claim
+    insufficiency remains an inference. Wei 2026 carries its own bounds — both variants are VUS, n = 2, and the authors claim
     only "preliminary functional support".'
   scenario_dependent: false
 - id: E14
@@ -619,8 +619,9 @@ edges:
     title_hint: SIRT2 transgenic over-expression does not impact lifespan in mice
   counterevidence: 這是本假說最關鍵也最脆弱的一步。(1) 基質類別不同：BubR1-H/H 的殘餘蛋白是量少的「正常」蛋白，本案的殘餘蛋白是錯摺的錯義蛋白；去乙醯化能保護正常蛋白免於降解，未必救得回因摺疊問題被清除的蛋白。(2)
     背景特異性：SIRT2 過表現在正常背景對健康與壽命無效（Wu 2023），這限縮了適用範圍，也表示沒有一般性證據支持它。(3) 沒有指名 E3 ligase，因此無法判斷 K668 所保護的降解路徑與清除錯摺蛋白的路徑是否同一條——這正是整個假說最可能破的接縫。(4)
-    見 E16b：同一酵素在 K250 的作用方向相反。本案背景的淨效應未測。(5) 2026-10-20 補：North 2014 摘要明寫壽命延長「在雄鼠效果較大」（a greater effect in male mice）。整條治療軸唯一的承重結果是性別相依的，而
-    n-of-1 的對象只有一個性別；本提案先前完全沒有記錄這一點
+    見 E16b，而且要照原文的說法寫、不要照我們最初的寫法：同一酵素也作用在 K250，該位點的乙醯化會阻擋泛素依賴的降解，所以第二個作用的「方向」確實與本邊相反——但該位點唯一的研究發現 K250 乙醯化上升「not substantial
+    to elevate the levels of total BubR1」，因此「對蛋白量有相反效應」並未被證實，不可在此主張。真正未測的是本案背景下的淨效應。(5) 2026-10-20 補：North 2014 摘要明寫壽命延長「在雄鼠效果較大」（a
+    greater effect in male mice）。整條治療軸唯一的承重結果是性別相依的，而 n-of-1 的對象只有一個性別；本提案先前完全沒有記錄這一點
   counterevidence_en: 'This is the most load-bearing and most fragile step in the hypothesis. (1) Different substrate class:
     the residual protein in BubR1-H/H is a low-abundance but otherwise normal protein, whereas this case''s residual protein
     is a misfolded missense product; deacetylation that protects a normal protein from degradation need not rescue one being
@@ -628,11 +629,14 @@ edges:
     a normal background (Wu 2023), which narrows the claim to a BubR1-low setting and means no general evidence supports it.
     (3) No E3 ligase is named, so it cannot be determined whether the degradation route K668 acetylation protects against
     is the same route that destroys a misfolded kinase-domain mutant -- this is the joint at which the whole hypothesis is
-    most likely to fail. (4) See E16b: the same enzyme acts in the opposite direction at K250. The net effect in this background
-    is unmeasured. (5) Added 2026-10-20: North 2014''s own abstract states that the SIRT2 lifespan extension came ''with a
-    greater effect in male mice''. The single load-bearing result of the entire therapeutic axis is therefore sex-dependent,
-    an n-of-1 patient has one sex, and this submission had not recorded the fact at all until a third verification round re-read
-    the abstract.'
+    most likely to fail. (4) See E16b, stated as the source states it rather than as we first wrote it: the same enzyme also
+    acts on K250, where acetylation blocks ubiquitin-dependent degradation, so the *direction* of that second action opposes
+    this one -- but the one study of the site found that raising K250 acetylation was "not substantial to elevate the levels
+    of total BubR1", so an opposing effect on ABUNDANCE is not established and must not be asserted here. What is unmeasured
+    is the net effect in this background. (5) Added 2026-10-20: North 2014''s own abstract states that the SIRT2 lifespan
+    extension came ''with a greater effect in male mice''. The single load-bearing result of the entire therapeutic axis is
+    therefore sex-dependent, an n-of-1 patient has one sex, and this submission had not recorded the fact at all until a third
+    verification round re-read the abstract.'
   scenario_dependent: true
 unexplained_phenotypes:
 - H2
@@ -641,4 +645,4 @@ warnings:
 - 'E04: rule 4 - this measured claim rests on premise T2, which is supported only by predicted/asserted edges, so the report
   must word it as "if T2 holds"'
 - 找不到 hpo_terms.tsv：跳過「每個 HPO term 都有節點」的檢查
-generated_at: '2026-10-20T18:47:15+08:00'
+generated_at: '2026-10-20T23:11:56+08:00'

@@ -40,7 +40,8 @@ def verification_mode(url: str) -> str:
     u = (url or "").lower()
     if "pubmed.ncbi.nlm.nih.gov" in u:
         return "literature_read"          # a person must read the source; nothing else substitutes
-    if "dailymed.nlm.nih.gov" in u or "ema.europa.eu" in u:
+    if ("dailymed.nlm.nih.gov" in u or "ema.europa.eu" in u
+            or "medicines.org.uk" in u):      # UK emc: the SmPC is the GB equivalent of the label
         return "label_text_match"         # open the label, match the quoted string and its date
     if "ods.od.nih.gov" in u:
         # Not a product label. Disclosed rather than counted as a label check: these rows point at
@@ -81,10 +82,10 @@ GLOBAL_NEGATIVES = [
   "0 relevant hits; the 4 returned records concern unrelated tissues or are the SIRT2-BubR1 paper itself",
   "unresolved"),
  ("GN-02",
-  "No approved translational-readthrough agent exists for the truncating allele: the only candidate with a marketing authorisation lost it.",
+  "No approved translational-readthrough agent is eligible for this patient's truncating allele. Bounded, because the global version is false: ataluren retains a Great Britain marketing authorisation (live UK SmPC, 250 mg updated 2026-03-31) after the EU non-renewal of 2025-03-28 and the US withdrawal of 2026-02-12, but for a different gene and indication; the approved aminoglycosides are rejected on renal grounds; ELX-02 and DAP are investigational.",
   "section 5 Candidate funnel; section 7 Eligibility matrix",
-  "EMA EPAR page for Translarna (ataluren); DailyMed search for approved readthrough agents",
-  "EMA: conditional authorisation not renewed 28 March 2025, effectiveness not confirmed",
+  "EMA EPAR page for Translarna (ataluren); UK emc SmPC for Translarna (checked 2026-10-20); DailyMed search for approved readthrough agents",
+  "EMA: conditional authorisation not renewed 28 March 2025, effectiveness not confirmed; UK: authorisation live, so the claim is jurisdiction-bounded and indication-bounded rather than global",
   "bounded"),
  ("GN-03",
   "No approved drug selectively activates SIRT2 or directly stabilises BUBR1; the strongest mechanistic link has no pharmacology behind it.",

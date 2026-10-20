@@ -11,6 +11,7 @@
 那一天之外每天都紅，那是沒有用的測試。
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -78,8 +79,13 @@ class ManifestGate(unittest.TestCase):
         eng = self.tree()
         p = eng / "docs" / "REPORT.md"
         t = p.read_text(encoding="utf-8")
-        self.assertIn("36 claims", t)
-        p.write_text(t.replace("36 claims", "99 claims", 1), encoding="utf-8")
+        # Read the count out of the report rather than hard-coding it: the ledger grows (a product
+        # row was added on 2026-10-20 and this test failed on the literal "36"), and a fixture that
+        # has to be edited whenever the thing it guards changes is a fixture that gets switched off.
+        m = re.search(r"\b(\d+) claims\b", t)
+        self.assertIsNotNone(m, "fixture 假設報告寫了 'N claims'")
+        self.assertNotEqual(m.group(1), "99")
+        p.write_text(t.replace(f"{m.group(1)} claims", "99 claims", 1), encoding="utf-8")
         self.assertBlocks(eng, "99 claims")
 
     # ---- 主要假說：報告和 pitch 必須逐字相同 ----

@@ -98,7 +98,7 @@
       "entity_type": "mechanism_branch",
       "branch": "A protein-rescue (readthrough/NMD)",
       "competition_eligibility": "INELIGIBLE",
-      "eligibility_note": "ataluren lost approval (EMA non-renewal 2025-03-28; PTC withdrew FDA NDA application 2026-02-12); aminoglycosides INELIGIBLE here on renal grounds; ELX-02 investigational; DAP preclinical",
+      "eligibility_note": "ataluren lost its EU authorisation (EMA non-renewal 2025-03-28) and its US application was withdrawn (2026-02-12), but RETAINS a Great Britain marketing authorisation (live UK SmPC, 250 mg updated 2026-03-31, checked 2026-10-20) for nonsense-mutation Duchenne muscular dystrophy - a different gene and indication, so it is not an eligible product for this allele without an off-label argument not made here; aminoglycosides INELIGIBLE on renal grounds; ELX-02 investigational; DAP preclinical",
       "research_judgment": "CONDITIONAL",
       "directionality": "compensate",
       "net_effect": "strengthen",
@@ -187,10 +187,10 @@
         "G3_renal": "ok",
         "G4_growth": "ok"
       },
-      "best_evidence": "As a disease modifier: rejected (effective 0.5-5 mM vs reachable plasma ~2-25 uM oral). As mitigation: reduces oxidative/senescence load (consequence endpoint). Independent model-organism support for the mitigation lane itself appeared in 2026: in a Drosophila MVA model built by depleting one SAC gene in the neural-stem-cell compartment (Nat Commun, PMID 41820377), proteostasis failure and mitochondrial dysfunction were shown to mediate how complex aneuploidy damages stemness, and overexpressing ROS scavengers or mitochondrial chaperones, or blocking apoptosis, dampened the aneuploidy-driven loss of brain size. Bounds: Drosophila, genetic manipulation rather than a drug, an organ-size endpoint, and NAC itself was not tested - this raises the prior on the mitigation lane, not on this molecule at this exposure.",
+      "best_evidence": "As a disease modifier: rejected (effective 0.5-5 mM vs reachable plasma ~2-25 uM oral). As mitigation: reduces oxidative/senescence load (consequence endpoint). Independent model-organism support for the mitigation lane itself appeared in 2026: in a Drosophila MVA model built by depleting one SAC gene in the neural-stem-cell compartment (Nat Commun, PMID 41820377), proteostasis failure and mitochondrial dysfunction were shown to mediate how complex aneuploidy damages stemness, and overexpressing ROS scavengers or mitochondrial chaperones, or blocking apoptosis, dampened the aneuploidy-driven loss of brain size. Bounds: Drosophila, genetic manipulation rather than a drug, an organ-size endpoint, and NAC itself was not tested there. A second 2025 data point does test the molecule, in a mammalian system, and was missed by our original search (added 2026-10-20): Nago 2025, Reprod Med Biol (PMID 39845481) - in Sod1-deficient mouse oocytes matured in vitro, chromosome misalignment and segregation errors rose and this was associated with REDUCED RECRUITMENT OF BUBR1 TO KINETOCHORES, and adding N-acetyl-L-cysteine or L-ascorbic acid during maturation REDUCED the frequency of segregation errors. Bounds, which keep this at CONDITIONAL rather than supported: an oxidative-stress knockout, not MVA and not BUB1B; the BUBR1 lesion is kinetochore recruitment, not low abundance; meiosis in oocytes, not mitosis in somatic cells; drug added to maturation medium, not a systemic exposure in a child. What it changes: the mitigation lane now has a drug-level mammalian result on a segregation-fidelity endpoint rather than only general oxidative-load reasoning and a fly genetic model.",
       "disposition_reason": "Conditional as downstream mitigation (a lane the strategy permits), NOT a disease modifier; exposure for the mitigation endpoint unproven; keep tumor-promotion watch.",
       "decisive_experiment": "In patient cells: ROS + senescence markers (SA-beta-gal/p16/p21) + proliferative lifespan at achievable exposure; explicitly a mitigation readout, not a fidelity fix.",
-      "version": "2026-10-08",
+      "version": "2026-10-20",
       "engine_inputs": {
         "net_effect": "strengthen",
         "evidence_distance": 2,

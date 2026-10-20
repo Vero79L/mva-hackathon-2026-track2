@@ -96,5 +96,15 @@ child.
 | Whether we built our screening tool to produce the answer we wanted | `ROBUSTNESS.md` |
 | The one-sentence decision rule this all rests on | `PRIMARY_HYPOTHESIS.md` |
 
-*No genomic coordinate, genotype, sample identifier or individual clinical detail appears in this
-file or anywhere else in this repository.*
+*No genomic coordinate, no genotype and no sample identifier appears in this file or anywhere in
+this repository, and a scan blocks every commit that would add one. This page and the report
+describe the child's features by category only.*
+
+*One thing we will not round off, because it is the family's to know and because the full report
+says it on page 60 where a reader of this page would never find it: the structured files the
+screening tool reads do list the eight observations as standard HPO terms — the shared vocabulary
+clinicians use for clinical features — because the mechanism diagram has to connect specific
+features, and because the organizers list those terms among the facts that may be shared. In a
+condition with a few hundred reported cases worldwide, a gene result plus eight specific terms is
+a narrow description, and we weighed that rather than assuming it away. `REPORT.md` §15 sets out
+what we kept, what we left out, and why.*
