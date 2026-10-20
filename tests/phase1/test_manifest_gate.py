@@ -88,6 +88,30 @@ class ManifestGate(unittest.TestCase):
         p.write_text(t.replace(f"{m.group(1)} claims", "99 claims", 1), encoding="utf-8")
         self.assertBlocks(eng, "99 claims")
 
+    def test_count_drift_inside_the_xlsx_methods_form_is_caught(self):
+        """組織方的 methods 表單是 .xlsx，閘以前根本讀不到它裡面的數字。
+
+        2026-10-20 發現：那份已提交的表單還寫著舊的 ledger 列數，而且帶著報告早已撤回的
+        全稱否定。一道只檢查「容易讀的檔」的閘，破洞的形狀就是一個 spreadsheet。
+        """
+        import zipfile
+        eng = self.tree()
+        x = eng / "docs" / "Vero7878_track2_methods.xlsx"
+        self.assertTrue(x.exists(), "fixture 假設 methods 表單在交付物裡")
+        zin = zipfile.ZipFile(x)
+        items = [(i, zin.read(i.filename)) for i in zin.infolist()]
+        zin.close()
+        sheet = "xl/worksheets/sheet1.xml"
+        m = re.search(r"\b(\d+) claims\b",
+                      next(d for i, d in items if i.filename == sheet).decode("utf-8"))
+        self.assertIsNotNone(m, "fixture 假設表單裡寫了 'N claims'")
+        with zipfile.ZipFile(x, "w", zipfile.ZIP_DEFLATED) as zout:
+            for i, data in items:
+                if i.filename == sheet:
+                    data = data.decode("utf-8").replace(f"{m.group(1)} claims", "99 claims", 1).encode("utf-8")
+                zout.writestr(i, data)
+        self.assertBlocks(eng, "99 claims")
+
     # ---- 主要假說：報告和 pitch 必須逐字相同 ----
 
     def test_primary_sentence_paraphrase_is_caught(self):

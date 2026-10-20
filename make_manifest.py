@@ -50,6 +50,12 @@ DELIVERABLES = [
     "docs/SAFETY_ANNEX.md", "docs/MVA_DECISION_TABLE.md",
     "docs/candidate_table.md", "docs/candidates_canonical.json", "docs/computed_vs_human.md",
     "docs/ROBUSTNESS.md", "docs/PLAIN_LANGUAGE_SUMMARY.md",
+    # The organizers' own methods form. It is a submitted deliverable and a judge opens it, but
+    # being a .xlsx it was read by nothing: on 2026-10-20 it still said "36 claims: ... 11
+    # regulatory" after the ledger had grown, and it carried a global negative the report had
+    # already withdrawn. A gate that checks only the files it finds easy to read is a gate with a
+    # hole shaped like a spreadsheet.
+    "docs/Vero7878_track2_methods.xlsx",
 ]
 NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
                 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen",
@@ -61,6 +67,28 @@ NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 
                 35: "thirty-five", 36: "thirty-six"}
 WORD_NUM = {v: k for k, v in NUMBER_WORDS.items()}
 NUM_RE = r"(\d{1,3}|" + "|".join(sorted(WORD_NUM, key=len, reverse=True)) + r")"
+
+
+def deliverable_text(path):
+    """The text of a deliverable, including the .xlsx methods form.
+
+    Everything else here is Markdown, JSON or CSV and reads as text. The methods spreadsheet is a
+    zip, so `read_text` returns binary noise and every count check silently matched nothing in it.
+    Pull the cell text out instead: sheet1 holds inline strings in this workbook, and
+    sharedStrings is read too in case a later edit moves them there.
+    """
+    if path.suffix.lower() == ".xlsx":
+        import zipfile
+        try:
+            with zipfile.ZipFile(path) as z:
+                parts = [n for n in z.namelist()
+                         if n.endswith(("sharedStrings.xml",)) or re.search(r"worksheets/sheet\d+\.xml$", n)]
+                raw = " ".join(z.read(n).decode("utf-8", errors="replace") for n in sorted(parts))
+        except Exception as ex:                      # a corrupt deliverable is a problem, not a pass
+            return f"__UNREADABLE_XLSX__ {ex}"
+        import html as _html
+        return _html.unescape(re.sub(r"<[^>]+>", " ", raw))
+    return path.read_text(encoding="utf-8")
 
 
 def as_int(tok):
@@ -136,6 +164,7 @@ CHECKED_FOR_COUNTS = ["docs/REPORT.md", "docs/PITCH.md", "docs/METHODS_AND_AI.md
                       "docs/PRIMARY_HYPOTHESIS.md", "docs/SAFETY_ANNEX.md",
                       "docs/PLAIN_LANGUAGE_SUMMARY.md", "docs/MVA_DECISION_TABLE.md",
                       "docs/ROBUSTNESS.md",
+                      "docs/Vero7878_track2_methods.xlsx",
                       "../registers/claim_ledger.csv"]
 
 problems = []
@@ -164,7 +193,7 @@ for rel in DELIVERABLES:
     path = HERE / rel
     if not path.exists():
         continue
-    for mm in ENTRIES_RE.finditer(path.read_text(encoding="utf-8")):
+    for mm in ENTRIES_RE.finditer(deliverable_text(path)):
         got = as_int(mm.group(1))
         if got is not None and got != len(cands):
             problems.append(f"{rel}: says '{mm.group(0).strip()}' but the canonical "
@@ -175,7 +204,10 @@ for rel in CHECKED_FOR_COUNTS:
     path = HERE / rel
     if not path.exists():
         continue
-    text = path.read_text(encoding="utf-8")
+    text = deliverable_text(path)
+    if text.startswith("__UNREADABLE_XLSX__"):
+        problems.append(f"{rel}: cannot be read as a deliverable - {text}")
+        continue
     for pattern, key in COUNT_CLAIMS:
         if key not in TRUTH:
             continue
