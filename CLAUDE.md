@@ -6,13 +6,22 @@ Hackathon 2026. Reply to Vero in Traditional Chinese. The full plan is Spec 1 v1
 
 ## 0. Check the account before touching any patient-derived data
 
-The competition's data rules allow patient data to be processed by an LLM only under business / API terms
-(organizers' answer in Community discussion #2). A Claude Pro or Max login does not qualify.
+The organizers' **final** guidance (Community discussion #2, ~2026-09-29, confirmed in #21) permits a
+consumer tier — including a Claude Pro or Max login — for patient-specific or derived information when
+model training is disabled in account settings and no feedback is given on any output. Both conditions
+hold for this work, and `docs/METHODS_AND_AI.md` declares exactly that.
+
+An earlier revision of this section said the opposite: that patient data could be processed by an LLM
+only under business / API terms, and that a Pro or Max login does not qualify. That was the organizers'
+interim answer and it was superseded; it is corrected here rather than left in place, because a runbook
+that contradicts the submission's own AI disclosure on the one compliance question that matters reads
+as an admission instead of a record. **Tier 3 below stays local-terminal-only regardless.** That is a
+data-minimisation choice this project keeps, not a rule it is forced into.
 
 | Tier | Steps | What they read | Login |
 |---|---|---|---|
 | 1 · no patient data | `tests/phase1/run_tests.sh`, `00_preflight.sh`, `11a_selftest_clinvar.sh`, `16_verify_citations.py` | code, public reference data, public ClinVar, PMIDs/DOIs | any |
-| 2 · derived, public-safe | `12`–`15`, `18`, `19` | `docs/` outputs (HGVS of the two variants, HPO terms, mechanism text), the fact register, the case file | Console (API) recommended — organizers' guidance on 2026-10-09. A Max login is what `docs/METHODS_AND_AI.md` currently declares for this kind of input; keep the declaration and practice identical |
+| 2 · derived, public-safe | `12`–`15`, `18`, `19` | `docs/` outputs (HGVS of the two variants, HPO terms, mechanism text), the fact register, the case file | Claude Max with training opt-out and no feedback is permitted (organizers' final guidance #2); Console (API) is still the cleaner route. Keep this file, `docs/METHODS_AND_AI.md` and `registers/ai_usage_register.csv` identical on what was actually used |
 | 3 · raw | `10_handoff.py`, `11_transcript_facts.sh` | Track 1 submission CSV and VCF (coordinates, genotypes) | **Console (API) only**, or Vero runs them herself in Terminal |
 
 1. Run `/status` first. Tier 3 needs a Claude Console (API) credential (an Anthropic profile or an API key).
