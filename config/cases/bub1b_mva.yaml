@@ -182,6 +182,9 @@ provenance:
     file: results/track2/handoff_from_track1.yaml
     sha256: b3ba0540e781654e13a8222816563bc32d0598b3a6bb9350628a1949b56f8d46
     mode: A
+    recomputed: false
+    note: carried over by --repo-only; the controlled file was neither opened nor
+      hashed in this run
   transcript_facts_public:
     file: docs/transcript_facts_public.yaml
     sha256: 0e69844ad6fbe621df59205ed82d1a12b1237c83e7f7e7d0221194b8a66bb03c
@@ -190,7 +193,7 @@ provenance:
     sha256: 6602dcef5290c4108edc3a2149a4c75b99377a75948a922ae3a8af22c7f5af1d
   mechanism_graph:
     file: docs/mechanism_graph.yaml
-    sha256: fca53e7db36564a1ca7b9b464fd24b053f61df0084454076b3ac4511e618a872
+    sha256: 350949418bbc8781933c72711216d9f28db79a2bb9b0f3c34ede075d222acd59
   scenarios:
     file: config/scenarios/bub1b_mva.scenarios.yaml
     sha256: e59bc42c64d18f321fde5189560fbd9a181ba7d35e16fd5bd13e719b0764c408
@@ -198,4 +201,4 @@ provenance:
     file: research/registers/fact_register.csv
     sha256: 12ccdf52f606b5a5468c28b0667dc73c351915ed55d9f59e32f76916172882ef
     rows: 18
-  built_at: '2026-10-20T17:38:02+08:00'
+  built_at: '2026-10-20T18:47:35+08:00'

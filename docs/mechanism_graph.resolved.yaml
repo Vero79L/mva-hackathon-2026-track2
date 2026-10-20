@@ -334,7 +334,7 @@ edges:
     strength: measured_in_model
     title_hint: BubR1 allelic effects drive phenotypic heterogeneity in mosaic-variegated aneuploidy progeria syndrome
   - pmid: '24981203'
-    locator: main text
+    locator: 'main text. Erratum: Chromosome Res 2014;22(4):645-6'
     strength: measured_in_model
     title_hint: Mosaic variegated aneuploidy in mouse BubR1 deficient embryos and pregnancy loss in human
   counterevidence: 非整倍體比例不隨疾病嚴重度單調排序（Sieben 2020），因此不可單獨作為主要療效終點
@@ -443,7 +443,7 @@ edges:
     genotype_match: same_gene_LoF
   sources:
   - pmid: '24981203'
-    locator: main text
+    locator: 'main text. Erratum: Chromosome Res 2014;22(4):645-6'
     strength: measured_in_model
     title_hint: Mosaic variegated aneuploidy in mouse BubR1 deficient embryos and pregnancy loss in human
   counterevidence: 該模型是完全缺失的胚胎致死背景，比本案的 hypomorph 嚴重；方向一致但程度不可直接套用
@@ -466,8 +466,8 @@ edges:
     genotype_match: same_gene_LoF
   sources:
   - pmid: '24981203'
-    locator: 'abstract: "we predict that deficiency/insufficiency of BubR1 ... are responsible for a significant fraction
-      of both early and late RPLs"'
+    locator: 'erratum Chromosome Res 2014;22(4):645-6; abstract: "we predict that deficiency/insufficiency of BubR1 ... are
+      responsible for a significant fraction of both early and late RPLs"'
     strength: asserted
     title_hint: Mosaic variegated aneuploidy in mouse BubR1 deficient embryos and pregnancy loss in human
   - pmid: '42434306'
@@ -610,7 +610,7 @@ edges:
     genotype_match: same_gene_other
   sources:
   - pmid: '24825348'
-    locator: main text; Fig 4 lifespan
+    locator: main text; Fig 4 lifespan; abstract states the lifespan increase had "a greater effect in male mice"
     strength: measured_in_model
     title_hint: SIRT2 induces the checkpoint kinase BubR1 to increase lifespan
   - pmid: '38009412'
@@ -619,7 +619,8 @@ edges:
     title_hint: SIRT2 transgenic over-expression does not impact lifespan in mice
   counterevidence: 這是本假說最關鍵也最脆弱的一步。(1) 基質類別不同：BubR1-H/H 的殘餘蛋白是量少的「正常」蛋白，本案的殘餘蛋白是錯摺的錯義蛋白；去乙醯化能保護正常蛋白免於降解，未必救得回因摺疊問題被清除的蛋白。(2)
     背景特異性：SIRT2 過表現在正常背景對健康與壽命無效（Wu 2023），這限縮了適用範圍，也表示沒有一般性證據支持它。(3) 沒有指名 E3 ligase，因此無法判斷 K668 所保護的降解路徑與清除錯摺蛋白的路徑是否同一條——這正是整個假說最可能破的接縫。(4)
-    見 E16b：同一酵素在 K250 的作用方向相反。本案背景的淨效應未測
+    見 E16b：同一酵素在 K250 的作用方向相反。本案背景的淨效應未測。(5) 2026-10-20 補：North 2014 摘要明寫壽命延長「在雄鼠效果較大」（a greater effect in male mice）。整條治療軸唯一的承重結果是性別相依的，而
+    n-of-1 的對象只有一個性別；本提案先前完全沒有記錄這一點
   counterevidence_en: 'This is the most load-bearing and most fragile step in the hypothesis. (1) Different substrate class:
     the residual protein in BubR1-H/H is a low-abundance but otherwise normal protein, whereas this case''s residual protein
     is a misfolded missense product; deacetylation that protects a normal protein from degradation need not rescue one being
@@ -628,7 +629,10 @@ edges:
     (3) No E3 ligase is named, so it cannot be determined whether the degradation route K668 acetylation protects against
     is the same route that destroys a misfolded kinase-domain mutant -- this is the joint at which the whole hypothesis is
     most likely to fail. (4) See E16b: the same enzyme acts in the opposite direction at K250. The net effect in this background
-    is unmeasured.'
+    is unmeasured. (5) Added 2026-10-20: North 2014''s own abstract states that the SIRT2 lifespan extension came ''with a
+    greater effect in male mice''. The single load-bearing result of the entire therapeutic axis is therefore sex-dependent,
+    an n-of-1 patient has one sex, and this submission had not recorded the fact at all until a third verification round re-read
+    the abstract.'
   scenario_dependent: true
 unexplained_phenotypes:
 - H2
@@ -636,4 +640,5 @@ unexplained_phenotypes:
 warnings:
 - 'E04: rule 4 - this measured claim rests on premise T2, which is supported only by predicted/asserted edges, so the report
   must word it as "if T2 holds"'
-generated_at: '2026-10-20T17:38:02+08:00'
+- 找不到 hpo_terms.tsv：跳過「每個 HPO term 都有節點」的檢查
+generated_at: '2026-10-20T18:47:15+08:00'

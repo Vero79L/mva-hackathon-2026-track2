@@ -128,6 +128,11 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check-only", action="store_true")
     ap.add_argument("--run-engine", action="store_true")
+    ap.add_argument("--repo-only", action="store_true",
+                    help="只重算 repo 內來源檔的 sha256；不開啟、不雜湊交接檔，"
+                         "原有的 handoff provenance 原樣保留並標記為未重算。"
+                         "給兩種情況用：沒有受管制資料存取權的人要驗 provenance，"
+                         "以及 repo 內的來源檔改了但交接檔沒動的時候。")
     ap.add_argument("--candidates", default="evidence/candidates_from_canonical.yaml")
     a = ap.parse_args()
     env = C.load_env()
@@ -143,8 +148,22 @@ def main():
         reg_ids, nrows = {r["fact_id"].strip() for r in rows}, len(rows)
     pub_p = eng / "docs" / "transcript_facts_public.yaml"
     public = C.read_yaml(pub_p) if pub_p.exists() else None
-    handoff = C.path("T2_RESULTS", env) / "handoff_from_track1.yaml" if env.get("T2_RESULTS") else None
-    hmode = (C.read_yaml(handoff) or {}).get("mode") if handoff and handoff.exists() else None
+    # --repo-only never touches the controlled area: the handoff file is neither opened nor stat'd,
+    # so fact_mode cannot be cross-checked and the existing handoff hash is carried over verbatim
+    # rather than dropped. Dropping it would silently delete a provenance record, which is worse
+    # than carrying one marked as not-recomputed.
+    if a.repo_only:
+        handoff, hmode = None, None
+    else:
+        handoff = C.path("T2_RESULTS", env) / "handoff_from_track1.yaml" if env.get("T2_RESULTS") else None
+        try:
+            readable = bool(handoff) and handoff.exists()
+        except OSError:
+            # Present but unreadable (sandbox, container without the controlled area mounted).
+            # Say so and point at the flag, rather than dying with a bare PermissionError.
+            C.die("交接檔存在但讀不到（權限）。沒有受管制資料存取權時用 "
+                  "`--repo-only`：只重算 repo 內來源檔的雜湊，交接檔完全不碰。")
+        hmode = (C.read_yaml(handoff) or {}).get("mode") if readable else None
     fails, warns = check(case, reg_ids, public, hmode)
     for w in warns:
         C.warn(w)
@@ -160,7 +179,14 @@ def main():
             if p and Path(p).exists():
                 prov[key] = {"file": label, "sha256": C.sha256(p), **extra}
 
-        add("handoff", handoff, "results/track2/handoff_from_track1.yaml", mode=hmode)
+        if a.repo_only:
+            carried = ((case.get("provenance") or {}).get("handoff") or {})
+            if carried:
+                prov["handoff"] = dict(carried, recomputed=False,
+                                       note="carried over by --repo-only; the controlled file was "
+                                            "neither opened nor hashed in this run")
+        else:
+            add("handoff", handoff, "results/track2/handoff_from_track1.yaml", mode=hmode)
         add("transcript_facts_public", pub_p, "docs/transcript_facts_public.yaml")
         add("domain_map", eng / "docs" / "domain_map.yaml", "docs/domain_map.yaml")
         add("mechanism_graph", eng / "docs" / "mechanism_graph.yaml", "docs/mechanism_graph.yaml")

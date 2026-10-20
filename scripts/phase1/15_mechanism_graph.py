@@ -60,10 +60,23 @@ def load_register_ids(p):
 
 
 def load_hpo(p):
-    if not p.exists():
+    # This file lives in the controlled area. `exists()` returns False when it is absent, but it
+    # RAISES PermissionError when the path is present and unreadable -- which is what happens under
+    # an OS sandbox, in a container that does not mount the controlled area, and for any reviewer
+    # reproducing this repository. The step then died on line 1 instead of taking the "no
+    # hpo_terms.tsv -> warn and skip rule 5" path it already documents. An unreadable file is
+    # absent as far as this step is concerned; the caller warns either way.
+    try:
+        if not p.exists():
+            return None
+    except OSError:
         return None
     ids = []
-    with open(p, encoding="utf-8") as fh:
+    try:
+        fh = open(p, encoding="utf-8")
+    except OSError:
+        return None
+    with fh:
         for line in fh:
             t = line.split("\t")[0].strip()
             if t.startswith("HP:"):

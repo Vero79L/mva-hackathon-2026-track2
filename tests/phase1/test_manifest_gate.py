@@ -110,7 +110,10 @@ class ManifestGate(unittest.TestCase):
         t = p.read_text(encoding="utf-8")
         p.write_text(t + "\n\n**2:55–3:40 — overrun.**\n" + ("word " * 200) + "\n",
                      encoding="utf-8")
-        self.assertBlocks(eng, "180s limit")
+        # needle must appear ONLY in the failure; "180s limit" also shows up in the
+        # success line "pitch length : 2:53 (173s, 180s limit)", which made the
+        # unperturbed-tree test fail the moment the manifest first went green.
+        self.assertBlocks(eng, "docs/PITCH.md is estimated at")
 
     def test_pitch_stated_length_must_match_computed(self):
         """舞台指示裡寫的長度本身也要對帳，不能是斷言。"""
@@ -173,7 +176,7 @@ class ManifestGate(unittest.TestCase):
         eng = self.tree()
         _rc, out = self.run_gate(eng)
         for needle in ("but the canonical", "99 claims", "PRIMARY line is not quoted verbatim",
-                       "records a failed run", "180s limit", "computed length is",
+                       "records a failed run", "docs/PITCH.md is estimated at", "computed length is",
                        "undisclosed AI use", "missing deliverable"):
             self.assertNotIn(needle, out, f"未擾動的樹就報了 {needle!r}：\n{out}")
 
