@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """第 19 步：公開安全檢查（Spec 1 v1.1 第 10 節）。engine 是要在 10/25 公開的 repo：commit 前擋下病人層級的資料。
 
-FAIL（擋下）：基因體座標（<染色體>:<位置>、chr<染色體>:<位置>、NC_0000…:g.<位置>、g.<位置>；位置 5 位數以上）、VCF 格式的列、
+FAIL（擋下）：基因體座標（<染色體>:<位置>、chr<染色體>:<位置>、後面緊接等位基因的 chr7:1234567A>T／chr7:1234567del、
+             以分隔號串起來的 7-1234567-A-T／7_1234567_A_T、逗號分組的 chr7:1,234,567、NC_0000…:g.<位置>、
+             g.<位置>；位置 5 位數以上）、VCF 格式的列、
              第一階段的私有檔名（handoff_from_track1.yaml、transcript_facts.yaml、t2_variants.*）、超過 5 MB 的檔案。
 WARN（人工看）：基因型字樣（0/1、1|0）、AD= / DP= / GQ=。
 例外：config/public_safety_allow.txt，一行一個「完全相同的字串<TAB>理由」（例如已在 ClinVar 公開的座標）。
@@ -46,8 +48,23 @@ PRIVATE_NAMES = re.compile(r"(^|/)(handoff_from_track1\.yaml|transcript_facts\.y
                            # any variant-call file at all, however it is named (red-team 2026-10-19:
                            # the name list only caught the two files we happened to know about)
                            r"|\.(vcf|vcf\.gz|bcf|bam|cram|fastq|fq|fq\.gz|fastq\.gz|ped|gvcf|gvcf\.gz)$")
+# The chromosome token, shared by the coordinate patterns below.
+_CHROM = r"(?:chr)?(?:[1-9]|1\d|2[0-2]|X|Y|MT?)"
 FAIL_PATTERNS = [
-    ("genomic_coordinate", re.compile(r"(?<![\w.:-])(?:chr)?(?:[1-9]|1\d|2[0-2]|X|Y|MT?):\d{5,}(?:[-_]\d+)?(?![\w.])")),
+    ("genomic_coordinate", re.compile(r"(?<![\w.:-])" + _CHROM + r":\d{5,}(?:[-_]\d+)?(?![\w.])")),
+    # A position written with its alleles attached is the form a coordinate actually arrives in
+    # when it is pasted out of a VCF, a browser or an annotation tool -- and the pattern above
+    # could not see it, because its trailing (?![\w.]) guard is broken by the very allele letter
+    # that makes the string a variant. Red-team 2026-10-20: `chr7:1234567A>T`, `7-1234567-A-T`
+    # and `chr7:1234567del` all passed the scan, so the pre-commit hook would not have blocked a
+    # commit containing them while the scan reported "no coordinates found". Two further patterns,
+    # because one regex that tries to cover both delimiters stops being readable.
+    ("genomic_coordinate_allele", re.compile(
+        r"(?<![\w.:-])" + _CHROM + r":\d{1,3}(?:,\d{3})+|"          # comma-grouped browser locus
+        r"(?<![\w.:-])" + _CHROM + r":\d{5,}\s*"
+        r"(?:[ACGTNacgtn]+\s*(?:>|->|/)\s*[ACGTNacgtn]+|del|dup|ins|inv|delins)")),
+    ("variant_id_delimited", re.compile(
+        r"(?<![\w.:-])" + _CHROM + r"[-_]\d{5,}[-_][ACGTNacgtn]+[-_][ACGTNacgtn]+(?![\w])")),
     ("refseq_genomic_hgvs", re.compile(r"\bN[CG]_\d{6}\.\d+:g\.\d+")),
     ("genomic_hgvs", re.compile(r"(?<![\w])g\.\d{5,}")),
     ("vcf_line", re.compile(r"^\S+\t\d+\t\S+\t[ACGTN]+\t[ACGTN,.*<>]+\t", re.M)),

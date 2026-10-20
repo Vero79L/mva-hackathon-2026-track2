@@ -3,9 +3,9 @@
   "denominator": "13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries",
   "primary_hypothesis": "A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experiment only if it acts in the compensating direction on the bottleneck the decisive experiment is built to measure — residual BubR1 abundance and checkpoint function, both of which are UNKNOWN in this child — passes this patient's constraint gates with every safety axis those gates cannot see declared rather than counted as clear, and rests on an approved product with a dated label. Under that rule the single named candidate is niacin (nicotinic acid), an approved NAD+ precursor acting through the SIRT2–BubR1 stabilization axis, carried as a conditional research hypothesis and not a recommendation: its oncology axis is contradictory and its growth axis unassessed. It is overturned if NAD+ repletion in patient-derived cells fails to raise BubR1 protein, fails to correct the checkpoint defect, or raises the aneuploid fraction of the surviving population — a fraction, never raw survival, because a real checkpoint rescue can raise overall survival.",
   "files": {
-    "docs/REPORT.md": "c749c21a9643aebc2a5dd5635b36a4030c58aa31ea41c65032710d439bfff05a",
+    "docs/REPORT.md": "2ec203478b6ad4a8bc35f9430b1fe96df0837049f2479ce8fe7a0f0ef0e6d393",
     "docs/PITCH.md": "c2b3237e4a8975b68d6b6c1c8306dd50bcc4eb3fe8a03a512330d5fd0b87a0fe",
-    "docs/METHODS_AND_AI.md": "208889eade9400a9a44805c9091c7fcbb2c3da9578af2ad1726043f7c76c7361",
+    "docs/METHODS_AND_AI.md": "d023ef6a17d0063138900e7caa7643c53035f70b1346e54ca6312b11631e15db",
     "docs/PRIMARY_HYPOTHESIS.md": "6ed273cd3ebbeab0f236652a38cc17107aecf54d876d3cb7a9ab7abdde50eab3",
     "docs/SAFETY_ANNEX.md": "f8819bc75b80f890313312adc9d19f0efaa39e4208b27cc60d9400ea1356ac6f",
     "docs/MVA_DECISION_TABLE.md": "04447485f9a758c9a0a49d64dca3567d3de44710018834702a66a4ffd8f39588",

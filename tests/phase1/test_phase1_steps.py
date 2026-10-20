@@ -105,7 +105,11 @@ class TestHandoff(Sandbox):
         (self.mva / "work" / "track1" / "norm.vcf.gz").write_bytes(b"fake")
         self.bin = self.tmp / "bin"
         self.bin.mkdir()
-        self.set_bcftools("0|1", "1|0", "7_10090_C_T", "7_10090_C_T")
+        # The PID value is only ever compared for equality, so it is an opaque block label here.
+        # It used to be written in the `<chrom>_<pos>_<ref>_<alt>` shape a real PID has; the
+        # public-safety scan now (correctly) treats that shape as a coordinate, and a test
+        # fixture is not a good reason to teach the scan an exception.
+        self.set_bcftools("0|1", "1|0", "ps_block_1", "ps_block_1")
 
     def set_bcftools(self, pgt1, pgt2, pid1, pid2, gt1="0/1", gt2="0/1"):
         script = self.bin / "bcftools"
@@ -486,6 +490,19 @@ class TestPublicSafety(Sandbox):
             f"chr15:{POS}\tpublic in ClinVar\nNC_000015.10:g.{POS}\tpublic in ClinVar\n", encoding="utf-8")
         r = self.run_step("19_public_safety.py")
         self.assertEqual(r.returncode, 0, r.stdout)
+
+    def test_coordinate_with_alleles_attached_is_blocked(self):
+        """紅隊 2026-10-20：座標後面緊接等位基因，正是從 VCF／瀏覽器貼出來的實際形狀。
+
+        修補前這三種寫法全部漏掉，掃描還會印「沒有發現基因體座標」——pre-commit 防護因此
+        不會擋下含座標的 commit。這個測試在修補前是失敗的。
+        """
+        (self.eng / "docs" / "MECHANISM.md").write_text(
+            f"a chr15:{POS}A>T  b 15-{POS}-A-T  c chr15:{POS}del\n", encoding="utf-8")
+        r = self.run_step("19_public_safety.py")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("genomic_coordinate_allele", r.stdout)
+        self.assertIn("variant_id_delimited", r.stdout)
 
     def test_no_false_alarm_on_dates_and_hgvs_c(self):
         (self.eng / "docs" / "MECHANISM.md").write_text(
