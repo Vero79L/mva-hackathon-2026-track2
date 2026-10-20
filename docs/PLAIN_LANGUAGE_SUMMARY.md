@@ -75,6 +75,30 @@ One staged laboratory experiment, in cells from the child, in this order:
 Stage 2 and stage 3 are worth doing even if the medicine turns out to be useless, because they
 would be the first direct measurement of how this child's own checkpoint behaves.
 
+## What that experiment would practically need
+
+We are not the people who can run it, and we do not have the child's cells. So that this page
+leaves something more usable than a hypothesis, here is what the experiment needs, in the order it
+would be needed. None of this is a medical recommendation and none of it is urgent; it is the
+answer to "what would it take", which is otherwise buried in §6 of a long report.
+
+1. **Living cells from the child.** Either skin fibroblasts, which come from a small skin biopsy,
+   or a lymphoblastoid cell line, which is grown from a blood sample. Both are ordinary procedures
+   that genetics services do for research, and either one works for every stage above.
+2. **Two comparison cell lines**, which the laboratory supplies rather than the family: a healthy
+   control or a gene-corrected version of the child's own cells, and one in which BubR1 has been
+   deliberately lowered, so a result can be read against both ends of the scale.
+3. **A laboratory that works on chromosome segregation**, and a materials transfer agreement
+   between that laboratory and the centre that holds the cells. This is the step that usually
+   decides whether a study like this happens, and it is administrative rather than scientific.
+4. **A reagent that may have to be made.** One measurement in stage 2 needs an antibody against a
+   specific chemical mark on BubR1 that we could not find on sale. The report names two ways round
+   it, so this is a known cost rather than a surprise (`REPORT.md` §6).
+
+The question to ask a clinical team is therefore narrow and answerable: *are any of this child's
+cells already banked, and if not, would a skin biopsy or blood sample for research banking be
+reasonable to consider?* Banked cells outlast any single hypothesis, including ours.
+
 ## Questions a family could reasonably take to their own team
 
 These are questions, not recommendations, and the answers belong to the clinicians who know the
