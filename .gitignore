@@ -54,7 +54,6 @@ docs/PITCH_STORYBOARD.md
 
 # Pitch deck (production aid, like PITCH_STORYBOARD.md): not a submission deliverable.
 docs/pitch_deck.*
-docs/pitch_deck.pdf
 
 # BUILDER_TASKS_<date>.md — the internal work order for a build session (what to verify, what to
 # commit, what not to read). Same class as AGENTS.md and PITCH_STORYBOARD.md: a production aid, not
