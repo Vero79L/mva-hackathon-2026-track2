@@ -61,3 +61,6 @@ docs/pitch_deck.*
 # engine had 28 self-tests, and it carried an instruction to reword a data-handling caveat that
 # docs/METHODS_AND_AI.md is the record for. Kept local.
 BUILDER_TASKS_*.md
+docs/pitch_deck_presenter.html
+docs/make_presenter.py
+docs/pitch_deck_notes.pdf
