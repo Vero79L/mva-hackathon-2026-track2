@@ -66,9 +66,9 @@ at portrait text width its node labels render around 6pt, which is unreadable.
 ## Tests
 ```sh
 python3 src/triage.py --selftest     # 28 regression checks (input validation + gates + scenarios)
-bash tests/phase1/run_tests.sh       # 80 checks: the pipeline, the robustness harness, and the release gate
+bash tests/phase1/run_tests.sh       # 81 checks: the pipeline, the robustness harness, and the release gate
 ```
-Expected: `ALL PASS` and `Ran 80 tests ... OK`. The second suite includes
+Expected: `ALL PASS` and `Ran 81 tests ... OK`. The second suite includes
 `test_manifest_gate.py`, which perturbs a copy of the whole tree one item at a time and requires
 `make_manifest.py` to block with the right message — so the consistency gate is tested rather than
 asserted. The `--selftest` checks cover: wrong-direction rejects; unknown defect_direction or
@@ -110,6 +110,33 @@ gain-of-function case shows the directionality rule flipping with the input. Thi
 demonstrates that the gate logic is case-driven; it is **not** a cross-disease discovery
 claim — candidate generation and evidence appraisal remain curated.
 
+## Three quantitative checks, recomputed rather than asserted
+
+`scripts/phase1/21_quant_checks.py` produces the three numbers a reader would otherwise have to
+take on trust. Each query sends a gene symbol or an Ensembl identifier and nothing else.
+
+```sh
+python3 scripts/phase1/21_quant_checks.py power              # -> docs/power_table.md   (offline, in run.sh)
+python3 scripts/phase1/21_quant_checks.py tractability       # -> docs/target_tractability.md  (network)
+python3 scripts/phase1/21_quant_checks.py clinvar-baserate   # -> docs/clinvar_baserate.md     (network)
+```
+
+- **power** — detectability of the staged experiment in report §6: two-proportion test with a design
+  effect for clustering within a culture. Pure arithmetic, so `run.sh` regenerates it and the release
+  gate recomputes the two cells the report quotes in prose. It caught its own first draft, where the
+  table used 0.33 for a reduction the prose called one third.
+- **tractability** — Open Targets buckets for the fifteen proteins in the checkpoint/segregation
+  module and the NAD+ axis. The counted result is the external form of the directionality rule:
+  0 of 15 carry an approved drug in any modality, and the 5 with advanced clinical small molecules
+  are all inhibitors.
+- **clinvar-baserate** — what a curated classification is worth per consequence class for *BUB1B*,
+  one row per VariationID so the columns are a partition rather than overlapping search filters.
+  This path reads only each record's `molecular_consequence_list`; it never touches the
+  coordinate-bearing part of the summary, so no coordinate can reach a generated file.
+
+The two network checks are committed as **dated snapshots**: `run.sh` must stay runnable offline, so
+re-running them is a deliberate act and the date in each file is part of the claim.
+
 ## Submission documents (docs/)
 - `docs/REPORT.md` — the written report (decision, patient basis, candidate funnel, limitations).
 - `docs/PLAIN_LANGUAGE_SUMMARY.md` — the same conclusion in one page without jargon, written for
@@ -120,3 +147,8 @@ claim — candidate generation and evidence appraisal remain curated.
   gated by `make_manifest.py`, which blocks at 2:54 so a slower read still fits the limit.
 - `docs/METHODS_AND_AI.md` — methods + AI provenance + data governance.
 - `docs/candidates_canonical.json` — the single candidate source of truth (copy).
+- `docs/power_table.md`, `docs/target_tractability.md`, `docs/clinvar_baserate.md` — the three
+  quantitative checks above, generated.
+- `docs/MVA_DECISION_TABLE.md` — the same decision rule across nine MVA genes (scalability).
+- `docs/SAFETY_ANNEX.md` — mechanism-derived recognition for a care team, independent of our
+  candidate.

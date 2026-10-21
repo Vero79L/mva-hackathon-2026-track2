@@ -86,10 +86,10 @@ both strands, which is why single-point tests had not caught it. The error equal
 span length, so SNVs were unaffected. Fixed (nearest-edge rule) and pinned with two regression
 tests covering all four strand x direction combinations; the synthetic test suite went from 57 to
 59 tests at that point, and the new test is verified to fail against the pre-fix code. (The whole
-`tests/phase1/` suite stands at **80** today: 61 pipeline and transcript checks — the 59 above, one added on
+`tests/phase1/` suite stands at **81** today: 61 pipeline and transcript checks — the 59 above, one added on
 2026-10-20 that red-teams the public-safety scan, and one added on 2026-10-21 that requires the
 sign-off tool to write nothing when no person is at the keyboard — 5 that test whether the
-robustness harness can fail, described below, and 14 that perturb the release gate.) Any residual
+robustness harness can fail, described below, and 15 that perturb the release gate.) Any residual
 disagreement after the rerun is listed field-by-field in the self-test report and carried as a
 known, bounded limitation rather than suppressed.
 
@@ -152,6 +152,40 @@ must agree before a fact enters the report (both variants passed: 6/6 and 7/7 ch
 - **Human adjudication:** AI conclusions were reviewed and reconciled by a human; items not
   signed off are marked "pending human confirmation"; AI agents are not treated as
   independent evidence. Discovery, falsification, and citation-audit ran as separate contexts.
+
+## Three quantitative checks and what bounds them
+
+Three statements that a reviewer would otherwise have to accept on our word are computed from public
+sources by one script (`scripts/phase1/21_quant_checks.py`) and written as files, not typed into
+prose. Stating the bounds here rather than only the results, because each number is easy to
+over-read.
+
+- **Detectability of the proposed experiment** (`docs/power_table.md`): a two-proportion two-sided
+  test at alpha = 0.05 and power 0.80, with the design effect `1 + (m-1)·ICC` for clustering of
+  scored units within a culture. *Bound:* every input is an assumption — the baseline rate is
+  unmeasured in this child's cells, the effect sizes bracket a plausible rescue rather than
+  predicting one, and the intra-culture correlation has never been measured for these endpoints. A
+  power calculation states what an experiment could see, not that there is anything to see. It is
+  pure arithmetic and offline, so `run.sh` regenerates it and the release gate recomputes the two
+  cells the report quotes.
+- **Tractability of the module** (`docs/target_tractability.md`): Open Targets buckets for fifteen
+  proteins — the MCC/SAC components, the druggable mitotic neighbours, the two other MVA genes, and
+  the NAD+ axis. *Bound:* a tractability bucket is a database's assessment of whether a modality
+  looks feasible, not a search for every compound with activity on a protein, and the approved-drug
+  bucket is scoped to the target rather than the pathway. The panel is the module we reasoned over;
+  it is not a genome-wide screen.
+- **ClinVar base rates per consequence class** (`docs/clinvar_baserate.md`): one row per
+  VariationID, classified locally from each record's own summary, so the columns are a partition.
+  We report it because the advanced-search significance filters match *any* submitted
+  classification and therefore double-count records with conflicts — our own first attempt at these
+  counts did exactly that and overstated the pathogenic missense count by a factor of thirty-five.
+  *Bound:* a base rate across a gene says what a classification of that class usually is, not what
+  one allele is, and the counts move with each release, so the query date is part of the claim.
+
+Data-handling note: these queries send a gene symbol (`BUB1B`) or an Ensembl gene identifier and
+nothing else. The ClinVar path deliberately reads only each record's `molecular_consequence_list`,
+never the coordinate-bearing fields of the same summary, so no coordinate can reach a generated
+file by that route.
 
 ## Reproducibility
 `run.sh` executes the self-test, generates all views from the canonical source, runs the real

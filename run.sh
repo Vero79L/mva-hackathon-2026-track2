@@ -35,6 +35,11 @@ for sc in S1 S2 S3; do
     echo "== scenario $sc == (skipped: config/cases/bub1b_mva_$sc.yaml not present yet)" >> "$OUT"
   fi
 done
+# Detectability of the proposed experiment: pure arithmetic, no network, so the table in the
+# report cannot drift from the numbers it claims. The two network-dependent quantitative
+# checks (tractability, clinvar-baserate) are dated snapshots and are NOT re-run here:
+# run.sh must stay runnable offline.
+step power "$PY" scripts/phase1/21_quant_checks.py power
 # Robustness harness: ablation, constraint perturbation, name blinding, synthetic
 # probes, leave-one-source-out. R3/R4 are assertions and exit non-zero on failure,
 # so a regression that makes the engine name-dependent fails the build here.

@@ -125,7 +125,7 @@ this repository, and a scan blocks every commit that would add one. This page an
 describe the child's features by category only.*
 
 *One thing we will not round off, because it is the family's to know and because the full report
-says it on page 60 where a reader of this page would never find it: the structured files the
+says it in its final section, where a reader of this page would never find it: the structured files the
 screening tool reads do list the eight observations as standard HPO terms — the shared vocabulary
 clinicians use for clinical features — because the mechanism diagram has to connect specific
 features, and because the organizers list those terms among the facts that may be shared. In a

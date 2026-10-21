@@ -23,7 +23,7 @@ for _s in (_sys.stdout, _sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
     except Exception: pass
 
-import hashlib, json, re, sys
+import hashlib, json, math, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -279,6 +279,41 @@ if "phase-1 tests" in TRUTH:
             if got is not None and got != TRUTH["phase-1 tests"]:
                 problems.append(f"{rel}: says '{mm.group(0).strip()}' but tests/phase1 contains "
                                 f"{TRUTH['phase-1 tests']} tests")
+
+# ---- the detectability numbers must be the ones the arithmetic produces ----
+# docs/power_table.md is generated and the report quotes two of its cells in prose. A quoted cell is
+# exactly the kind of number that drifts when an assumption changes, so both the generated table and
+# the report are checked against a fresh computation rather than against each other.
+_pw = DOCS / "power_table.md"
+try:
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("_qc", HERE / "scripts" / "phase1" / "21_quant_checks.py")
+    _qc = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_qc)
+    _units = _qc.n_per_arm(0.30, 0.20)
+    _cult = math.ceil(_units * _qc.design_effect(100, 0.05) / 100)
+    TRUTH["reference-design units per arm"] = _units
+    TRUTH["reference-design cultures per arm at ICC 0.05"] = _cult
+except Exception as _exc:                                        # noqa: BLE001
+    pending.append(f"docs/power_table.md: could not recompute the detectability numbers ({_exc})")
+else:
+    if not _pw.exists():
+        (problems if FREEZE else pending).append(
+            "docs/power_table.md does not exist - run scripts/phase1/21_quant_checks.py power")
+    else:
+        for rel in ("docs/power_table.md", "docs/REPORT.md"):
+            txt = (HERE / rel).read_text(encoding="utf-8")
+            for mm in re.finditer(r"\*{0,2}([\d,]{2,6})\*{0,2}\s+scored cells per arm", txt):
+                got = as_int(mm.group(1).replace(",", ""))
+                if got is not None and got != _units:
+                    problems.append(f"{rel}: says '{mm.group(0).strip()}' but the two-proportion "
+                                    f"computation gives {_units} units per arm")
+            for mm in re.finditer(r"\*{0,2}(\d{1,4})\*{0,2}\s+cultures per arm at an? "
+                                  r"(?:intra-culture correlation of 0\.05|ICC = 0\.05)", txt):
+                got = as_int(mm.group(1))
+                if got is not None and got != _cult:
+                    problems.append(f"{rel}: says '{mm.group(0).strip()}' but the design effect gives "
+                                    f"{_cult} cultures per arm")
 
 # ---- the citation-verification artefact must not be older than the chain it verifies ----
 # It was silently stale on 2026-10-19: the chain had gained PMIDs since the last run, and nothing

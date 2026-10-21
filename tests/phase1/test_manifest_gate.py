@@ -139,6 +139,22 @@ class ManifestGate(unittest.TestCase):
         p.write_text(t.replace(f"Ran {m.group(1)} tests", "Ran 99 tests", 1), encoding="utf-8")
         self.assertBlocks(eng, "but tests/phase1 contains")
 
+    def test_a_quoted_detectability_number_that_the_arithmetic_does_not_produce_is_caught(self):
+        """報告在散文裡引用 power_table.md 的兩格數字，閘要對帳回算術本身。
+
+        2026-10-21 加這一條時它立刻抓到自己：表格用 0.33 當「三分之一」，算出 300，
+        而報告寫的是 0.30 -> 0.20，也就是 294。引用一格生成的數字就是會漂的那種數字。
+        """
+        eng = self.tree()
+        p = eng / "docs" / "REPORT.md"
+        t = p.read_text(encoding="utf-8")
+        self.assertIn("**294 scored cells per arm**", t, "fixture 假設報告引用了參考設計那一格")
+        p.write_text(t.replace("**294 scored cells per arm**", "**120 scored cells per arm**", 1),
+                     encoding="utf-8")
+        # needle 必須只在失敗訊息裡出現："units per arm" 也是成功那行
+        # "counts verified: ... reference-design units per arm=294" 的一部分。
+        self.assertBlocks(eng, "but the two-proportion computation gives")
+
     # ---- 主要假說：報告和 pitch 必須逐字相同 ----
 
     def test_primary_sentence_paraphrase_is_caught(self):
@@ -235,7 +251,9 @@ class ManifestGate(unittest.TestCase):
         for needle in ("but the canonical", "99 claims", "PRIMARY line is not quoted verbatim",
                        "records a failed run", "docs/PITCH.md is estimated at", "computed length is",
                        "undisclosed AI use", "missing deliverable",
-                       "but tests/phase1 contains", "still contains a withdrawn claim"):
+                       "but tests/phase1 contains", "still contains a withdrawn claim",
+                       "but the two-proportion computation gives",
+                       "but the design effect gives"):
             self.assertNotIn(needle, out, f"未擾動的樹就報了 {needle!r}：\n{out}")
 
 

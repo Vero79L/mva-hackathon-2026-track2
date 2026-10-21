@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 用合成資料測試 Track 2 第一階段的程式（不需要比賽資料、VEP、網路；約 5 秒）。
-# 用法：bash tests/phase1/run_tests.sh        預期：Ran 80 tests … OK
+# 用法：bash tests/phase1/run_tests.sh        預期：Ran 81 tests … OK
 # 需要 PyYAML：有 conda 的 mva 環境就自動用它。graphviz 有裝的話會順便測 SVG。
 set -euo pipefail
 export PYTHONIOENCODING=utf-8 PYTHONUTF8=1
