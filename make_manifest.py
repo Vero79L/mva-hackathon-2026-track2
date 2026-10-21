@@ -151,6 +151,17 @@ try:
 except Exception as _e:          # never let the gate crash on an environment problem
     problems_selftest = f"could not run the self-tests: {_e}"
 
+# The size of the phase-1 suite is retyped in four places: the README's Tests section, the runbook's
+# run table, the methods prose and the runner's own usage line. It drifted three times (75 -> 77 ->
+# 78) and this gate caught none of them, because the number lives in test files rather than in a
+# register, so nothing computed it. Counting `def test_` statically is exact for this suite -- every
+# test is a plain method, none is generated in a loop -- and it costs nothing, unlike running the
+# suite from inside the gate.
+_testfiles = sorted((HERE / "tests" / "phase1").glob("test_*.py"))
+if _testfiles:
+    TRUTH["phase-1 tests"] = sum(len(re.findall(r"^\s*def test_", f.read_text(encoding="utf-8"), re.M))
+                                 for f in _testfiles)
+
 # phrase -> which TRUTH key it must agree with. Each is matched case-insensitively.
 COUNT_CLAIMS = [
     (r"" + NUM_RE + r"\s+claims\b", "claims"),
@@ -215,6 +226,29 @@ for rel in CHECKED_FOR_COUNTS:
             got = as_int(mm.group(1))
             if got is not None and got != TRUTH[key]:
                 problems.append(f"{rel}: says '{mm.group(0).strip()}' but {key} is {TRUTH[key]}")
+
+# The suite size is stated in files that are not deliverables -- the README a judge opens first, the
+# runbook, the runner itself -- so it cannot ride on CHECKED_FOR_COUNTS; and the phrasings differ
+# enough that one generic "N tests" pattern would also match unrelated prose in the same paragraph
+# ("61 pipeline and transcript checks"). Each shape is therefore named.
+SUITE_SIZE_CLAIMS = [
+    ("README.md", r"Ran\s+" + NUM_RE + r"\s+tests"),
+    ("README.md", NUM_RE + r"\s+checks: the pipeline"),
+    ("CLAUDE.md", r"expect\s+" + NUM_RE + r"\s+tests\s+OK"),
+    ("docs/METHODS_AND_AI.md", r"suite stands at \*{0,2}" + NUM_RE + r"\*{0,2}"),
+    ("docs/REPORT.md", r"is\s+" + NUM_RE + r"\s+checks in total"),
+    ("tests/phase1/run_tests.sh", r"Ran\s+" + NUM_RE + r"\s+tests"),
+]
+if "phase-1 tests" in TRUTH:
+    for rel, pattern in SUITE_SIZE_CLAIMS:
+        path = HERE / rel
+        if not path.exists():
+            continue
+        for mm in re.finditer(pattern, path.read_text(encoding="utf-8"), re.I):
+            got = as_int(mm.group(1))
+            if got is not None and got != TRUTH["phase-1 tests"]:
+                problems.append(f"{rel}: says '{mm.group(0).strip()}' but tests/phase1 contains "
+                                f"{TRUTH['phase-1 tests']} tests")
 
 # ---- the citation-verification artefact must not be older than the chain it verifies ----
 # It was silently stale on 2026-10-19: the chain had gained PMIDs since the last run, and nothing

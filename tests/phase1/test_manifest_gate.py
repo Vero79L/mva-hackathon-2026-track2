@@ -112,6 +112,21 @@ class ManifestGate(unittest.TestCase):
                 zout.writestr(i, data)
         self.assertBlocks(eng, "99 claims")
 
+    def test_suite_size_drift_outside_the_deliverables_is_caught(self):
+        """套件大小被手抄在 README、runbook 與 runner 裡，閘以前不算這個數字。
+
+        2026-10-21：同一個數字在 75 → 77 → 78 之間漂了三次，四份檔案各說各話，而閘一次都沒抓到——
+        因為它寫在測試檔裡而不是任何 register 裡，沒有東西去算它。評審第一個打開的就是 README。
+        """
+        eng = self.tree()
+        p = eng / "README.md"
+        t = p.read_text(encoding="utf-8")
+        m = re.search(r"Ran (\d+) tests", t)
+        self.assertIsNotNone(m, "fixture 假設 README 寫了實際的套件大小")
+        self.assertNotEqual(m.group(1), "99")
+        p.write_text(t.replace(f"Ran {m.group(1)} tests", "Ran 99 tests", 1), encoding="utf-8")
+        self.assertBlocks(eng, "but tests/phase1 contains")
+
     # ---- 主要假說：報告和 pitch 必須逐字相同 ----
 
     def test_primary_sentence_paraphrase_is_caught(self):
@@ -207,7 +222,8 @@ class ManifestGate(unittest.TestCase):
         _rc, out = self.run_gate(eng)
         for needle in ("but the canonical", "99 claims", "PRIMARY line is not quoted verbatim",
                        "records a failed run", "docs/PITCH.md is estimated at", "computed length is",
-                       "undisclosed AI use", "missing deliverable"):
+                       "undisclosed AI use", "missing deliverable",
+                       "but tests/phase1 contains"):
             self.assertNotIn(needle, out, f"未擾動的樹就報了 {needle!r}：\n{out}")
 
 
