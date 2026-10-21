@@ -26,6 +26,7 @@ import csv
 import datetime
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -39,6 +40,29 @@ AUDITS = sorted(REG.glob("citation_manual_check_*.md"))
 HDR = ["claim_id", "reviewed_by", "reviewed_date", "note"]
 AWAITING = "Awaiting countersignature."
 W = 96
+
+
+def ledger_python():
+    """An interpreter that can run make_claim_ledger.py.
+
+    This script deliberately needs nothing but the standard library, so it runs under the system
+    python3. make_claim_ledger.py needs PyYAML, which that interpreter usually lacks -- the first
+    real run of this tool signed all twelve claims and then died on `import yaml`. Look for the
+    project's conda environment the way run.sh does, and if nothing has PyYAML, say so and print
+    the command instead of pretending the ledger was rebuilt.
+    """
+    seen, cands = set(), [sys.executable]
+    for base in ("miniforge3", "mambaforge", "miniconda3", "anaconda3"):
+        cands.append(str(Path.home() / base / "envs" / "mva" / "bin" / "python"))
+    cands.append("python3")
+    for c in cands:
+        exe = c if c == sys.executable else (shutil.which(c) or (c if Path(c).exists() else None))
+        if not exe or exe in seen:
+            continue
+        seen.add(exe)
+        if subprocess.run([exe, "-c", "import yaml"], capture_output=True).returncode == 0:
+            return exe
+    return None
 
 
 def wrap(text, indent="    "):
@@ -191,14 +215,23 @@ def main():
     if REG != (HERE.parent / "registers"):
         print("REGISTERS is overridden, so the ledger was not regenerated.")
         return
-    print("\nregenerating the ledger so every deliverable sees the new count:")
-    rc = subprocess.call([sys.executable, str(HERE / "make_claim_ledger.py")])
-    if rc:
-        sys.exit(rc)
+    py = ledger_python()
+    if py is None:
+        print("\nThe signatures are saved. The ledger was NOT regenerated: no interpreter here has")
+        print("PyYAML, which make_claim_ledger.py needs. Install it, or point PYTHON at the mva")
+        print("environment, then run the three commands below -- nothing is lost by doing it later.")
+        py = "$PYTHON"
+    else:
+        print("\nregenerating the ledger so every deliverable sees the new count:")
+        rc = subprocess.call([py, str(HERE / "make_claim_ledger.py")])
+        if rc:
+            sys.exit(rc)
+    home = str(Path.home())
+    short = "$HOME" + py[len(home):] if py.startswith(home + "/") else py
     print("\nnext, in this directory:")
-    print("    sh run.sh                        # rebuild the reports")
+    print(f"    PYTHON={short} sh run.sh          # rebuild the reports")
     print("    bash tests/phase1/run_tests.sh   # expect OK")
-    print(f"    {Path(sys.executable).name} make_manifest.py      # the sign-off line should move")
+    print(f"    {short} make_manifest.py         # the sign-off line should move")
 
 
 if __name__ == "__main__":
