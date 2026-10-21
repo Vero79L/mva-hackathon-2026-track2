@@ -25,7 +25,36 @@ trap 'rm -rf "$W"' EXIT
 mkdir -p "$W/figures"
 cp docs/figures/mechanism.png "$W/figures/"
 
-npx --yes marked@15.0.7 --gfm -i docs/REPORT.md -o "$W/body.html"
+# The submitted PDF carries the report plus three appendices. Three documents that answer the
+# panel's own criteria -- the plain-language summary, the care-team safety annex and the nine-gene
+# decision table -- lived only in the repository, while the file a judge opens is this PDF. A
+# pointer to a file the reader cannot open is not a pointer, so they are bound in.
+W="$W" python3 - <<'PY2'
+import os, pathlib, re
+w = pathlib.Path(os.environ["W"])
+APPENDICES = [
+    ("A", "docs/PLAIN_LANGUAGE_SUMMARY.md",
+     "written for the child's family and for a care team that has not read the mitosis literature. "
+     "Where it and the report disagree, the report is right."),
+    ("B", "docs/SAFETY_ANNEX.md",
+     "mechanism-derived recognition for a care team, useful independently of this submission's "
+     "candidate, and pointed first at the published cancer-surveillance consensus that names MVA."),
+    ("C", "docs/MVA_DECISION_TABLE.md",
+     "the same decision rule applied across nine MVA-causing genes, with the first experiment for "
+     "each and a per-gene statement of where the BUB1B-specific lever does not apply."),
+]
+parts = [pathlib.Path("docs/REPORT.md").read_text(encoding="utf-8")]
+for letter, rel, why in APPENDICES:
+    text = pathlib.Path(rel).read_text(encoding="utf-8")
+    m = re.match(r"#\s+(.+?)\n", text)
+    title = m.group(1).strip() if m else rel
+    body = text[m.end():] if m else text
+    parts.append(f'\n\n<div class="apxbreak"></div>\n\n# Appendix {letter} \u2014 {title}\n\n'
+                 f'*Repository file `{rel}`, bound into this PDF so the panel does not have to browse '
+                 f'the repository: {why}*\n{body}')
+(w / "full.md").write_text("".join(parts), encoding="utf-8")
+PY2
+npx --yes marked@15.0.7 --gfm -i "$W/full.md" -o "$W/body.html"
 
 W="$W" python3 - <<'PY'
 import html, os, pathlib, re
@@ -64,6 +93,7 @@ hr { border:none; border-top:0.6pt solid #ccc; margin:10pt 0; }
 .figpage { page: landscape; break-before: page; break-after: page; text-align:center; }
 .figpage img { max-width:100%; max-height:15.5cm; }
 .figpage .cap { font-size:8pt; text-align:left; margin-top:6pt; color:#222; }
+.apxbreak { break-before: page; page-break-before: always; }
 """
 
 
