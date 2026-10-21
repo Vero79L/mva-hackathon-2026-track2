@@ -227,6 +227,36 @@ for rel in CHECKED_FOR_COUNTS:
             if got is not None and got != TRUTH[key]:
                 problems.append(f"{rel}: says '{mm.group(0).strip()}' but {key} is {TRUTH[key]}")
 
+# ---- claims we have WITHDRAWN must not survive anywhere a judge reads ----
+# Twice now a retracted statement outlived its retraction in a file nobody greps. The readthrough
+# global negative sat in the organizers' .xlsx methods form after the report had withdrawn it (found
+# 2026-10-20, and only because the gate learned to read .xlsx). The ClinVar negative -- false rather
+# than merely stale -- sat in that same form in three places, in the report and in two registers
+# (found 2026-10-21, by querying ClinVar at gene level). A withdrawn claim is worse than an
+# uncorrected one: the submission's own documents then contradict each other, and the reviewer
+# decides which of us to believe. Each entry below is the exact wording as it was PUBLISHED, so a
+# correction that quotes what the text used to say does not trip it.
+WITHDRAWN = [
+    ("neither allele has a ClinVar record in the 2026-10-04 release",
+     "withdrawn 2026-10-21: the truncating allele is ClinVar VCV000533901, Pathogenic/Likely pathogenic, two-star"),
+    ("neither variant has a ClinVar record",
+     "withdrawn 2026-10-21, the report's own wording of the same false negative"),
+    ("there was nothing to look up",
+     "withdrawn 2026-10-21: there was a record to look up"),
+    ("This closes the readthrough route",
+     "withdrawn 2026-10-20: ataluren retains a Great Britain marketing authorisation"),
+]
+for rel in CHECKED_FOR_COUNTS + ["README.md"]:
+    path = HERE / rel
+    if not path.exists():
+        continue
+    text = deliverable_text(path)
+    if text.startswith("__UNREADABLE_XLSX__"):
+        continue                      # already reported by the count scan above
+    for phrase, why in WITHDRAWN:
+        if phrase in text:
+            problems.append(f"{rel}: still contains a withdrawn claim, '{phrase}' - {why}")
+
 # The suite size is stated in files that are not deliverables -- the README a judge opens first, the
 # runbook, the runner itself -- so it cannot ride on CHECKED_FOR_COUNTS; and the phrasings differ
 # enough that one generic "N tests" pattern would also match unrelated prose in the same paragraph

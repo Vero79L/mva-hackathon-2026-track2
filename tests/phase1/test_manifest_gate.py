@@ -112,6 +112,18 @@ class ManifestGate(unittest.TestCase):
                 zout.writestr(i, data)
         self.assertBlocks(eng, "99 claims")
 
+    def test_a_withdrawn_claim_reappearing_is_caught(self):
+        """撤回過的句子重新出現在任何交付物裡就擋。
+
+        2026-10-20 與 10-21 各發生一次：被報告撤回的陳述還活在組織方的 .xlsx 表單裡。
+        自相矛盾的兩份交付物比單一個錯誤更貴，因為評審得自己決定要相信哪一份。
+        """
+        eng = self.tree()
+        p = eng / "docs" / "PLAIN_LANGUAGE_SUMMARY.md"
+        t = p.read_text(encoding="utf-8")
+        p.write_text(t + "\n\nThis closes the readthrough route.\n", encoding="utf-8")
+        self.assertBlocks(eng, "still contains a withdrawn claim")
+
     def test_suite_size_drift_outside_the_deliverables_is_caught(self):
         """套件大小被手抄在 README、runbook 與 runner 裡，閘以前不算這個數字。
 
@@ -223,7 +235,7 @@ class ManifestGate(unittest.TestCase):
         for needle in ("but the canonical", "99 claims", "PRIMARY line is not quoted verbatim",
                        "records a failed run", "docs/PITCH.md is estimated at", "computed length is",
                        "undisclosed AI use", "missing deliverable",
-                       "but tests/phase1 contains"):
+                       "but tests/phase1 contains", "still contains a withdrawn claim"):
             self.assertNotIn(needle, out, f"未擾動的樹就報了 {needle!r}：\n{out}")
 
 

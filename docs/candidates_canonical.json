@@ -98,7 +98,7 @@
       "entity_type": "mechanism_branch",
       "branch": "A protein-rescue (readthrough/NMD)",
       "competition_eligibility": "INELIGIBLE",
-      "eligibility_note": "ataluren lost its EU authorisation (EMA non-renewal 2025-03-28) and its US application was withdrawn (2026-02-12), but RETAINS a Great Britain marketing authorisation (live UK SmPC, 250 mg updated 2026-03-31, checked 2026-10-20) for nonsense-mutation Duchenne muscular dystrophy - a different gene and indication, so it is not an eligible product for this allele without an off-label argument not made here; aminoglycosides INELIGIBLE on renal grounds; ELX-02 investigational; DAP preclinical",
+      "eligibility_note": "ataluren lost its EU authorisation (EMA non-renewal 2025-03-28) and its US application was withdrawn (2026-02-12), but RETAINS a Great Britain marketing authorisation (live UK SmPC, 250 mg updated 2026-03-31, checked 2026-10-20) for nonsense-mutation Duchenne muscular dystrophy - a different gene and indication, so it is not an eligible product for this allele without an off-label argument not made here; aminoglycosides INELIGIBLE on renal grounds; ELX-02 investigational; DAP preclinical. DECISION 2026-10-21 (previously deferred): the branch is not advanced. The UGA stop at codon 737 is the right substrate class, but the transcript is NMD-predicted; the Great Britain product's EU authorisation was not renewed because effectiveness was not confirmed; and an access route for a dystrophin indication cannot be assessed here. Allele-specific BUB1B mRNA showing NMD escape (scenario S3) reverses it. Report section 7 carries the reasons",
       "research_judgment": "CONDITIONAL",
       "directionality": "compensate",
       "net_effect": "strengthen",
@@ -110,7 +110,7 @@
         "G4_growth": "n/a"
       },
       "best_evidence": "Trzaska 2020 Nat Commun PMID 32198346 (DAP UGA readthrough); Toledano 2024 Nat Genet PMID 39174735 (genome-scale readthrough). Full-length restoration precedent is CFTR (Sharma 2021 PMID 34272367), not BUB1B.",
-      "disposition_reason": "Corrected: readthrough gives a near-full-length product (old 'truncated' reason withdrawn). Coordinates recomputed (readthrough_coordinates_2026-10-08.md): stop UGA at c.2209-2211, +1 context base = c.2212 (raw log's c.2213 was off by one). Blocker = NMD (PREDICTED, not measured; needs allele-specific mRNA) + no renal-safe approved UGA agent. One-allele rescue judged by functional threshold, not allele count.",
+      "disposition_reason": "Corrected: readthrough gives a near-full-length product (old 'truncated' reason withdrawn). Coordinates recomputed (readthrough_coordinates_2026-10-08.md): stop UGA at c.2209-2211, +1 context base = c.2212 (raw log's c.2213 was off by one). Blocker = NMD (PREDICTED, not measured; needs allele-specific mRNA) + no renal-safe approved UGA agent. One-allele rescue judged by functional threshold, not allele count. Eligibility judgment recorded 2026-10-21 instead of left open; eligibility is read per product and per indication, so the GB ataluren product is a counterexample row rather than an eligible route.",
       "decisive_experiment": "Allele-specific BUBR1 mRNA + full-length protein under NMD-inhibition alone / readthrough agent alone / combination, with SAC-competence readout.",
       "version": "2026-10-08",
       "engine_inputs": {

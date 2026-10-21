@@ -3,21 +3,21 @@
   "denominator": "13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries",
   "primary_hypothesis": "A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experiment only if it acts in the compensating direction on the bottleneck the decisive experiment is built to measure — residual BubR1 abundance and checkpoint function, both of which are UNKNOWN in this child — passes this patient's constraint gates with every safety axis those gates cannot see declared rather than counted as clear, and rests on an approved product with a dated label. Under that rule the single named candidate is niacin (nicotinic acid), an approved NAD+ precursor acting through the SIRT2–BubR1 stabilization axis, carried as a conditional research hypothesis and not a recommendation: its oncology axis is contradictory and its growth axis unassessed. It is overturned if NAD+ repletion in patient-derived cells fails to raise BubR1 protein, fails to correct the checkpoint defect, or raises the aneuploid fraction of the surviving population — a fraction, never raw survival, because a real checkpoint rescue can raise overall survival.",
   "files": {
-    "docs/REPORT.md": "7c9f029dfb41e1f56e12403bcd7d50ef7e302836425e89e97621c81a5418da15",
+    "docs/REPORT.md": "f924bf4d8ef1d555800c5ba43dcd74c927d15482e9a121597f5f1fa0ef1bd621",
     "docs/PITCH.md": "c2b3237e4a8975b68d6b6c1c8306dd50bcc4eb3fe8a03a512330d5fd0b87a0fe",
-    "docs/METHODS_AND_AI.md": "b3caf1f48495beb1bec8b37ff6afc4578b0faab3f3c9bbb182f7247b86bf4814",
+    "docs/METHODS_AND_AI.md": "a0c75a50a1041acca6799fdbd915c1fd6d54b927d417ea79ef8e621b3af9fca0",
     "docs/PRIMARY_HYPOTHESIS.md": "6ed273cd3ebbeab0f236652a38cc17107aecf54d876d3cb7a9ab7abdde50eab3",
     "docs/SAFETY_ANNEX.md": "f8819bc75b80f890313312adc9d19f0efaa39e4208b27cc60d9400ea1356ac6f",
     "docs/MVA_DECISION_TABLE.md": "04447485f9a758c9a0a49d64dca3567d3de44710018834702a66a4ffd8f39588",
-    "docs/candidate_table.md": "b86410c6abc0f01b8d7e50d39850cf04e14bfcf220021820d5905a2fb099bdbd",
-    "docs/candidates_canonical.json": "c7e2fb96c4e08df47677e2dc852ac03124a2dfaf9a9a55f370bade08c132659b",
+    "docs/candidate_table.md": "1eaec847b9cf51e0cc9ef3f81c177dc27eed5f32cc9e4907f004c44fb536b3ff",
+    "docs/candidates_canonical.json": "d3c82cb0e6713a24325c40471c13c09759e80f329f63cdbb158a1a810ec21cc8",
     "docs/computed_vs_human.md": "f35d30db215e36705f063da804beb4679182ce78845a743b7795b2ad1db815f2",
     "docs/ROBUSTNESS.md": "4a8687226157e00ac166ac82d8dc4e2ca294a01e062b8c5aa6a14307b3c77bf1",
     "docs/PLAIN_LANGUAGE_SUMMARY.md": "b0b8d9933f94515bed8ec60b75e94ec180199c14769ec1a830f3e6db008d60ff",
-    "docs/Vero7878_track2_methods.xlsx": "d81b8e4bc8a5499abb9fe72cef1a2ef8fdbe7cb983c5dd8372a4a0063fdb2d50"
+    "docs/Vero7878_track2_methods.xlsx": "0234f07de71f682603b93deec5f2484c865f8f8918c91e1e0077044c9a7c3232"
   },
   "submitted_pdf": {
     "file": "docs/Vero7878_track2_report.pdf",
-    "sha256": "172c07839d1eefdb9be6218bfb781488e92057dc89cae64475420ab8f18fbb1d"
+    "sha256": "02ae9e3112c00346e5370e56cdaa7eefdaf41affbaa57b544a1e0ae7af369300"
   }
 }

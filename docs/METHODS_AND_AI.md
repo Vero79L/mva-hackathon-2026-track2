@@ -86,10 +86,10 @@ both strands, which is why single-point tests had not caught it. The error equal
 span length, so SNVs were unaffected. Fixed (nearest-edge rule) and pinned with two regression
 tests covering all four strand x direction combinations; the synthetic test suite went from 57 to
 59 tests at that point, and the new test is verified to fail against the pre-fix code. (The whole
-`tests/phase1/` suite stands at **79** today: 61 pipeline and transcript checks — the 59 above, one added on
+`tests/phase1/` suite stands at **80** today: 61 pipeline and transcript checks — the 59 above, one added on
 2026-10-20 that red-teams the public-safety scan, and one added on 2026-10-21 that requires the
 sign-off tool to write nothing when no person is at the keyboard — 5 that test whether the
-robustness harness can fail, described below, and 13 that perturb the release gate.) Any residual
+robustness harness can fail, described below, and 14 that perturb the release gate.) Any residual
 disagreement after the rerun is listed field-by-field in the self-test report and carried as a
 known, bounded limitation rather than suppressed.
 
