@@ -37,7 +37,7 @@ Start Claude Code in this folder (`research/engine`). Use the mva conda environm
 
 | Step | Command | Typical time |
 |---|---|---|
-| tests | `bash tests/phase1/run_tests.sh` (expect 77 tests OK) | 5 s |
+| tests | `bash tests/phase1/run_tests.sh` (expect 78 tests OK) | 5 s |
 | 00 | `bash scripts/phase1/00_preflight.sh` (no ✗ allowed) | 1 min |
 | 11a | `bash scripts/phase1/11a_selftest_clinvar.sh` (≥ 99 % concordance) | 3–5 min |
 | 10 | `python3 scripts/phase1/10_handoff.py --match full --rank-points 100 --f-max 1` | 1 min |

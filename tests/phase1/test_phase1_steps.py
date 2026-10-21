@@ -708,5 +708,36 @@ class TestConfigAndBash(Sandbox):
         self.assertNotIn("unbound variable", r.stderr)
 
 
+class TestClaimSignoffTool(unittest.TestCase):
+    """簽核工具不能在沒有人按鍵的情況下寫下「有人讀過這篇論文」。
+    reviewed_by 這一欄是整份作品唯一無法由程式產生的東西；外部審查抓過一次這類自我認證，所以這條用測試釘住。"""
+
+    def test_it_refuses_to_sign_without_a_terminal(self):
+        reg = Path(tempfile.mkdtemp(prefix="t2sign_"))
+        self.addCleanup(shutil.rmtree, reg, True)
+        (reg / "claim_ledger.csv").write_text(
+            "claim_id,claim_text,claim_type,report_location,source_url,source_locator,checked_date,"
+            "strength,counterevidence,disposition,verification_mode,reviewed_by\n"
+            "CL-MECH-E99,A claim,mechanism,section 3,https://pubmed.ncbi.nlm.nih.gov/12345678/,"
+            "PMID 12345678: main text,2026-10-21,measured,none,bounded,literature_read,\n",
+            encoding="utf-8")
+        signoff = reg / "claim_signoff.csv"
+        signoff.write_text('claim_id,reviewed_by,reviewed_date,note\n'
+                           'CL-MECH-E99,,,"Awaiting countersignature."\n', encoding="utf-8")
+        before = signoff.read_bytes()
+        for extra in ([], ["--list"]):
+            r = subprocess.run([PY, str(ENGINE_SRC / "sign_claims.py"), *extra], capture_output=True,
+                               text=True, encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL,
+                               env={**os.environ, "REGISTERS": str(reg)})
+            self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+            self.assertIn("CL-MECH-E99", r.stdout)                 # 有把待簽的那一條印出來
+            self.assertEqual(signoff.read_bytes(), before,
+                             f"沒有人按鍵，簽核檔卻被改了（參數 {extra}）")
+        r = subprocess.run([PY, str(ENGINE_SRC / "sign_claims.py")], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL,
+                           env={**os.environ, "REGISTERS": str(reg)})
+        self.assertIn("nothing was signed", r.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

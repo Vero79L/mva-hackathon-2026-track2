@@ -153,7 +153,7 @@ manifest OK
   PENDING (filled at freeze; run with --freeze to make this blocking): docs/REPORT.md: slots still to fill at freeze ['{{FILL:DATE}}', '{{FILL:VIDEO}}']
   PENDING (filled at freeze; run with --freeze to make this blocking): 12/15 literature claims carry no human sign-off (registers/claim_signoff.csv): ['CL-MECH-E04', 'CL-MECH-E06', 'CL-MECH-E07', 'CL-MECH-E08', 'CL-MECH-E09', 'CL-MECH-E10', 'CL-MECH-E11', 'CL-MECH-E12'] .... The other 22 rows are verified by the mechanism named in their verification_mode column (label text, reproducible search, internal provenance), not by a literature read. A generated ledger can prove its sources; it cannot prove that a person read them.
   PENDING (filled at freeze; run with --freeze to make this blocking): 2 eligibility rows cite a fact-sheet host rather than a product label (CL-REG-03, CL-REG-04) - correct by construction (no approved product exists for those molecules), recorded so it is a stated choice
-  PENDING (filled at freeze; run with --freeze to make this blocking): docs/Vero7878_track2_report.pdf is 277 min older than docs/REPORT.md - rebuild it with `sh make_pdf.sh` or the submitted PDF is a superseded report
+  PENDING (filled at freeze; run with --freeze to make this blocking): docs/Vero7878_track2_report.pdf is 22 min older than docs/REPORT.md - rebuild it with `sh make_pdf.sh` or the submitted PDF is a superseded report
  counts verified: claims=37, global-negative=5, load-bearing PMIDs=36, product rows=12, registered facts=18, self-tests=28
  pitch length  : 2:53 (173s, 180s limit)
  denominator: 13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries
