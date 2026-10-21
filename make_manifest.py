@@ -124,6 +124,25 @@ try:
     TRUTH["product rows"] = count_rows(DOCS / "eligibility_matrix.csv")
 except FileNotFoundError:
     pass
+# The AI-disclosure section describes the shape of registers/ai_usage_register.csv in prose --
+# how many usage rows it has, how many involve an AI provider at all, and how many of those carry
+# no patient-specific input, which is the subset where the organizers' training-setting condition
+# does not bind. On 2026-10-21 that sentence said "three of its seven rows" against a register
+# holding six rows of which two qualified: both numbers were wrong, and they were wrong in the one
+# section whose subject is whether this submission's statements can be trusted. The provider list
+# was already gated in three directions; the counts describing the same file were not.
+try:
+    _aiu_rows = count_rows(REG / "ai_usage_register.csv")
+    _aiu_prov = count_rows(REG / "ai_usage_register.csv",
+                           lambda r: "n/a" not in (r.get("product_tier") or "").lower())
+    TRUTH["AI-register usage rows"] = _aiu_rows
+    TRUTH["AI-register rows with a provider"] = _aiu_prov
+    TRUTH["AI-register provider rows without patient input"] = count_rows(
+        REG / "ai_usage_register.csv",
+        lambda r: "n/a" not in (r.get("product_tier") or "").lower()
+        and (r.get("patient_specific_input") or "").strip().lower().startswith("no"))
+except FileNotFoundError:
+    pass
 # "N load-bearing PMIDs" is a count the report states about itself and nothing checked it.
 # Load-bearing means a citation that carries part of the argument and therefore has a recorded
 # title to compare against; the `manual` rows are UniProt feature annotations pulled in by
@@ -170,6 +189,11 @@ COUNT_CLAIMS = [
     (r"" + NUM_RE + r"\s+product rows\b", "product rows"),
     (r"" + NUM_RE + r"[\s-]+(?:regression\s+)?self-tests\b", "self-tests"),
     (r"\*{0,2}" + NUM_RE + r"\*{0,2}\s+load-bearing PMIDs\b", "load-bearing PMIDs"),
+    (r"of its \*{0,2}" + NUM_RE + r"\*{0,2}\s+usage rows\b", "AI-register usage rows"),
+    (r"\*{0,2}" + NUM_RE + r"\*{0,2}\s+involve an AI provider\b",
+     "AI-register rows with a provider"),
+    (r"\*{0,2}" + NUM_RE + r"\*{0,2}\s+of those carry no patient-specific input\b",
+     "AI-register provider rows without patient input"),
 ]
 CHECKED_FOR_COUNTS = ["docs/REPORT.md", "docs/PITCH.md", "docs/METHODS_AND_AI.md",
                       "docs/PRIMARY_HYPOTHESIS.md", "docs/SAFETY_ANNEX.md",
@@ -608,6 +632,16 @@ for rel in ("docs/REPORT.md", "docs/METHODS_AND_AI.md", "docs/PLAIN_LANGUAGE_SUM
         if _p in _PATH_OK or _p.startswith(("http", "api.", "www.", "github.com")):
             continue
         if _p.startswith("..") or _p.split("/")[0] in _INSIDE_ONLY:
+            continue
+        # A backticked token containing a slash is not necessarily a path. Report section 2 and
+        # section 13 quote ClinVar's own field values, and `Pathogenic/Likely_pathogenic` is one
+        # of them: the first version of this check read it as a promised file and blocked the
+        # release on a correct sentence. A false positive here is as expensive as a miss, because
+        # the way past it is to edit accurate prose. So a token is treated as a path only when it
+        # looks like one -- its last segment carries an extension, or its first segment is a real
+        # directory in this repository -- and a data value that happens to contain a slash is
+        # left alone.
+        if "." not in _p.rsplit("/", 1)[-1] and not (HERE / _p.split("/")[0]).is_dir():
             continue
         if (HERE / _p).exists():
             continue

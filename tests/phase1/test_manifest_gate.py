@@ -273,6 +273,33 @@ class ManifestGate(unittest.TestCase):
         _rc, out = self.run_gate(eng)
         self.assertNotIn("which does not exist", out, out)
 
+    def test_a_retyped_ai_register_count_that_the_file_does_not_support_is_caught(self):
+        """2026-10-21 的真實缺陷：REPORT §14 寫「three of its seven rows」，而
+        ai_usage_register.csv 是六列、其中兩列符合。兩個數字都是手打的，而且錯在
+        整份提交裡主題最是「我們的陳述能不能被信任」的那一節。供應商清單早就被三向
+        閘住，描述同一個檔案形狀的計數却沒有。"""
+        eng = self.tree()
+        p = eng / "docs" / "REPORT.md"
+        t = p.read_text(encoding="utf-8")
+        self.assertIn("Of its **six** usage rows", t)
+        p.write_text(t.replace("Of its **six** usage rows", "Of its **nine** usage rows"),
+                     encoding="utf-8")
+        self.assertBlocks(eng, "AI-register usage rows is 6")
+
+    def test_a_data_value_containing_a_slash_is_not_read_as_a_promised_file(self):
+        """路徑檢查的假陽性類別，實際發生過。ClinVar 的欄位值本身帶斜線，
+        §2 和 §13 都直接引用 `Pathogenic/Likely_pathogenic`，第一版檢查把它讀成一個
+        被承諾的檔案，就在一句完全正確的文字上擋住發佈。這裡的假陽性跟漏抱一樣貴，
+        因為繞過它的方法是去改準確的叙述。"""
+        eng = self.tree()
+        p = eng / "docs" / "REPORT.md"
+        p.write_text(p.read_text(encoding="utf-8")
+                     + "\n\nClassified `Pathogenic/Likely_pathogenic` with `CLNSIG=Benign/Likely_"
+                       "benign` and consequence `missense_variant/splice_region_variant`.\n",
+                     encoding="utf-8")
+        _rc, out = self.run_gate(eng)
+        self.assertNotIn("which does not exist", out, out)
+
     # ---- 機器人性檢查：閘不能只是回傳失敗 ----
 
     def test_gate_is_not_blocking_on_everything(self):
@@ -288,7 +315,8 @@ class ManifestGate(unittest.TestCase):
                        "undisclosed AI use", "missing deliverable",
                        "but tests/phase1 contains", "still contains a withdrawn claim",
                        "but the two-proportion computation gives",
-                       "but the design effect gives", "which does not exist"):
+                       "but the design effect gives", "which does not exist",
+                       "AI-register usage rows is"):
             self.assertNotIn(needle, out, f"未擾動的樹就報了 {needle!r}：\n{out}")
 
 

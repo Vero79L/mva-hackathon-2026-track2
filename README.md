@@ -66,9 +66,9 @@ at portrait text width its node labels render around 6pt, which is unreadable.
 ## Tests
 ```sh
 python3 src/triage.py --selftest     # 28 regression checks (input validation + gates + scenarios)
-bash tests/phase1/run_tests.sh       # 86 checks: the pipeline, the robustness harness, and the release gate
+bash tests/phase1/run_tests.sh       # 88 checks: the pipeline, the robustness harness, and the release gate
 ```
-Expected: `ALL PASS` and `Ran 86 tests ... OK`. The second suite includes
+Expected: `ALL PASS` and `Ran 88 tests ... OK`. The second suite includes
 `test_manifest_gate.py`, which perturbs a copy of the whole tree one item at a time and requires
 `make_manifest.py` to block with the right message — so the consistency gate is tested rather than
 asserted. The `--selftest` checks cover: wrong-direction rejects; unknown defect_direction or
