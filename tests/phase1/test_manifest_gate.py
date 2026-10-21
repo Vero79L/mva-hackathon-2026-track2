@@ -238,6 +238,41 @@ class ManifestGate(unittest.TestCase):
         self.assertNotIn("superseded report", out.split("PENDING")[0],
                          "freeze 之前這一條應該是 PENDING，不是 BLOCKED")
 
+    def test_a_quoted_continuous_endpoint_effect_the_arithmetic_does_not_produce_is_caught(self):
+        """§6 引用了連續型終點（Stage A/B）的兩個數字：三皿每組只看得到 d = 2.29，
+        以及 d = 1.0 需要 16 皿每組。兩個都由 21_quant_checks 重算，不是互相比對。"""
+        eng = self.tree()
+        p = eng / "docs" / "REPORT.md"
+        p.write_text(p.read_text(encoding="utf-8").replace("standardised difference of **d = 2.29**",
+                                                           "standardised difference of **d = 0.80**"),
+                     encoding="utf-8")
+        self.assertBlocks(eng, "two-sample computation gives")
+
+    def test_a_deliverable_promising_a_file_that_does_not_exist_is_caught(self):
+        """2026-10-21 的真實缺陷：METHODS_AND_AI.md 說 AI 合規的截圖證據 archived 在
+        registers/ai_usage_evidence/、available on request，而那個資料夾從來不存在。
+        閘當時不看引用的路徑存不存在，所以 compliance 一節可以在全綠的 manifest 底下
+        承諾一個拿不出來的東西。"""
+        eng = self.tree()
+        p = eng / "docs" / "METHODS_AND_AI.md"
+        p.write_text(p.read_text(encoding="utf-8")
+                     + "\n\nFull audit trail archived in `docs/ai_usage_proof/`, "
+                       "available on request.\n", encoding="utf-8")
+        self.assertBlocks(eng, "which does not exist")
+
+    def test_a_citation_that_leaves_the_repository_does_not_block(self):
+        """閘宣告的範圍是 repo 內。交付物也會引用 repo 外的 registers/ 和 ../DATA-LOCATION.md，
+        而這支閘跟著 repo 走，分不出真的外圍目錄和重現／擾動用的修剪樹——兩者都有一個
+        registers/，裡面放的檔案子集不同。這一條把那個界限釘住：上面那個檢查第一版對
+        repo 外的路徑一律照抓，結果在一棵完全沒被動過的樹上報了九個不存在的檔案。"""
+        eng = self.tree()
+        p = eng / "docs" / "REPORT.md"
+        p.write_text(p.read_text(encoding="utf-8")
+                     + "\n\nSee `registers/not_a_real_file_2026.md` and `../NOT-REAL.md`.\n",
+                     encoding="utf-8")
+        _rc, out = self.run_gate(eng)
+        self.assertNotIn("which does not exist", out, out)
+
     # ---- 機器人性檢查：閘不能只是回傳失敗 ----
 
     def test_gate_is_not_blocking_on_everything(self):
@@ -253,7 +288,7 @@ class ManifestGate(unittest.TestCase):
                        "undisclosed AI use", "missing deliverable",
                        "but tests/phase1 contains", "still contains a withdrawn claim",
                        "but the two-proportion computation gives",
-                       "but the design effect gives"):
+                       "but the design effect gives", "which does not exist"):
             self.assertNotIn(needle, out, f"未擾動的樹就報了 {needle!r}：\n{out}")
 
 

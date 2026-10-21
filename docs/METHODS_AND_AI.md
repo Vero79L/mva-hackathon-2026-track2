@@ -86,7 +86,7 @@ both strands, which is why single-point tests had not caught it. The error equal
 span length, so SNVs were unaffected. Fixed (nearest-edge rule) and pinned with two regression
 tests covering all four strand x direction combinations; the synthetic test suite went from 57 to
 59 tests at that point, and the new test is verified to fail against the pre-fix code. (The whole
-`tests/phase1/` suite stands at **81** today: 61 pipeline and transcript checks — the 59 above, one added on
+`tests/phase1/` suite stands at **86** today: 61 pipeline and transcript checks — the 59 above, one added on
 2026-10-20 that red-teams the public-safety scan, and one added on 2026-10-21 that requires the
 sign-off tool to write nothing when no person is at the keyboard — 5 that test whether the
 robustness harness can fail, described below, and 15 that perturb the release gate.) Any residual
@@ -132,14 +132,28 @@ must agree before a fact enters the report (both variants passed: 6/6 and 7/7 ch
 ## AI usage (provider / tier / data-handling), per organizers' final guidance (#2, ~Sep 29)
 - **Provider / tier / setting:** Claude Max (claude.ai and Claude Code), training opt-out
   enabled in account settings, no feedback (thumbs) provided on any output; Anthropic
-  Consumer Terms. A second provider (OpenAI, ChatGPT/Codex) was used for independent review
-  under the same no-feedback, training-off handling.
+  Consumer Terms. A second provider (OpenAI, ChatGPT/Codex) ran an independent adversarial
+  review of the engine and of the report text. It received repository code and report prose
+  and no patient-derived content of any kind, which is why its account setting is recorded but
+  not load-bearing: the organizers' condition is about patient-specific or derived information,
+  and none reached that provider.
 - **Permitted use:** the organizers' final guidance (Community #2, confirmed #21) permits a
   consumer tier (e.g. Claude Max) for patient-specific or derived information when (1)
   model-training is disabled in account settings and (2) no feedback is given on outputs and
-  content is not flagged into safety review. This submission meets both conditions; settings
-  evidence (account screenshot, dated) is archived in `registers/ai_usage_evidence/` (not in
-  the public repo) and is available on request.
+  content is not flagged into safety review. This submission meets both conditions. It is worth
+  separating what a reader can check from what they have to take on attestation, because this
+  section is the one place where the two are easy to blur. An account setting is visible only
+  from inside the account, so on condition (1) this submission is an attestation like any other;
+  the per-session record of provider, tier, setting and whether patient-derived content was
+  involved is `registers/ai_usage_register.csv`, kept outside the public repository because it
+  names working sessions, and it marks explicitly which rows the setting actually governs.
+  An earlier version of this bullet said a dated settings screenshot was archived at
+  `registers/ai_usage_evidence/` and available on request; no such directory exists, and a
+  compliance section is the worst place to carry a claim that cannot be produced, so the
+  sentence is withdrawn rather than quietly dropped. Condition (2) is a statement about
+  operator behaviour and is recorded per session in the same file. What is externally checkable
+  is the stronger half: no genotype-level file was opened by an AI system, and this repository
+  contains no such file for one to have been opened from.
 - **Inputs to AI were limited** to derived, non-genotype-scale information (see Data boundary
   above); no raw genotype-level FILE was ever opened by an AI system; see the data-boundary section above for the two occasions on which coordinate-level content nevertheless reached a conversation.
 - **Safety-classifier events (disclosed):** **two** responses were interrupted by the provider's

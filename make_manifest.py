@@ -292,8 +292,12 @@ try:
     _spec.loader.exec_module(_qc)
     _units = _qc.n_per_arm(0.30, 0.20)
     _cult = math.ceil(_units * _qc.design_effect(100, 0.05) / 100)
+    _dmin3 = _qc.d_min(3)
+    _nd1 = _qc.n_for_d(1.0)
     TRUTH["reference-design units per arm"] = _units
     TRUTH["reference-design cultures per arm at ICC 0.05"] = _cult
+    TRUTH["smallest detectable d at 3 cultures per arm"] = round(_dmin3, 2)
+    TRUTH["cultures per arm for d=1.0"] = _nd1
 except Exception as _exc:                                        # noqa: BLE001
     pending.append(f"docs/power_table.md: could not recompute the detectability numbers ({_exc})")
 else:
@@ -314,6 +318,18 @@ else:
                 if got is not None and got != _cult:
                     problems.append(f"{rel}: says '{mm.group(0).strip()}' but the design effect gives "
                                     f"{_cult} cultures per arm")
+            # The continuous-endpoint cells for stages A and B, added 2026-10-21. Same reason as
+            # above: both are quoted in the report's prose, so both are recomputed, not compared.
+            for mm in re.finditer(r"standardised difference of \*{0,2}d = ([\d.]+)", txt):
+                if abs(float(mm.group(1)) - _dmin3) > 5e-3:
+                    problems.append(f"{rel}: says 'd = {mm.group(1)}' at three cultures per arm but the "
+                                    f"two-sample computation gives d = {_dmin3:.2f}")
+            for mm in re.finditer(r"\*{0,2}(\d{1,4})\*{0,2}\s+cultures per arm(?:\b[^.|]{0,40}?)"
+                                  r"d = 1\.0", txt):
+                got = as_int(mm.group(1))
+                if got is not None and got != _nd1:
+                    problems.append(f"{rel}: says '{mm.group(0).strip()}' but d = 1.0 needs "
+                                    f"{_nd1} cultures per arm")
 
 # ---- the citation-verification artefact must not be older than the chain it verifies ----
 # It was silently stale on 2026-10-19: the chain had gained PMIDs since the last run, and nothing
@@ -555,6 +571,49 @@ if _meth.exists() and _aiu.exists():
                 f"docs/METHODS_AND_AI.md discloses the AI provider '{_name}' but "
                 f"docs/REPORT.md section 14 does not name it - the two deliverables disagree "
                 f"about who had access")
+
+# ---- every file path a deliverable names in backticks must resolve to something ----
+# Found on 2026-10-21, in the worst possible section. docs/METHODS_AND_AI.md said the dated
+# account-settings evidence for the AI-compliance claim was "archived in
+# registers/ai_usage_evidence/ ... and is available on request". That directory has never
+# existed. Nothing in this gate looked at whether a cited path is real, so a compliance section
+# could promise an artifact that could not be produced, under a green manifest.
+# A path named but deliberately absent is legitimate -- the withdrawal sentence above still has
+# to name the directory it is withdrawing -- so the exception is declared here with its reason
+# rather than pattern-matched out of the prose.
+_PATH_RE = re.compile(r"`([A-Za-z0-9_.\-]+/[A-Za-z0-9_./\-]*)`")
+# Repo-internal paths named on purpose while absent, each with the reason it is allowed.
+_PATH_OK = {
+    "research/engine": "CLAUDE.md names the working directory a reader starts Claude Code in; "
+                       "it is this directory, described from outside rather than referenced",
+}
+# Scope, stated rather than assumed. Only paths inside the repository are checked. A deliverable
+# also cites the register area (`registers/...`) and `../DATA-LOCATION.md`, which live outside it
+# by design, and a gate that ships inside the repository cannot tell a real surrounding tree from
+# the trimmed copy a reproduction or a perturbation test runs in -- both have a `registers/`
+# directory holding a different subset of files. So this check does not cover those, and the
+# `ai_usage_evidence/` defect that prompted it was an outside path: it was caught by a one-off
+# audit of every backticked path in every deliverable, not by this gate, and report section 13
+# says so. What the gate guarantees is narrower and permanent: no deliverable can point a reader
+# at a file inside this repository that is not there.
+_INSIDE_ONLY = ("..", "registers", "results", "mva")
+for rel in ("docs/REPORT.md", "docs/METHODS_AND_AI.md", "docs/PLAIN_LANGUAGE_SUMMARY.md",
+            "docs/PITCH.md", "docs/SAFETY_ANNEX.md", "docs/MVA_DECISION_TABLE.md",
+            "README.md", "CLAUDE.md"):
+    _f = HERE / rel
+    if not _f.exists():
+        continue
+    for _m in _PATH_RE.finditer(_f.read_text(encoding="utf-8")):
+        _p = _m.group(1).rstrip(".,;:)")
+        if _p in _PATH_OK or _p.startswith(("http", "api.", "www.", "github.com")):
+            continue
+        if _p.startswith("..") or _p.split("/")[0] in _INSIDE_ONLY:
+            continue
+        if (HERE / _p).exists():
+            continue
+        problems.append(f"{rel}: cites `{_p}`, which does not exist - either the path is wrong, "
+                        f"or the artifact was never produced and the sentence promising it has "
+                        f"to go (add it to _PATH_OK with a reason if it is named on purpose)")
 
 # ---- outputs/run.txt is committed as "the latest clean run", so check that it is one ----
 # It is a generated snapshot that run.sh truncates and rewrites, which means a failed run leaves

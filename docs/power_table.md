@@ -21,10 +21,39 @@ Two-proportion two-sided test, alpha = 0.05, power = 0.80. Counting unit is one 
 
 **The reference design.** Stage D at a baseline aneuploid fraction of 0.30 and a one-third relative reduction (0.30 -> 0.20) needs **294 scored cells per arm**. At 100 cells per culture that is **3 cultures per arm** if units within a culture are independent, and **18 cultures per arm** at ICC = 0.05. The design rule stated in §6 (≥ 3 independent biological replicates) therefore covers the replicate *structure* and not the *power*: three cultures per arm suffice only for a large effect with near-zero between-culture variance.
 
+## Stages A and B: continuous endpoints
+
+Stage A (intracellular NAD+ by LC-MS) and Stage B (K668-acetylated fraction normalised to total BubR1) are continuous, so the proportion arithmetic above does not apply to them. The counting unit is a culture, not a cell, which is why the numbers are so much smaller and the detectable effects so much larger. Two-sample two-sided test, alpha = 0.05, power = 0.80, effect expressed as a standardised difference (Cohen's *d*).
+
+| cultures/arm | smallest detectable *d* |   | target *d* | cultures/arm needed |
+|---|---|---|---|---|
+| 3 | 2.29 |   | 2.0 | 4 |
+| 4 | 1.98 |   | 1.5 | 7 |
+| 6 | 1.62 |   | 1.0 | 16 |
+| 8 | 1.40 |   | 0.8 | 25 |
+| 12 | 1.14 |   | 0.5 | 63 |
+| 20 | 0.89 |   | 0.3 | 175 |
+
+**What this says about the rule in §6.** At the conventional **3 cultures per arm**, Stage A and Stage B can only see a standardised difference of **d = 2.29** or larger — roughly a two-and-a-quarter standard-deviation separation between treated and untreated. That is a very large effect to require of the two stages whose job is to *gate* the rest of the design: a real but moderate rise in intracellular NAD+ (say d = 1.0) would need **16 cultures per arm** and would be missed at three. Stage A is written in §6 as the stage that decides whether anything downstream is interpretable, so under-powering it is the one place in this design where a null would be most likely to be misread as a negative result about the hypothesis. These are **floors**: the normal approximation understates the requirement at small n, where the t distribution applies.
+
+## Pre-specified stage gates
+
+The stage logic in §6 says what each result *means*. This says what each stage has to *show* to pay for the next one, so the design can be pre-registered rather than interpreted afterwards. The thresholds are assumptions, stated as such; the sample sizes beside them are the arithmetic above.
+
+| Gate | Proceed only if | Sized at |
+|---|---|---|
+| A -> B | intracellular NAD+ in treated patient cells rises against vehicle at the chosen dose | 16 cultures/arm for *d* = 1.0; at 3/arm only *d* >= 2.29 is visible, so a null at 3/arm is uninformative, not negative |
+| B -> C | the K668-acetylated fraction falls **and** total BubR1 rises **and** the rise is abolished by SIRT2 knockdown | same as A -> B; the knockdown arm doubles the culture count |
+| C -> D | new missegregation events per division fall by >= one third | 294 scored divisions/arm (18 cultures/arm at ICC = 0.05) |
+| D -> report as rescue | the aneuploid fraction of survivors falls **without** a fall in absolute normal-cell number | same sizing as C -> D; a fall in both is selection, not repair |
+| stop | NAD+ rises, K668 fraction falls, total BubR1 does not | S1 is retired and abundance-raising goes with it (§6 Stage B, fourth branch) |
+| stop | a truncated product is present and rises with NAD+ repletion | every abundance-raising strategy pauses (§6 Stage E) |
+
 **What each number assumes, and what would replace it.**
 
 - *Baseline rate.* Unmeasured in this child's cells. Stage C's first run is what replaces it; until then the row to read is a range, not a point.
 - *Effect size.* No NAD+-raising agent has been tested in this disease or this allele class, so the one-third / one-half columns are scenario values chosen to bracket a plausible rescue, not predictions. If the true effect is smaller than a third, every number here is an underestimate.
 - *ICC.* Between-culture clustering has not been measured for these endpoints. ICC = 0.05 with 100 units per culture already multiplies the requirement by 5.95, which is why the column exists rather than a single headline n.
+- *The standard deviation behind Cohen's d.* A standardised effect is a difference divided by a within-group SD, and that SD is unmeasured for intracellular NAD+ and for acetyl-site occupancy in these cells. The Stage A/B table is in standardised units on purpose: it says what separation is needed, not what concentration. Converting it into a concentration needs the first dose-response run — the same run that would replace the baseline rate.
 - *One-sided vs two-sided.* Two-sided throughout, because a rise in the aneuploid fraction is a result this experiment must be able to detect (§6 Stage D).
 - *What this is not.* A power calculation is not evidence that the effect exists. It states what the proposed experiment could see if it did.

@@ -33,6 +33,13 @@ STATUS = {"CONFIRMED", "ASSUMED", "UNKNOWN"}
 STRENGTH = {"measured_in_proband", "clinically_validated", "measured_in_model", "predicted", "asserted"}
 FACT_RE = re.compile(r"\bF-[A-Z]+-[A-Za-z0-9][A-Za-z0-9_-]*")
 DATE_RE = re.compile(r"\b20\d\d-\d\d-\d\d\b")
+# 範本的每個待填格都寫成 <說明>。整格就是一對角括號 = 沒填。這個檢查存在的理由：2026-10-19
+# 到 10-21 之間，九列臨床／表現型事實一直留著範本的佔位字串，而 R1–R6 全部通過——因為
+# 「statement 非空」對佔位字串來說是真的。引擎讀的 case 檔有真值，所以科學沒受影響，
+# 但登錄表是報告引用的那一份，看不見自己沒填完的檢查器等於沒有檢查。
+# 不會誤判 HGVS：c.2210T>G 沒有左角括號，而這裡要求整格以 < 開頭、以 > 結尾。
+PLACEHOLDER_RE = re.compile(r"^<[^<>]*>$")
+PLACEHOLDER_COLS = ("statement", "basis", "source", "alternative", "resolution_path", "report_section")
 
 
 def ref_files(eng, case_id):
@@ -63,6 +70,9 @@ def check(rows, refs_text):
             fails.append((where, f"strength 要是 {sorted(STRENGTH)}"))
         if not r["statement"].strip() or not r["basis"].strip() or not r["source"].strip():
             fails.append((where, "statement、basis、source 都要填"))
+        for col in PLACEHOLDER_COLS:
+            if PLACEHOLDER_RE.match(r[col].strip()):
+                fails.append((where, f"{col} 還是範本的佔位字串 {r[col].strip()[:48]}：填真值，或清空"))
         # R1 / R4：CONFIRMED 只能來自病人身上的量測或外部臨床驗證；predicted 永遠不是 CONFIRMED
         if r["status"] == "CONFIRMED" and r["strength"] not in ("measured_in_proband", "clinically_validated"):
             fails.append((where, "R1/R4：CONFIRMED 的 strength 只能是 measured_in_proband 或 clinically_validated"))

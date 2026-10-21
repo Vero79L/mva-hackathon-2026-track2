@@ -230,6 +230,31 @@ class TestRegister(Sandbox):
         for token in ("R1/R4", "R2", "R3", "前綴 F-PROT", "R5", "必須連到情境", "R6"):
             self.assertIn(token, out, token)
 
+    def test_a_row_valid_in_every_other_respect_but_still_holding_the_template_text_is_caught(self):
+        """The gap this check closes. Nine clinical/phenotype rows carried the template's
+        `<...>` placeholder from 2026-10-19 to 2026-10-21 while R1-R6 passed, because
+        "statement is non-empty" is true of a placeholder. Everything else here is valid."""
+        rows = good_register()
+        rows[7][2] = "<HPO term 名稱（HP:xxxxxxx）>"       # F-PHEN-01 statement
+        rows[8][4] = "<例：主辦方表現型檔>"                 # F-CLIN-age basis
+        write_register(self.reg / "fact_register.csv", rows)
+        r = self.run_step("13_check_register.py")
+        out = r.stdout + r.stderr
+        self.assertNotEqual(r.returncode, 0, out)
+        self.assertIn("還是範本的佔位字串", out)
+        self.assertIn("F-PHEN-01", out)
+        self.assertIn("F-CLIN-age", out)
+
+    def test_real_hgvs_is_not_mistaken_for_a_placeholder(self):
+        """c.2210T>G ends in an angle-bracketed look-alike. The check requires the whole cell
+        to open with `<`, so a transcript-level statement must still pass."""
+        rows = good_register()
+        rows[0][2] = "V1: ENST00000287598.11:c.2210T>G (ENSP00000287598.7:p.Leu737Ter)"
+        rows[1][2] = "V2: ENST00000287598.11:c.3006T>G, MAX_AF <0.0001"
+        write_register(self.reg / "fact_register.csv", rows)
+        r = self.run_step("13_check_register.py")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
     def test_register_inside_engine_is_refused(self):
         write_register(self.eng / "fact_register.csv", good_register())
         r = self.run_step("13_check_register.py", "--register", str(self.eng / "fact_register.csv"))

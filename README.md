@@ -66,9 +66,9 @@ at portrait text width its node labels render around 6pt, which is unreadable.
 ## Tests
 ```sh
 python3 src/triage.py --selftest     # 28 regression checks (input validation + gates + scenarios)
-bash tests/phase1/run_tests.sh       # 81 checks: the pipeline, the robustness harness, and the release gate
+bash tests/phase1/run_tests.sh       # 86 checks: the pipeline, the robustness harness, and the release gate
 ```
-Expected: `ALL PASS` and `Ran 81 tests ... OK`. The second suite includes
+Expected: `ALL PASS` and `Ran 86 tests ... OK`. The second suite includes
 `test_manifest_gate.py`, which perturbs a copy of the whole tree one item at a time and requires
 `make_manifest.py` to block with the right message — so the consistency gate is tested rather than
 asserted. The `--selftest` checks cover: wrong-direction rejects; unknown defect_direction or
@@ -123,8 +123,11 @@ python3 scripts/phase1/21_quant_checks.py clinvar-baserate   # -> docs/clinvar_b
 
 - **power** — detectability of the staged experiment in report §6: two-proportion test with a design
   effect for clustering within a culture. Pure arithmetic, so `run.sh` regenerates it and the release
-  gate recomputes the two cells the report quotes in prose. It caught its own first draft, where the
-  table used 0.33 for a reduction the prose called one third.
+  gate recomputes the four cells the report quotes in prose. It caught its own first draft, where the
+  table used 0.33 for a reduction the prose called one third. It covers the two proportion endpoints
+  (stages C and D), the two continuous ones (stages A and B, where three cultures per arm can see only
+  a standardised difference of d = 2.29 and a moderate d = 1.0 needs sixteen), and a pre-specified gate
+  table stating what each stage has to show to pay for the next one.
 - **tractability** — Open Targets buckets for the fifteen proteins in the checkpoint/segregation
   module and the NAD+ axis. The counted result is the external form of the directionality rule:
   0 of 15 carry an approved drug in any modality, and the 5 with advanced clinical small molecules
