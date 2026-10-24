@@ -153,6 +153,7 @@ claim_ledger.csv: 37 claims -> /Users/veromacpro/Claude-MyBrain-Professional/opp
 == manifest ==
 manifest OK
   PENDING (filled at freeze; run with --freeze to make this blocking): 2 eligibility rows cite a fact-sheet host rather than a product label (CL-REG-03, CL-REG-04) - correct by construction (no approved product exists for those molecules), recorded so it is a stated choice
+  PENDING (filled at freeze; run with --freeze to make this blocking): docs/Vero7878_track2_report.pdf is 7 min older than docs/REPORT.md - rebuild it with `sh make_pdf.sh` or the submitted PDF is a superseded report
  counts verified: AI-register provider rows without patient input=3, AI-register rows with a provider=6, AI-register usage rows=7, claims=37, cultures per arm for d=1.0=16, global-negative=5, load-bearing PMIDs=36, phase-1 tests=88, product rows=12, reference-design cultures per arm at ICC 0.05=18, reference-design units per arm=294, registered facts=18, self-tests=28, smallest detectable d at 3 cultures per arm=2.29
  pitch length  : 2:52 (173s, 180s limit)
  denominator: 13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries
