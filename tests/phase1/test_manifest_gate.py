@@ -193,8 +193,13 @@ class ManifestGate(unittest.TestCase):
         eng = self.tree()
         p = eng / "docs" / "PITCH.md"
         t = p.read_text(encoding="utf-8")
-        self.assertIn("Measured 2:53 spoken", t)
-        p.write_text(t.replace("Measured 2:53 spoken", "Measured 1:30 spoken", 1), encoding="utf-8")
+        # Read the stated figure instead of hard-coding it. The first version of this test pinned
+        # "Measured 2:53 spoken" as its precondition and broke the day the script was legitimately
+        # rewritten to 2:52 -- a test that fails when the thing it guards changes correctly is the
+        # same retyped-constant drift the rest of this suite exists to catch.
+        stated = re.search(r"Measured \d:\d\d spoken", t)
+        self.assertIsNotNone(stated, "PITCH.md must state its measured length")
+        p.write_text(t.replace(stated.group(0), "Measured 1:30 spoken", 1), encoding="utf-8")
         self.assertBlocks(eng, "computed length is")
 
     # ---- AI 揭露：登錄簿有、文件沒寫，是兩種失敗裡較嚴重的那一種 ----
