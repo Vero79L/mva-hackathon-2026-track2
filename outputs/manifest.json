@@ -3,9 +3,9 @@
   "denominator": "13 interventions + 3 mechanism-branches + 1 negative-control groups = 17 entries",
   "primary_hypothesis": "A repurposed medicine for BUB1B-related mosaic variegated aneuploidy earns its next experiment only if it acts in the compensating direction on the bottleneck the decisive experiment is built to measure — residual BubR1 abundance and checkpoint function, both of which are UNKNOWN in this child — passes this patient's constraint gates with every safety axis those gates cannot see declared rather than counted as clear, and rests on an approved product with a dated label. Under that rule the single named candidate is niacin (nicotinic acid), an approved NAD+ precursor acting through the SIRT2–BubR1 stabilization axis, carried as a conditional research hypothesis and not a recommendation: its oncology axis is contradictory and its growth axis unassessed. It is overturned if NAD+ repletion in patient-derived cells fails to raise BubR1 protein, fails to correct the checkpoint defect, or raises the aneuploid fraction of the surviving population — a fraction, never raw survival, because a real checkpoint rescue can raise overall survival.",
   "files": {
-    "docs/REPORT.md": "8624bdf5066340d3540e1e6aafa4420f539de3528097c72b896b95803abdd7f4",
+    "docs/REPORT.md": "7bc2a18d6f3aa1b9b64e860716a05f3b364fd0f078aca7c2db9fc05e9f360611",
     "docs/PITCH.md": "62186f842fd93920ff32e2ef258a682ab019c26d9e8efcb367c6cfd907869c38",
-    "docs/METHODS_AND_AI.md": "0d549bba79e438ea81d062d20d7e27acd70ed6c2a359510520fcd1716aa6c905",
+    "docs/METHODS_AND_AI.md": "16cd0e7f270c63fdccaa12c26ae4b1b3731385ecc76486c5c7e7d6a636d6ce1d",
     "docs/PRIMARY_HYPOTHESIS.md": "6ed273cd3ebbeab0f236652a38cc17107aecf54d876d3cb7a9ab7abdde50eab3",
     "docs/SAFETY_ANNEX.md": "f8819bc75b80f890313312adc9d19f0efaa39e4208b27cc60d9400ea1356ac6f",
     "docs/MVA_DECISION_TABLE.md": "04447485f9a758c9a0a49d64dca3567d3de44710018834702a66a4ffd8f39588",
@@ -18,6 +18,6 @@
   },
   "submitted_pdf": {
     "file": "docs/Vero7878_track2_report.pdf",
-    "sha256": "f2ee98a0a57067691067176ccb92f3d309df3eecb2ccb374cf7933a32dbb370d"
+    "sha256": "9fd181f7e925551b55fb6fe7ac755539b9f4ce8ff6f8672d8f411560d0b5aff9"
   }
 }

@@ -136,7 +136,15 @@ must agree before a fact enters the report (both variants passed: 6/6 and 7/7 ch
   review of the engine and of the report text. It received repository code and report prose
   and no patient-derived content of any kind, which is why its account setting is recorded but
   not load-bearing: the organizers' condition is about patient-specific or derived information,
-  and none reached that provider.
+  and none reached that provider. A third provider, **Google's Gemini API**
+  (`gemini-3.8-flash-tts`, free tier), produced the spoken narration of the pitch video. The
+  narration of that video is synthetic speech and is disclosed as such; there is no avatar and no
+  cloned or human voice likeness. What it received is the pitch script, whose only clinical string
+  across 449 words is the gene symbol *BUB1B*, so again no patient-derived content reached it.
+  That matters more here than for the other two, because Google states that free-tier API data may
+  be used to improve its products: the condition the organizers set is the same one, and it does
+  not bind a request that carries nothing about this child. The seven audio files were assembled
+  into the video locally with ffmpeg.
 - **Permitted use:** the organizers' final guidance (Community #2, confirmed #21) permits a
   consumer tier (e.g. Claude Max) for patient-specific or derived information when (1)
   model-training is disabled in account settings and (2) no feedback is given on outputs and

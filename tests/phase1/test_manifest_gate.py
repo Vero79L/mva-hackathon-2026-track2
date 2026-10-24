@@ -286,10 +286,16 @@ class ManifestGate(unittest.TestCase):
         eng = self.tree()
         p = eng / "docs" / "REPORT.md"
         t = p.read_text(encoding="utf-8")
-        self.assertIn("Of its **six** usage rows", t)
-        p.write_text(t.replace("Of its **six** usage rows", "Of its **nine** usage rows"),
-                     encoding="utf-8")
-        self.assertBlocks(eng, "AI-register usage rows is 6")
+        # Read the stated count rather than pinning it. This test hard-coded "six" and broke the
+        # day a seventh provider row was legitimately added -- the second time in this file that a
+        # retyped constant in a test guarding retyped constants failed for the right reason at the
+        # wrong moment. The number the gate computes is the authority; the test only needs to know
+        # that perturbing the prose is caught.
+        stated = re.search(r"Of its \*\*(\w+)\*\* usage rows", t)
+        self.assertIsNotNone(stated, "REPORT section 14 must state the register's row count")
+        self.assertNotEqual(stated.group(1), "nine", "pick a different wrong value")
+        p.write_text(t.replace(stated.group(0), "Of its **nine** usage rows"), encoding="utf-8")
+        self.assertBlocks(eng, "AI-register usage rows is")
 
     def test_a_data_value_containing_a_slash_is_not_read_as_a_promised_file(self):
         """路徑檢查的假陽性類別，實際發生過。ClinVar 的欄位值本身帶斜線，

@@ -39,6 +39,25 @@ print(f"  replaced {n_v} video slot(s) and {n_d} date slot(s)")
 PYEOF
 
 echo ""
+echo "=== regenerating the committed run snapshot ==="
+# Order matters, and the first version of this script had it wrong. It ran the freeze gate before
+# rebuilding these two artifacts, and the gate blocks precisely because they are older than
+# docs/REPORT.md -- which they are BECAUSE the two slots were just filled. With set -e the script
+# died at the gate and never reached the rebuild it needed. Regenerate first, check last.
+PYTHON="$PY" sh run.sh >/dev/null
+echo "  outputs/run.txt and outputs/manifest.json regenerated"
+
+echo ""
+echo "=== rebuilding the submitted PDF from the filled report ==="
+sh make_pdf_chrome.sh
+"$PY" - <<'PYEOF'
+import re
+PAT = rb"/Count\s+(\d+)"          # kept out of the f-string: a backslash cannot go inside one
+d = open("docs/Vero7878_track2_report.pdf", "rb").read()
+pages = max(int(m.group(1)) for m in re.finditer(PAT, d))
+print("  {} pages, {:,} bytes".format(pages, len(d)))
+PYEOF
+echo ""
 echo "=== tests ==="
 bash tests/phase1/run_tests.sh 2>&1 | tail -3
 echo ""
@@ -48,19 +67,11 @@ echo ""
 echo "=== fact register ==="
 "$PY" scripts/phase1/13_check_register.py 2>&1 | tail -3
 echo ""
-echo "=== freeze gate ==="
-"$PY" make_manifest.py --freeze
-echo ""
-echo "=== rebuilding the submitted PDF from the filled report ==="
-sh make_pdf_chrome.sh
-"$PY" - <<'PYEOF'
-import re
-d = open("docs/Vero7878_track2_report.pdf", "rb").read()
-print(f"  {max(int(m.group(1)) for m in re.finditer(rb'/Count\s+(\d+)', d))} pages, {len(d):,} bytes")
-PYEOF
-echo ""
 echo "=== privacy scan, whole repo ==="
 "$PY" scripts/phase1/19_public_safety.py 2>&1 | tail -2
+echo ""
+echo "=== freeze gate ==="
+"$PY" make_manifest.py --freeze
 echo ""
 echo "=== what is left ==="
 echo "  1. read the diff:   git diff --stat"
